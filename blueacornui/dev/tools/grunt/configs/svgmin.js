@@ -9,7 +9,7 @@
 
 var combo  = require('./combo'),
     themes = require('./themes'),
-    path = require('./path'),
+    path   = require('./path'),
     _      = require('underscore');
 
 var themeOptions = {};

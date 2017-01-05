@@ -28,7 +28,7 @@ _.each(themes, function(theme, name) {
             ]
         },
         dist: {
-            src: combo.lessFiles(name)    
+            src: combo.lessFiles(name)
         }
     };
 });

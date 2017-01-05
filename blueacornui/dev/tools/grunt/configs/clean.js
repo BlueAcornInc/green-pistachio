@@ -3,8 +3,6 @@
  * See COPYING.txt for license details.
  */
 
-'use strict';
-
 var themes = require('./themes'),
     _      = require('underscore');
 
@@ -110,4 +108,3 @@ var cleanOptions = {
 };
 
 module.exports = _.extend(cleanOptions, themeOptions);
-

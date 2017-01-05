@@ -3,8 +3,14 @@
         "map": true,
         "options": {
             "browsers": [
-                "last 2 versions",
-                "ie 9"
+                "last 2 Explorer versions",
+                "last 2 Edge versions",
+                "last 2 Chrome versions",
+                "last 2 Safari versions",
+                "last 2 Firefox Versions",
+                "last 2 iOS versions",
+                "last 2 ChromeAndroid versions",
+                "> 1%"
             ],
             "map": {
                 "inline": false,
@@ -18,15 +24,6 @@
         },
         "updater": {
             "src": "<%= path.css.updater %>/updater.css"
-        }
-    },
-    "production": {
-        "map": false,
-        "options": {
-            "browsers": [
-                "last 2 versions",
-                "ie 9"
-            ]
         }
     }
 }
