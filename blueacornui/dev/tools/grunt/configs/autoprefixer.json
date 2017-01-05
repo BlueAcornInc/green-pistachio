@@ -1,0 +1,32 @@
+{
+    "dev": {
+        "map": true,
+        "options": {
+            "browsers": [
+                "last 2 versions",
+                "ie 9"
+            ],
+            "map": {
+                "inline": false,
+                "prev": true,
+                "annotation": "!",
+                "sourceContent": false
+            }
+        },
+        "setup": {
+            "src": "<%= path.css.setup %>/setup.css"
+        },
+        "updater": {
+            "src": "<%= path.css.updater %>/updater.css"
+        }
+    },
+    "production": {
+        "map": false,
+        "options": {
+            "browsers": [
+                "last 2 versions",
+                "ie 9"
+            ]
+        }
+    }
+}
