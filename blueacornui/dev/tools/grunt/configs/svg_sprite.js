@@ -7,17 +7,18 @@
 
 var combo  = require('./combo'),
     themes = require('./themes'),
+    path   = require('./path'),
     _      = require('underscore');
 
 var themeOptions = {};
 
 _.each(themes, function(theme, name) {
     if(theme.grunt) {
-        themeOptions[name + 'Dev'] = {
+        themeOptions[name] = {
             expand: true,
-            cwd: combo.autopath(name, 'library') + 'spritesrc/',
+            cwd: combo.designpath(name, path.design) + 'web/spritesrc/',
             src: '**/*.svg',
-            dest: combo.autopath(name, 'library') + 'src/',
+            dest: combo.designpath(name, path.design) + 'web/src/',
             options: {
                 svg: {
                     xmlDeclaration: true,
@@ -44,7 +45,7 @@ _.each(themes, function(theme, name) {
                         sprite: '../images/sprites.svg',
                         render: {
                             less: {
-                                dest: '../less/00_base/_sprites.less'
+                                dest: '../css/source/blueacorn/_sprites.less'
                             }
                         }
                     },
@@ -57,7 +58,7 @@ _.each(themes, function(theme, name) {
                         common: 'svg-view',
                         render: {
                             less: {
-                                dest: '../less/00_base/_sprites-view.less'
+                                dest: '../css/source/blueacorn/_sprites-view.less'
                             }
                         }
                     }
@@ -67,10 +68,10 @@ _.each(themes, function(theme, name) {
     }
 });
 
-var svgminOptions = {
+var svgspriteOptions = {
     options: {
 
     }
 };
 
-module.exports = _.extend(themeOptions, svgminOptions);
+module.exports = _.extend(themeOptions, svgspriteOptions);

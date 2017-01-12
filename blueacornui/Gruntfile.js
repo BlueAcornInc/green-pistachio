@@ -25,7 +25,8 @@ module.exports = function (grunt) {
         init: true,
         jitGrunt: {
             staticMappings: {
-                usebanner: 'grunt-banner'
+                usebanner: 'grunt-banner',
+                svgsprite: 'svg_sprite'
             }
         }
     });

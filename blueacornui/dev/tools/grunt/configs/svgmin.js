@@ -16,12 +16,23 @@ var themeOptions = {};
 
 _.each(themes, function(theme, name) {
     if(theme.grunt) {
-        files: [{
-            expand: true,
-            cwd: combo.autopath(name, path.pub) + '/BlueAcorn*/**/*',
-            src: ['**/*.svg'],
-            dest: combo.autopath(name, path.pub) + '/BlueAcorn*/**/*'
-        }]
+        themeOptions[name + 'Dev'] = {
+            files: [{
+                expand: true,
+                cwd: combo.designpath(name, path.design) + 'web/images/',
+                src: ['**/*.svg', '*.svg'],
+                dest: combo.designpath(name, path.design) + 'web/images/'
+            }]
+        }
+
+        themeOptions[name + 'Sprites'] = {
+            files: [{
+                expand: true,
+                cwd: combo.designpath(name, path.design) + 'web/spritesrc/',
+                src: ['**/*.svg', '*.svg'],
+                dest: combo.designpath(name, path.design) + 'web/spritesrc/'
+            }]
+        }
     }
 });
 

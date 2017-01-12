@@ -25,6 +25,20 @@ _.each(themes, function(theme, name) {
         ],
         'tasks': ['jshint:' + name],
     };
+
+    themeOptions[name + "Templates"] = {
+        'files': [
+            '<%= combo.designpath(\''+name+'\', path.design) %>/**/*.phtml'
+        ],
+        'tasks': ['shell:cache:' + name],
+    };
+
+    themeOptions[name + 'SvgSprites'] = {
+        files: [
+            '<%= combo.designpath(\''+name+'\', path.design) %>/web/spritesrc/**/*.svg'
+        ],
+        tasks: ['shell:' + name + 'Sprites', 'svgmin:' + name + 'Dev', 'svg_sprite:' + name]
+    };
 });
 
 var watchOptions = {
