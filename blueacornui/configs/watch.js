@@ -37,7 +37,7 @@ _.each(themes, function(theme, name) {
         files: [
             '<%= combo.designpath(\''+name+'\', path.design) %>/web/spritesrc/**/*.svg'
         ],
-        tasks: ['shell:' + name + 'Sprites', 'svgmin:' + name + 'Dev', 'svg_sprite:' + name]
+        tasks: ['svgmin:' + name + 'Sprites', 'svgmin:' + name + 'Dev', 'svg_sprite:' + name]
     };
 });
 
