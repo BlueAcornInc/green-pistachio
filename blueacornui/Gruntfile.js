@@ -10,9 +10,9 @@ module.exports = function (grunt) {
 
     var _ = require('underscore'),
         path = require('path'),
-        themes = require('./dev/tools/grunt/configs/themes'),
-        configDir = './dev/tools/grunt/configs',
-        tasks = grunt.file.expand('./dev/tools/grunt/tasks/*');
+        themes = require('./dev/configs/themes'),
+        configDir = './dev/configs',
+        tasks = grunt.file.expand('./dev/tasks/*');
 
     tasks = _.map(tasks, function(task){ return task.replace('.js', '') });
     tasks.push('time-grunt');
