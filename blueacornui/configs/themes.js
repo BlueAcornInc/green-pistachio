@@ -43,18 +43,6 @@ module.exports = {
         ],
         dsl: 'less'
     },
-    rds: {
-        grunt: true,
-        dev_url: 'magento2.dev',
-        area: 'frontend',
-        name: 'BlueAcorn/rds',
-        locale: 'en_US',
-        files: [
-            'css/styles-m',
-            'css/styles-l'
-        ],
-        dsl: 'less'
-    },
     backend: {
         grunt: false,
         area: 'adminhtml',
