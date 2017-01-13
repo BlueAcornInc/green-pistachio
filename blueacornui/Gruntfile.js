@@ -10,9 +10,9 @@ module.exports = function (grunt) {
 
     var _ = require('underscore'),
         path = require('path'),
-        themes = require('./dev/configs/themes'),
-        configDir = './dev/configs',
-        tasks = grunt.file.expand('./dev/tasks/*');
+        themes = require('./configs/themes'),
+        configDir = './configs',
+        tasks = grunt.file.expand('./tasks/*');
 
     tasks = _.map(tasks, function(task){ return task.replace('.js', '') });
     tasks.push('time-grunt');
@@ -93,7 +93,7 @@ module.exports = function (grunt) {
         ],
 
         spec: function (theme) {
-            var runner = require('./dev/tests/js/jasmine/spec_runner');
+            var runner = require('./tests/js/jasmine/spec_runner');
 
             runner.init(grunt, { theme: theme });
 
