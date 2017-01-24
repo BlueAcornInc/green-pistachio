@@ -5,10 +5,11 @@
 * @copyright   Copyright © 2016 Blue Acorn, Inc.
 */
 
-var combo  = require('./combo'),
-    themes = require('./themes'),
-    path   = require('./path'),
-    _      = require('underscore');
+var combo   = require('./combo'),
+    themes  = require('./themes'),
+    path    = require('./path'),
+    npmPath = require('path'),
+    _       = require('underscore');
 
 var themeOptions = {};
 
@@ -58,7 +59,8 @@ _.each(themes, function(theme, name) {
                         common: 'svg-view',
                         render: {
                             less: {
-                                dest: '../css/source/blueacorn/_sprites-view.less'
+                                dest: '../css/source/blueacorn/_sprites-view.less',
+                                template: npmPath.join(__dirname, '../assets/tmpl/_sprite-mixins.less')
                             }
                         }
                     }
