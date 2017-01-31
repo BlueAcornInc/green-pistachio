@@ -25,7 +25,8 @@ _.each(themes, function(theme, name) {
                     doctypeDeclaration: true,
                     namespaceIDs: true,
                     namespaceClassnames: true,
-                    dimensionAttributes: true
+                    dimensionAttributes: true,
+                    precision: 2
                 },
                 shape: {
                     dimension: {
