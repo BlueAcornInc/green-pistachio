@@ -1,3 +1,12 @@
+<!--
+/**
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ */
+-->
 <p align="center"><img src="images/logo.png" width="220" height="46" alt="Blue Acorn" align="center" /></p>
 
 <h1 align="center">Grunt Workflow for <img src="images/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
@@ -59,7 +68,7 @@ The value/object tells grunt how to process your theme.
 | Setting | Description |
 |---------|-------------|
 | `grunt` | Tells the grunt process whether or not this theme should be included in compilation. |
-| `appPath` | Section of the site where we are compiling, if you had a custom admin theme, in theory you chould set this to `adminhtml`, for now let's not get crazy, it's just `frontend` |
+| `appPath` | Section of the site where we are compiling, if you had a custom admin theme, in theory you could set this to `adminhtml`, for now let's not get crazy, it's just `frontend` |
 | `themePath` | Path within app/design/`appPath`/ where you wish to compile, in the example above we have `BlueAcorn/site` (our standard), and it would tell the grunt process to look in app/design/frontend/BlueAcorn/site for files it needs to compile. |
 | `dev_url` | Local URL used for the site, in most instances this will be client code followed by .test |
 | `locale` | TBD |
@@ -67,15 +76,15 @@ The value/object tells grunt how to process your theme.
 | `stylesheetSourceLanguage` | TBD |
 | `javascript` | TBD |
 | `bowerFallback` | TBD |
-| `themeFallback` | Fallback theme in magento, used for finding missing files in the compilation process. |
+| `themeFallback` | Fallback theme in Magento, used for finding missing files in the compilation process. |
 
 Before You Compile
 --
 
-These are helpful common suggestions, you will not need to do this everytime you go to work on the site, but at least the first time it's helpful.
+These are helpful common suggestions, you will not need to do this every-time you go to work on the site, but at least the first time it's helpful.
 
 
-1. It's always a good idea to make sure composer packages are up to date.  Do so by runnig the following commands from the site's root dir.
+1. It's always a good idea to make sure composer packages are up to date.  Do so by running the following commands from the site's root dir.
 
 	```bash
 	composer install && composer update
@@ -86,25 +95,25 @@ These are helpful common suggestions, you will not need to do this everytime you
 	```bash
 	php bin/magento setup:upgrade && php bin/magento indexer:reindex
 	```
-	
+
 3. Next let's deploy static content to make sure our parent themes are sent to `pub/static`, run this command from the site's root dir.
 
 	```bash
 	php bin/magento setup:static-content:deploy -f
 	```
-	
+
 4. Finally for our first time compiling we'll need to install our node pacakges.
 
 	```bash
 	npm install
 	```
-	
+
 5. Now let's compile.
 
 	```bash
 	grunt
 	```
-	
+
 Wait, what's happening?
 --
 
@@ -118,14 +127,14 @@ grunt less:site
 ```
 
 ### Babel/ES6
-We love ES6, so we wanted to make sure we could use some of it's features to write our code in a manor that we were happy with, just like less, our babel process looks for a source directory anywhere withing app/code/BlueAcorn or app/design/frontend/BlueAcorn js directory.  It will then compile down without the source directory in it's path.  
+We love ES6, so we wanted to make sure we could use some of it's features to write our code in a manor that we were happy with, just like less, our babel process looks for a source directory anywhere within app/code/BlueAcorn or app/design/frontend/BlueAcorn js directory.  It will then compile down without the source directory in it's path.  
 
 Confused yet, here's a table with examples of where js files would compile down to.
 
 **Standard Usage**
 
 ```bash
-app/code/BlueAcorn/MegaMenu/view/frontend/web/js/source/menu-modals.js => 
+app/code/BlueAcorn/MegaMenu/view/frontend/web/js/source/menu-modals.js =>
 app/code/BlueAcorn/MegaMenu/view/frontend/web/js/menu-modals.js
 ```
 
