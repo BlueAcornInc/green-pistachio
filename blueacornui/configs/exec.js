@@ -1,38 +1,40 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 
 'use strict';
 
-var combo = require('./combo'),
-    themes = require('./themes'),
-    _      = require('underscore');
+let combo = require('./_combo'),
+    themes = require('./_themes'),
+    themeOptions = {},
+    execOptions = {};
 
-var themeOptions = {};
-
-_.each(themes, function(theme, name) {
+for(let name in themes) {
     themeOptions[name] = {
         cmd: combo.collector.bind(combo, name)
     };
-});
+}
 
-var execOptions = {
+execOptions = {
     all : {
         cmd: function () {
-            var cmdPlus = (/^win/.test(process.platform) == true) ? ' & ' : ' && ',
+            let cmdPlus = (/^win/.test(process.platform) == true) ? ' & ' : ' && ',
                 command;
 
-            command = _.map(themes, function(theme, name) {
+            command = Object.keys(themes).map((name, idx) => {
                 return combo.collector(name);
             }).join(cmdPlus);
 
             return 'echo ' + command;
         }
+    },
+    cache: {
+        cmd: 'php bin/magento cache:flush -q'
     }
 };
 
-/**
- * Execution into cmd
- */
-module.exports = _.extend(themeOptions, execOptions);
+module.exports = Object.assign(themeOptions, execOptions);

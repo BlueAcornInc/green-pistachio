@@ -1,48 +1,61 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 
 'use strict';
 
-var combo  = require('./combo'),
-    themes = require('./themes'),
-    _      = require('underscore');
+const   path = require('path'),
+        combo = require('./_combo'),
+        themes = require('./_themes'),
+        settings = require('./_settings');
 
-var themeOptions = {};
+let     themeOptions = {},
+        lessOptions = {};
 
-_.each(themes, function(theme, name) {
-    themeOptions[name] = {
-        files: combo.lessFiles(name)
-    };
-});
+for(let name in themes) {
+    let theme = themes[name];
 
-var lessOptions = {
+    if(theme.grunt) {
+        themeOptions[name] = {
+            files: combo.lessFiles(name)
+        };
+
+        themeOptions[name + 'Prod'] = {
+            options: {
+                sourceMap: false,
+                strictImports: false,
+                sourceMapRootpath: '/',
+                dumpLinkNumbers: false,
+                ieCompat: false
+            },
+            files: combo.lessFiles(name)
+        };
+    }
+}
+
+lessOptions = {
     options: {
         sourceMap: true,
+        outputSourceFiles: true,
+        compress: true,
         strictImports: false,
         sourceMapRootpath: '/',
-        dumpLineNumbers: false, // use 'comments' instead false to output line comments for source
+        dumpLinkNumbers: false,
         ieCompat: false
     },
     setup: {
-        files: {
-            '<%= path.css.setup %>/setup.css': '<%= path.less.setup %>/_setup.less'
-        }
+        files: combo.getLessPaths(settings.css.setup, '/setup.css', settings.less.setup, '/_setup.less')
     },
     updater: {
-        files: {
-            '<%= path.css.updater %>/updater.css': '<%= path.less.setup %>/_setup.less'
-        }
+        files: combo.getLessPaths(settings.css.updater, '/updater.css', settings.less.updater, '/_setup.less')
     },
     documentation: {
-        files: {
-            '<%= path.doc %>/docs.css': '<%= path.doc %>/source/docs.less'
-        }
+        files: combo.getLessPaths(settings.doc, '/doc.css', settings.doc, '/source/docs.less')
     }
 };
 
-/**
- * Compiles Less to CSS and generates necessary files if requested.
- */
-module.exports = _.extend(themeOptions, lessOptions);
+module.exports = Object.assign(themeOptions, lessOptions);

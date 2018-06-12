@@ -1,16 +1,50 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 
 'use strict';
 
-var svgo = require('imagemin-svgo');
+const   path = require('path'),
+        combo = require('./_combo'),
+        themes = require('./_themes'),
+        settings = require('./_settings'),
+        svgo = require('imagemin-svgo');
 
-/**
- * Images optimization.
- */
-module.exports = {
+let     themeOptions = {},
+        imageminOptions = {};
+
+for(let name in themes) {
+    let theme = themes[name];
+
+    if(theme.grunt) {
+        themeOptions[name + 'Raster'] = {
+            files: [{
+                expand: true,
+                cwd: combo.autoPathImageSrc(name),
+                src: ['**/*.{png,jpg,gif,jpeg}'],
+                dest: combo.autoPathImages(name)
+            }]
+        };
+
+        themeOptions[name + 'Svg'] = {
+            files: [{
+                expand: true,
+                cwd: combo.autoPathImageSrc(name),
+                src: ['**/*.svg'],
+                dest: combo.autoPathImages(name)
+            }],
+            options: {
+                use: [svgo()]
+            },
+        };
+    }
+}
+
+imageminOptions = {
     png: {
         options: {
             optimizationLevel: 7
@@ -49,3 +83,5 @@ module.exports = {
         }]
     }
 };
+
+module.exports = Object.assign(themeOptions, imageminOptions);

@@ -1,25 +1,30 @@
 /**
-* @package     BlueAcorn/GreenPistachio
-* @version     4.5.0
-* @author      Blue Acorn, Inc. <code@blueacorn.com>
-* @copyright   Copyright © 2016 Blue Acorn, Inc.
-*/
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ */
 
-var combo   = require('./combo'),
-    themes  = require('./themes'),
-    path    = require('./path'),
-    npmPath = require('path'),
-    _       = require('underscore');
+'use strict';
 
-var themeOptions = {};
+const path = require('path'),
+      combo = require('./_combo'),
+      themes = require('./_themes'),
+      settings = require('./_settings');
 
-_.each(themes, function(theme, name) {
+let   themeOptions = {},
+      svgspriteOptions = {};
+
+for(const name in themes) {
+    let theme = themes[name];
+
     if(theme.grunt) {
         themeOptions[name] = {
             expand: true,
-            cwd: combo.designpath(name, path.design) + 'web/spritesrc/',
+            cwd: combo.autoPathSpriteSrc(name),
             src: '**/*.svg',
-            dest: combo.designpath(name, path.design) + 'web/src/',
+            dest: combo.autoPathImageSrc(name),
             options: {
                 svg: {
                     xmlDeclaration: true,
@@ -27,41 +32,28 @@ _.each(themes, function(theme, name) {
                     namespaceIDs: true,
                     namespaceClassnames: true,
                     dimensionAttributes: true,
-                    precision: 2
+                    precision: 4
                 },
                 shape: {
-                    dimension: {
-                        maxWidth: 500,
-                        maxHeight: 500
-                    },
+                    dest: '../src/intermediate-svg',
                     spacing: {
-                        padding: 0
-                    },
-                    dest: '../src/intermediate-svg'
+                        padding: 5,
+                        box: "padding"
+                    }
                 },
                 mode: {
-                    symbol: {
-                        dest: '../css/',
-                        prefix: '.svg-',
-                        bust: false,
-                        sprite: '../images/sprites.svg',
-                        render: {
-                            less: {
-                                dest: '../css/source/blueacorn/_sprites.less'
-                            }
-                        }
-                    },
                     view: {
                         dest: '../css/',
                         prefix: '.svg-view-',
                         bust: false,
-                        sprite: '../images/sprites.view.svg',
+                        sprite: '../src/sprites.view.svg',
                         mixin: 'svg-view',
                         common: 'svg-view',
+                        layout: 'vertical',
                         render: {
                             less: {
                                 dest: '../css/source/blueacorn/_sprites-view.less',
-                                template: npmPath.join(__dirname, '../assets/tmpl/_sprite-mixins.less')
+                                template: path.join(__dirname, '../assets/tmpl/_sprite-mixins.less')
                             }
                         }
                     }
@@ -69,12 +61,12 @@ _.each(themes, function(theme, name) {
             }
         };
     }
-});
+}
 
-var svgspriteOptions = {
+var svgSpriteOptions = {
     options: {
 
     }
 };
 
-module.exports = _.extend(themeOptions, svgspriteOptions);
+module.exports = Object.assign(themeOptions, svgSpriteOptions);

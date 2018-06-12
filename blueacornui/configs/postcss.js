@@ -1,40 +1,54 @@
 /**
-* @package     BlueAcorn/GreenPistachio
-* @version     4.5.0
-* @author      Blue Acorn, Inc. <code@blueacorn.com>
-* @copyright   Copyright © 2016 Blue Acorn, Inc.
-*/
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ */
 
 'use strict';
 
-var combo  = require('./combo'),
-    themes = require('./themes'),
-    _      = require('underscore'),
-    ap = require('./autoprefixer');
+let combo = require('./_combo'),
+    themes = require('./_themes'),
+    apOptions = require('./_autoprefixer'),
+    themeOptions = {};
 
-var themeOptions = {};
+for(let name in themes) {
+    let theme = themes[name];
 
-_.each(themes, function(theme, name) {
-    themeOptions[name] = {
-        options: {
-            map: ap.dev.map,
-            processors: [
-                require('autoprefixer')({
-                    browsers: ap.dev.options.browsers,
-                    map: ap.dev.options.map,
-                    add: true,
-                    remove: true
-                })
-            ]
-        },
-        dist: {
-            src: combo.lessFiles(name)
-        }
-    };
-});
+    if(theme.grunt) {
 
-var postCssOptions = {
+        themeOptions[name] = {
+            options: {
+                map: apOptions.dev.map,
+                processors: [
+                    require('autoprefixer')({
+                        browsers: apOptions.dev.options.browsers,
+                        map: apOptions.dev.options.map,
+                        add: true,
+                        remove: true
+                    })
+                ]
+            },
+            src: combo.autoPrefixerFiles(name)
+        };
 
-};
+        themeOptions[name + 'Production'] = {
+            options: {
+                map: apOptions.production.map,
+                processors: [
+                    require('autoprefixer')({
+                        browsers: apOptions.production.options.browsers,
+                        map: apOptions.production.options.map,
+                        add: true,
+                        remove: true
+                    })
+                ]
+            },
+            src: combo.autoPrefixerFiles(name)
+        };
 
-module.exports = _.extend(themeOptions, postCssOptions);
+    }
+}
+
+module.exports = themeOptions;

@@ -3,14 +3,14 @@
         "map": true,
         "options": {
             "browsers": [
-                "last 2 Explorer versions",
+                "Explorer 11",
                 "last 2 Edge versions",
                 "last 2 Chrome versions",
                 "last 2 Safari versions",
                 "last 2 Firefox Versions",
                 "last 2 iOS versions",
                 "last 2 ChromeAndroid versions",
-                "> 1%"
+                "> 1% in US"
             ],
             "map": {
                 "inline": false,
@@ -18,12 +18,21 @@
                 "annotation": "!",
                 "sourceContent": false
             }
-        },
-        "setup": {
-            "src": "<%= path.css.setup %>/setup.css"
-        },
-        "updater": {
-            "src": "<%= path.css.updater %>/updater.css"
+        }
+    },
+    "production": {
+        "map": false,
+        "options": {
+            "browsers": [
+                "Explorer 11",
+                "last 2 Edge versions",
+                "last 2 Chrome versions",
+                "last 2 Safari versions",
+                "last 2 Firefox Versions",
+                "last 2 iOS versions",
+                "last 2 ChromeAndroid versions",
+                "> 1% in US"
+            ]
         }
     }
 }

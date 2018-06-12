@@ -1,0 +1,71 @@
+{
+  "name": "blueacornui",
+  "version": "4.6.0",
+  "description": "Common Workflow for Front-end Development",
+  "private": "true",
+  "namespace": "Blue Acorn",
+  "homepage": "https://github.com/BlueAcornInc/green-pistachio#readme",
+  "bugs": {
+    "email": "greg@blueacorn.com",
+    "url": "https://github.com/BlueAcornInc/green-pistachio/issues"
+  },
+  "author": {
+    "name": "Greg Harvell @ Blue Acorn, Inc.",
+    "email": "greg@blueacorn.com",
+    "copyright": "Copyright © 2017 Blue Acorn, Inc."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/BlueAcornInc/green-pistachio.git"
+  },
+  "keywords": [
+    "grunt",
+    "browsersync",
+    "autoprefixer",
+    "svgmin",
+    "imagemin",
+    "compilation",
+    "preprocessor"
+  ],
+  "dependencies": {
+    "autoprefixer": "^8.6.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "grunt-babel": "^7.0.0",
+    "grunt-banner": "^0.6.0",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-concurrent": "^2.3.1",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-connect": "^1.0.2",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-imagemin": "^2.0.1",
+    "grunt-contrib-jasmine": "^2.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-less": "^2.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-eslint": "^20.2.0",
+    "grunt-exec": "^3.0.0",
+    "grunt-jscs": "^3.0.1",
+    "grunt-newer": "^1.3.0",
+    "grunt-newer-less": "^1.0.2",
+    "grunt-postcss": "^0.9.0",
+    "grunt-replace": "^1.0.1",
+    "grunt-shell": "^2.1.0",
+    "grunt-spritesmith": "^6.6.2",
+    "grunt-styledocco": "^0.3.0",
+    "grunt-svg-sprite": "^1.4.0",
+    "grunt-svgmin": "^5.0.0",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "imagemin-svgo": "^6.0.0",
+    "jit-grunt": "^0.10.0",
+    "load-grunt-config": "^0.19.2",
+    "morgan": "^1.9.0",
+    "node-minify": "^3.0.1",
+    "serve-static": "^1.13.2",
+    "strip-json-comments": "^2.0.1",
+    "time-grunt": "^1.4.0"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.3"
+  }
+}

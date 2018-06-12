@@ -1,37 +1,49 @@
+//**
+//* @package     BlueAcorn/GreenPistachio2
+//* @version     2.0.1
+//* @author      Blue Acorn, LLC. <code@blueacorn.com>
+//* @author      Greg Harvell <greg@blueacorn.com>
+//* @copyright   Copyright © 2018 Blue Acorn, LLC.
+//*/
 
-{{#hasMixin}}.{{mixinName}}() {
-	background: url("{{{sprite}}}") no-repeat;
+{{#hasMixin}}
+@sprite-url: "../images/sprites.view.svg";
+.{{mixinName}}() {
+  background: url("@{sprite-url}") no-repeat;
 }
 
-{{#hasCommon}}.{{commonName}} {
-	.{{mixinName}}();
-}
-
+{{#hasCommon}}
 {{/hasCommon}}{{/hasMixin}}{{^hasMixin}}.{{commonName}}{{^hasCommon}}(){{/hasCommon}} {
-	background: url("{{{sprite}}}") no-repeat;
+  background: url("@{sprite-url}") no-repeat;
 }
 
-{{/hasMixin}}{{#shapes}}{{#selector.shape}}{{expression}}{{^last}},
-{{/last}}{{/selector.shape}} {
-	{{^hasCommon}}{{#hasMixin}}.{{mixinName}}();{{/hasMixin}}{{^hasMixin}}.{{commonName}}();{{/hasMixin}}
-	{{/hasCommon}}background-position: {{position.relative.xy}};{{#dimensions.inline}}
-	width: {{width.outer}}px;
-	height: {{height.outer}}px;{{/dimensions.inline}}
+{{/hasMixin}}
+{{#shapes}}
+{{#selector.shape}}{{expression}}{{^last}},
+{{/last}}{{/selector.shape}}() {
+{{^hasCommon}}{{#hasMixin}}.{{mixinName}}();{{/hasMixin}}{{^hasMixin}}.{{commonName}}();{{/hasMixin}}
+{{/hasCommon}}
+    background-position: {{position.absolute.xy}};
+{{#dimensions.inline}}
+    width: {{width.inner}}px;
+    height: {{height.inner}}px;
+{{/dimensions.inline}}
 }{{#dimensions.extra}}
 
 {{#selector.dimensions}}{{expression}}{{^last}},
-{{/last}}{{/selector.dimensions}} {
-	width: {{width.outer}}px;
-	height: {{height.outer}}px;
+{{/last}}{{/selector.dimensions}}() {
+    width: {{width.outer}}px;
+    height: {{height.outer}}px;
 }{{/dimensions.extra}}
-
 {{/shapes}}
 
-.svg-icon(@fileName) when(isstring(@fileName)) {
-	{{#hasMixin}}{{#hasCommon}}.{{mixinName}}();{{/hasCommon}}{{/hasMixin}}{{#shapes}}
+{{#shapes}}
+@{{commonName}}-{{name}}-x: {{position.absolute.x}}px;
+@{{commonName}}-{{name}}-y: {{position.absolute.y}}px;
 
-	& when (@fileName = "{{name}}") {
-		{{#selector.shape}}{{expression}}{{/selector.shape}};{{#dimensions.extra}}
-		{{#selector.dimensions}}{{expression}};{{/selector.dimensions}}{{/dimensions.extra}}
-	}{{/shapes}}
+.svgi-{{name}}() {
+    {{#hasMixin}}{{#hasCommon}}.{{mixinName}};{{/hasCommon}}{{/hasMixin}}
+    {{#selector.shape}}{{expression}}{{/selector.shape}};{{#dimensions.extra}}
+    {{#selector.dimensions}}{{expression}};{{/selector.dimensions}}{{/dimensions.extra}}
 }
+{{/shapes}}
