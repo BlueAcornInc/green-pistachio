@@ -1,32 +1,35 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 
-var themes = require('./themes'),
-    _      = require('underscore');
+'use strict';
 
-var themeOptions = {};
+const   path = require('path'),
+        combo = require('./_combo'),
+        themes = require('./_themes'),
+        settings = require('./_settings');
 
-_.each(themes, function(theme, name) {
+let     themeOptions = {},
+        cleanOptions = {};
+
+for(let name in themes) {
+    let theme = themes[name];
+
     themeOptions[name] = {
-        "force": true,
-        "files": [
-            {
-                "force": true,
-                "dot": true,
-                "src": [
-                    "<%= path.tmp %>/cache/**/*",
-                    "<%= combo.autopath(\""+name+"\", path.pub ) %>**/*",
-                    "<%= combo.autopath(\""+name+"\", path.tmpLess) %>**/*",
-                    "<%= combo.autopath(\""+name+"\", path.tmpSource) %>**/*"
-                ]
-            }
-        ]
+        force: true,
+        files: [{
+            force: true,
+            dot: true,
+            src: combo.cleanPaths(name)
+        }]
     };
-});
+}
 
-var cleanOptions = {
+cleanOptions = {
     "var": {
         "force": true,
         "files": [
@@ -34,14 +37,15 @@ var cleanOptions = {
                 "force": true,
                 "dot": true,
                 "src": [
-                    "<%= path.tmp %>/cache/**/*",
-                    "<%= path.tmp %>/generation/**/*",
-                    "<%= path.tmp %>/log/**/*",
-                    "<%= path.tmp %>/maps/**/*",
-                    "<%= path.tmp %>/page_cache/**/*",
-                    "<%= path.tmp %>/tmp/**/*",
-                    "<%= path.tmp %>/view/**/*",
-                    "<%= path.tmp %>/view_preprocessed/**/*"
+                    "<%= settings.tmp %>/cache/**/*",
+                    "<%= settings.tmp %>/generation/**/*",
+                    "<%= settings.tmp %>/log/**/*",
+                    "<%= settings.tmp %>/maps/**/*",
+                    "<%= settings.tmp %>/page_cache/**/*",
+                    "<%= settings.tmp %>/tmp/**/*",
+                    "<%= settings.tmp %>/view/**/*",
+                    "<%= settings.tmp %>/view_preprocessed/**/*",
+                    "<%= settings.deployedVersion %>"
                 ]
             }
         ]
@@ -54,7 +58,8 @@ var cleanOptions = {
                 "dot": true,
                 "src": [
                     "<%= path.pub %>frontend/**/*",
-                    "<%= path.pub %>adminhtml/**/*"
+                    "<%= path.pub %>adminhtml/**/*",
+                    "<%= settings.deployedVersion %>"
                 ]
             }
         ]
@@ -66,12 +71,13 @@ var cleanOptions = {
                 "force": true,
                 "dot": true,
                 "src": [
-                    "<%= path.tmp %>/view_preprocessed/**/*",
-                    "<%= path.tmp %>/cache/**/*",
+                    "<%= settings.tmp %>/view_preprocessed/**/*",
+                    "<%= settings.tmp %>/cache/**/*",
                     "<%= path.pub %>frontend/**/*.less",
                     "<%= path.pub %>frontend/**/*.css",
                     "<%= path.pub %>adminhtml/**/*.less",
-                    "<%= path.pub %>adminhtml/**/*.css"
+                    "<%= path.pub %>adminhtml/**/*.css",
+                    "<%= settings.deployedVersion %>"
                 ]
             }
         ]
@@ -83,10 +89,10 @@ var cleanOptions = {
                 "force": true,
                 "dot": true,
                 "src": [
-                    "<%= path.tmp %>/cache/**/*",
-                    "<%= path.tmp %>/generation/**/*",
-                    "<%= path.tmp %>/view_preprocessed/html/**/*",
-                    "<%= path.tmp %>/page_cache/**/*"
+                    "<%= settings.tmp %>/cache/**/*",
+                    "<%= settings.tmp %>/generation/**/*",
+                    "<%= settings.tmp %>/view_preprocessed/html/**/*",
+                    "<%= settings.tmp %>/page_cache/**/*"
                 ]
             }
         ]
@@ -98,13 +104,14 @@ var cleanOptions = {
                 "force": true,
                 "dot": true,
                 "src": [
-                    "<%= path.pub %>**/*.js",
-                    "<%= path.pub %>**/*.html",
-                    "<%= path.pub %>_requirejs/**/*"
+                    "<%= settings.pub %>**/*.js",
+                    "<%= settings.pub %>**/*.html",
+                    "<%= settings.pub %>_requirejs/**/*",
+                    "<%= settings.deployedVersion %>"
                 ]
             }
         ]
     }
 };
 
-module.exports = _.extend(cleanOptions, themeOptions);
+module.exports = Object.assign(themeOptions, cleanOptions);

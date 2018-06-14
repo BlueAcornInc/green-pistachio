@@ -1,64 +1,78 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 
 'use strict';
 
-var combo  = require('./combo'),
-    themes = require('./themes'),
-    _      = require('underscore');
-
-var themeOptions = {};
-
-_.each(themes, function(theme, name) {
-    themeOptions[name + "Less"] = {
-        'files': [
-            '<%= combo.autopath(\''+name+'\', path.pub) %>/**/*.less'
-        ],
-        'tasks': ['less:' + name, 'postcss:' + name],
+let combo = require('./_combo'),
+    themes = require('./_themes'),
+    themeOptions = {},
+    commonOptions = {
+        interupt: true,
+        reload: false,
+        livereload: false,
+        spawn: false
     };
 
-    themeOptions[name + "Js"] = {
-        'files': [
-            '<%= combo.autopath(\''+name+'\', path.pub) %>/**/*.js'
-        ],
-        'tasks': ['jshint:' + name],
-    };
+for(let name in themes) {
+    let theme = themes[name];
 
-    themeOptions[name + "Templates"] = {
-        'files': [
-            '<%= combo.designpath(\''+name+'\', path.design) %>/**/*.phtml'
-        ],
-        'tasks': ['shell:cache:' + name],
-    };
+    if(theme.grunt) {
 
-    themeOptions[name + 'SvgSprites'] = {
-        files: [
-            '<%= combo.designpath(\''+name+'\', path.design) %>/web/spritesrc/**/*.svg'
-        ],
-        tasks: ['svgmin:' + name + 'Sprites', 'svgmin:' + name + 'Dev', 'svg_sprite:' + name]
-    };
-});
+        themeOptions[name + 'Less'] = {
+            files: combo.lessWatchFiles(name),
+            tasks: ['css:' + name],
+            options: commonOptions
+        };
 
-var watchOptions = {
-    'setup': {
-        'files': '<%= path.less.setup %>/**/*.less',
-        'tasks': 'less:setup'
-    },
-    'updater': {
-        'options': {
-            livereload: true
-        },
-        'files': '<%= path.less.updater %>/**/*.less',
-        'tasks': 'less:updater'
-    },
-    'reload': {
-        'files': '<%= path.pub %>/**/*.css',
-        'options': {
-            livereload: true
-        }
+        themeOptions[name + 'Css'] = {
+            files: combo.cssWatchFiles(name),
+            options: {
+                livereload: combo.getLiveReload(name)
+            }
+        };
+
+        themeOptions[name + 'Img'] = {
+            files: combo.imgWatchFiles(name),
+            tasks: ['concurrent:' + name + 'MinifyImages']
+        };
+
+        themeOptions[name + 'SvgSprite'] = {
+            files: combo.svgSpriteWatchFiles(name),
+            tasks: ['svg_sprite:' + name]
+        };
+
+        themeOptions[name + 'PngSprite'] = {
+            files: combo.pngSpriteWatchFiles(name),
+            task: ['sprite:' + name]
+        };
+
+        themeOptions[name + 'Js'] = {
+            files: combo.jsThemeSourceFiles(name),
+            tasks: ['jshint:' + name, 'babel:' + name]
+        };
     }
+}
+
+themeOptions['themeTemplates'] = {
+    files: combo.themeTemplateWatchFiles(),
+    tasks: ['exec:cache'],
+    options: commonOptions
 };
 
-module.exports = _.extend(themeOptions, watchOptions);
+themeOptions['appCode'] = {
+    files: combo.appCodeWatchFiles(),
+    tasks: ['exec:cache'],
+    options: commonOptions
+};
+
+themeOptions['appCodeJs'] = {
+    files: combo.jsAppCodeSourceFiles(),
+    tasks: ['jshint:appCode', 'babel:appCode']
+};
+
+module.exports = themeOptions;

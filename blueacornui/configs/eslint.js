@@ -1,12 +1,23 @@
 /**
- * Copyright © 2016 Magento. All rights reserved.
- * See COPYING.txt for license details.
+ * @package     BlueAcorn/GreenPistachio2
+ * @version     2.0.1
+ * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 
 'use strict';
 
-module.exports = {
-    file: {
+const   path = require('path'),
+        combo = require('./_combo'),
+        themes = require('./_themes'),
+        settings = require('./_settings');
+
+let     themeOptions = {},
+        eslintOptions = {};
+
+eslintOptions = {
+    files: {
         options: {
             configFile: 'dev/tests/static/testsuite/Magento/Test/Js/_files/eslint/.eslintrc',
             reset: true,
@@ -25,3 +36,5 @@ module.exports = {
         src: ''
     }
 };
+
+module.exports = Object.assign(themeOptions, eslintOptions);

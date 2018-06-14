@@ -1,0 +1,16 @@
+//**
+//* @package     BlueAcorn/GreenPistachio2
+//* @version     2.0.1
+//* @author      Blue Acorn, LLC. <code@blueacorn.com>
+//* @author      Greg Harvell <greg@blueacorn.com>
+//* @copyright   Copyright © 2018 Blue Acorn, LLC.
+//*/
+
+{{#sprites}}
+.png-sprite-{{name}}() {
+    background-image: url({{{escaped_image}}});
+    background-position: {{px.offset_x}} {{px.offset_y}};
+    width: {{px.width}};
+    height: {{px.height}};
+}
+{{/sprites}}

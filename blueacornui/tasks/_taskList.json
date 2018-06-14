@@ -1,0 +1,35 @@
+{
+    "compile": [
+        {"concurrent": "Sprite"},
+        {"concurrent": "Compile"}
+    ],
+    "css": [
+        {"less":    ""}
+    ],
+    "cssProd": [
+        {"less":    "Production"}
+    ],
+    "img": [
+        {"concurrent": "Sprite"},
+        {"concurrent": "MinifyImages"}
+    ],
+    "imgDev": [
+        {"concurrent": "Sprite"}
+    ],
+    "js": [
+        {"jshint":  ""},
+        {"babel":   ""}
+    ],
+    "jsProd": [
+        {"jshint":  ""},
+        {"babel":   "Production"}
+    ],
+    "dev": [
+        {"exec": ""},
+        {"compile": ""}
+    ],
+    "prod": [
+        {"exec": "prod"},
+        {"concurrent": "Production"}
+    ]
+}
