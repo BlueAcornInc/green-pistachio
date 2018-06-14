@@ -67,11 +67,7 @@ const themes = {
         stylesheets: [
             'css/styles-m',
             'css/styles-l',
-            'css/swatches',
-            'css/grid',
-            'css/print',
-            'css/email',
-            'css/email-inline'
+            'css/grid'
         ],
         stylesheetsSourceLanguage: 'less',
         javascript: [
