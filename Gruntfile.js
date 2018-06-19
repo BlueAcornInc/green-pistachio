@@ -14,7 +14,6 @@ const gruntSetup = function(grunt) {
         configDir = './blueacornui/configs',
         taskDir = './blueacornui/tasks/',
         tasks = [
-            'production'
             'prod',
             'compile',
             'dev',

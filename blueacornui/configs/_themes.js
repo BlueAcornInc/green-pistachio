@@ -66,8 +66,7 @@ const themes = {
         locale: 'en_US',
         stylesheets: [
             'css/styles-m',
-            'css/styles-l',
-            'css/grid'
+            'css/styles-l'
         ],
         stylesheetsSourceLanguage: 'less',
         javascript: [

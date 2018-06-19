@@ -30,13 +30,15 @@ To begin installation, you will need to have the following tools installed first
 
 Once you've met the [requirements](#requirements), you may proceed with the installation.  
 
-From the root Magento 2 installation directory, run the following commands to install Green Pistachio 2 with Modman:
+1. From the root Magento 2 installation directory, run the following commands to install Green Pistachio 2 with Modman:        
+        $: modman init
+        $: modman clone git@github.com:BlueAcornInc/green-pistachio-2.git
+        $: modman deploy --copy green-pistachio-2 --force
 
-```bash
-$: modman init
-$: modman clone git@github.com:BlueAcornInc/green-pistachio-2.git
-$: modman deploy --copy green-pistachio-2 --force
-```
+2. Update your `_theme.js` file to point to your theme to compile, see: [additional readme](blueacornui/README.md).
+
+3. Copy `source-example.js` to your theme's web dir (if your Vendor & Theme are not BlueAcorn/site):
+`app/design/frontend/BlueAcorn/site/web/js/source/source-example.js` copy to `app/design/frontend/<VENDOR>/<THEME>/web/js/source/source-example.js`
 
 Install your node dependencies:
 
