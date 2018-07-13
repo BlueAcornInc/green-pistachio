@@ -30,7 +30,8 @@ To begin installation, you will need to have the following tools installed first
 
 Once you've met the [requirements](#requirements), you may proceed with the installation.  
 
-1. From the root Magento 2 installation directory, run the following commands to install Green Pistachio 2 with Modman:        
+1. From the root Magento 2 installation directory, run the following commands to install Green Pistachio 2 with Modman:
+
         $: modman init
         $: modman clone git@github.com:BlueAcornInc/green-pistachio-2.git
         $: modman deploy --copy green-pistachio-2 --force
