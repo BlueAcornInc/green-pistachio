@@ -7,9 +7,11 @@
  * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 -->
-<p align="center"><img src="images/logo.png" width="220" height="46" alt="Blue Acorn" align="center" /></p>
+<p align="center"><img src="../.readme/logo.png" width="220" height="46" alt="Blue Acorn" align="center" /></p>
 
-<h1 align="center">Grunt Workflow for <img src="images/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
+<br/>
+
+<h1 align="center"><img src="../.readme/gp-logo.png" width="220" height="38" alt="Green Pistachio" valign="middle" /> <br>Theme for <img src="../.readme/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
 
 
 ### Table of Contents

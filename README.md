@@ -7,9 +7,11 @@
  * @copyright   Copyright © 2018 Blue Acorn, LLC.
  */
 -->
-<p align="center"><img src="blueacornui/images/logo.png" width="220" height="46" alt="Blue Acorn" align="center" /></p>
+<p align="center"><img src=".readme/logo.png" width="220" height="46" alt="Blue Acorn" align="center" /></p>
 
-<h1 align="center">Grunt Workflow for <img src="blueacornui/images/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
+<br/>
+
+<h1 align="center"><img src=".readme/gp-logo.png" width="220" height="38" alt="Green Pistachio" valign="middle" /> <br>Grunt Workflow for <img src=".readme/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
 
 
 ### Table of Contents
@@ -41,11 +43,9 @@ Once you've met the [requirements](#requirements), you may proceed with the inst
 3. Copy `source-example.js` to your theme's web dir (if your Vendor & Theme are not BlueAcorn/site):
 `app/design/frontend/BlueAcorn/site/web/js/source/source-example.js` copy to `app/design/frontend/<VENDOR>/<THEME>/web/js/source/source-example.js`
 
-Install your node dependencies:
+4. Install your node dependencies:
 
-```bash
-$: npm install
-```
+		$: npm install
 
 # Grunt Workflow usage
 
