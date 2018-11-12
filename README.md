@@ -11,7 +11,7 @@
 
 <br/>
 
-<h1 align="center"><img src=".readme/gp-logo.png" width="220" height="38" alt="Green Pistachio" valign="middle" /> <br>Grunt Workflow for <img src=".readme/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
+<h1 align="center"><img src=".readme/gp-logo.png" width="220" height="38" alt="Green Pistachio" valign="middle" /> <br>Gulp Workflow for <img src=".readme/magento-logo.png" width="160" height="46" alt="Magento" valign="middle" /> 2</h1>
 
 
 ### Table of Contents
@@ -49,4 +49,4 @@ Once you've met the [requirements](#requirements), you may proceed with the inst
 
 # Grunt Workflow usage
 
-To learn more about using the Blue Acorn Grunt workflow, refer to the following [README](blueacornui/README.md)
+To learn more about using the Blue Acorn Gulp workflow, refer to the following [README](blueacornui/README.md)
