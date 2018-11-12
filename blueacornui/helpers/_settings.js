@@ -1,6 +1,6 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     2.0.1
+ * @version     3.0.0
  * @author      Blue Acorn, LLC. <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
  * @copyright   Copyright © 2018 Blue Acorn, LLC.
@@ -47,7 +47,7 @@ module.exports = {
     base: './',
     configsDir: 'configs',
     taskDir: 'task',
-    gruntRoot: '../../',
+    root: '../../',
     jsThemeGlob: '/**/js/**/source/**/*.js',
     jsModuleGlob: '/BlueAcorn/**/view/frontend/web/js/**/source/**/*.js',
     lessThemeGlob: '/**/css/source/**/*.less',

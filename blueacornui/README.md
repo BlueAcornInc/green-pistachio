@@ -38,28 +38,20 @@
 Setting Up Your Theme
 --
 
-The Themes file is located at `blueacornui/configs/_themes.js`, open this in your editor/IDE of choice. Within the file you will find an object called `themes`, each key represents one **theme** in your workflow.
+The Themes file is located at `gulp-config.js`, open this in your editor/IDE of choice. Within the file you will find an object called `themes`, each key represents one **theme** in your workflow.
 
 ```javascript
 site: {
-    grunt: true,
-    appPath: 'frontend',
-    themePath: 'BlueAcorn/site',
-    dev_url: 'ba.test',
-    locale: 'en_US',
-    stylesheets: [
-        'css/styles-m',
-        'css/styles-l',
-        'css/swatches',
-        'css/grid',
-        'css/print'
-    ],
-    stylesheetsSourceLanguage: 'less',
-    javascript: [{
-        'BlueAcorn_GreenPistachio': 'blueacorn'
-    }],
-    bowerFallback: [],
-    themeFallback: ['luma']
+	gulp: true,
+	appPath: 'frontend',
+	themePath: 'BlueAcorn/site',
+	dev_url: 'm2.test',
+	locale: 'en_US',
+	stylesheets: [
+		'css/styles-m',
+		'css/styles-l',
+		'css/grid'
+	]
 }
 ```
 
@@ -69,16 +61,12 @@ The value/object tells grunt how to process your theme.
 
 | Setting | Description |
 |---------|-------------|
-| `grunt` | Tells the grunt process whether or not this theme should be included in compilation. |
+| `gulp` | Tells the grunt process whether or not this theme should be included in compilation. |
 | `appPath` | Section of the site where we are compiling, if you had a custom admin theme, in theory you could set this to `adminhtml`, for now let's not get crazy, it's just `frontend` |
 | `themePath` | Path within app/design/`appPath`/ where you wish to compile, in the example above we have `BlueAcorn/site` (our standard), and it would tell the grunt process to look in app/design/frontend/BlueAcorn/site for files it needs to compile. |
 | `dev_url` | Local URL used for the site, in most instances this will be client code followed by .test |
 | `locale` | TBD |
 | `stylesheets` | Array of parent stylesheets that you wish to compile from `less` to `css`. Doesn't change often, more likely to add a new one. |
-| `stylesheetSourceLanguage` | TBD |
-| `javascript` | TBD |
-| `bowerFallback` | TBD |
-| `themeFallback` | Fallback theme in Magento, used for finding missing files in the compilation process. |
 
 Before You Compile
 --
@@ -113,19 +101,23 @@ These are helpful common suggestions, you will not need to do this every-time yo
 5. Now let's compile.
 
 	```bash
-	grunt
+	gulp
 	```
 
 Wait, what's happening?
 --
 
-Blue Acorn's grunt process has been optimized to hit the ground running while minimizing the modifications we've made to native magento, keeping it performant and upgradable.  Now we'll go over what commands/technologies are available to you in grunt.
+Blue Acorn's gulp process has been optimized to hit the ground running while minimizing the modifications we've made to native magento, keeping it performant and upgradable.  Now we'll go over what commands/technologies are available to you in gulp.
 
 ### Less Compilation
-Less compilation can be achieved manually by typing `grunt less:themeName` where theme name in is your key form the `blueacornui/configs/_themes.js` `themes` variable.  If you wanted to compile the `site` theme less files, you would enter do the following from the command line:
+Less compilation can be achieved manually by typing `gulp less:themeName` (compile all themes that are configured with `gulp less:all`) where theme name in is your key form the `blueacornui/configs/_themes.js` `themes` variable.  If you wanted to compile the `site` theme less files, you would enter do the following from the command line:
+
+#### Manual Commands
 
 ```bash
-grunt less:site
+gulp less:site #Compiles the theme site's less
+
+gulp less:all #Compiles all theme's less files
 ```
 
 ### Babel/ES6
@@ -159,6 +151,13 @@ app/design/frontend/BlueAcorn/site/web/js/preloader.js
 ```bash
 app/design/frontend/BlueAcorn/site/Magento_Theme/web/js/frontend/test/source/test.js =>
 app/design/frontend/BlueAcorn/site/Magento_Theme/web/js/frontend/test/test.js
+```
+#### Manul Commands
+
+```bash
+gulp babel:site #Compiles js for the theme site's js source files
+
+gulp babel:all #Compiles js for all themes js source files
 ```
 
 ### SVG Sprites
@@ -197,17 +196,18 @@ There are several options for compiling, made to be as easy as possible.
 ### Compile Everything, Watch It All
 
 ```bash
-grunt
+gulp
 ```
 
 Runs the following commands:
 
-1. `grunt exec:[themeName]` - Cleans Pub Static Directories for all sites in _themes.js that have `grunt: true` & creates symlinks to the source files.
-2. `grunt concurrent:[themeName]Sprite` - Generates svg & png sprites sheets.
-3. `grunt concurrent:[themeName]Compile` - Compiles Less & Babel for the Theme, Minifies Images in app/design/frontend/[vendor]/[theme]/web/src to app/design/frontend/[vendor]/[theme]/web/images.
-4. `grunt jshint:appCode` - Runs static code analysis on javascript in the app/code source directories.
-5. `grunt babel:appCode` - Compiles Babel from app/code source directories.
-6. `grunt watch` - Starts the file watchers.
+1. `gulp exec:[themeName]` - Cleans Pub Static Directories for all sites in _themes.js that have `gulp: true` & creates symlinks to the source files.
+2. `gulp clean:js` & `gulp clean:all` cleans out any compiled assets.
+2. `gulp svg-site:all` & `gulp png-sprite:all` - Generates svg & png sprites sheets.
+3. `gulp less:all`, `gulp imagemin:all` & `gulp eslint:all` - Compiles Less & Babel for the Theme, Minifies Images in app/design/frontend/[vendor]/[theme]/web/src to app/design/frontend/[vendor]/[theme]/web/images, validates theme js.
+5. `grunt babel:all` - Compiles Babel from theme source directories.
+6. `gulp exec:cache` - Clears caches.
+6. `gulp watch` - Starts the file watchers.
 
 ### Compile Everything, without resymlinking it, Watch It All
 
@@ -215,49 +215,3 @@ Runs the following commands:
 grunt noexec
 ```
 Runs the same commands as above sans the first one.
-
-### Compile
-
-```bash
-grunt compile:[themeName]
-```
-
-2. `grunt concurrent:[themeName]Sprite` - Generates svg & png sprites sheets.
-3. `grunt concurrent:[themeName]Compile` - Compiles Less & Babel for the Theme.
-
-
-### CSS
-
-```bash
-grunt css:[themeName]
-
-```
-
-Alias for `grunt less`
-
-### Images
-
-```bash
-grunt img:[themeName]
-```
-
-2. `grunt concurrent:[themeName]Sprite` - Generates svg & png sprites sheets.
-3. `grunt concurrent:[themeName]MinifyImages` - Minifies Images in app/design/frontend/[vendor]/[theme]/web/src to app/design/frontend/[vendor]/[theme]/web/images.
-
-### JS
-
-```bash
-grunt js:[themeName]
-```
-
-1. `grunt jshint:[themeName]` - Runs static code analysis on javascript in the theme source directories.
-2. `grunt babel:[themeName]` - Compiles ES6 javascript from the theme source directories.
-
-### Dev
-
-```bash
-grunt dev:site
-```
-
-1. `grunt dev:[themeName]` - Sets up symlinks for a theme's less files.
-2. `grunt compile:[themeName]` - See [Compile](#compile)

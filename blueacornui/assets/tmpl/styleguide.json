@@ -1,0 +1,173 @@
+{
+    "colors": [
+        {
+            "name": "Blue",
+            "less": "@c-blue",
+            "color": "#1979c3",
+            "style": "blue"
+        }, {
+            "name": "Green",
+            "less": "@c-green",
+            "color": "#59ac18",
+            "style": "green"
+        }, {
+            "name": "Pink",
+            "less": "@c-pink",
+            "color": "#d85378",
+            "style": "pink"
+        }, {
+            "name": "Orange",
+            "less": "@c-orange",
+            "color": "#fdf0d6",
+            "style": "orange"
+        }, {
+            "name": "Red",
+            "less": "@c-red",
+            "color": "#fae5e6",
+            "style": "red"
+        }, {
+            "name": "Yellow",
+            "less": "@c-yellow",
+            "color": "#ffdd15",
+            "style": "yellow"
+        }, {
+            "name": "Black",
+            "less": "@c-black",
+            "color": "#000",
+            "style": "black"
+        }, {
+            "name": "Gray",
+            "less": "@c-gray",
+            "color": "#333",
+            "style": "gray"
+        }
+    ],
+    "fonts": {
+        "headings": {
+            "phrase": "Amet Tellus Ligula Vehicula Adipiscing",
+            "groups": [
+                {
+                    "name": "",
+                    "sizes": [
+                        {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Bold",
+                                "num": 700
+                            },
+                            "size": "3.2rem",
+                            "line": "4rem",
+                            "spacing": 0
+                        }, {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Bold",
+                                "num": 700
+                            },
+                            "size": "2.4rem",
+                            "line": "3.2rem",
+                            "spacing": 0
+                        }, {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Bold",
+                                "num": 700
+                            },
+                            "size": "2rem",
+                            "line": "2.4rem",
+                            "spacing": 0
+                        }, {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Bold",
+                                "num": 700
+                            },
+                            "size": "16rem",
+                            "line": "2.4rem",
+                            "spacing": 0
+                        }
+                    ]
+                }, {
+                    "name": "Regular",
+                    "sizes": [
+                        {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Regular",
+                                "num": 400
+                            },
+                            "size": "3.2rem",
+                            "line": "4rem",
+                            "spacing": "-1"
+                        },
+                        {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Regular",
+                                "num": 400
+                            },
+                            "size": "2.4rem",
+                            "line": "3.2rem",
+                            "spacing": "-1"
+                        },
+                        {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Regular",
+                                "num": 400
+                            },
+                            "size": "2rem",
+                            "line": "2.4rem",
+                            "spacing": "-0.5"
+                        },
+                        {
+                            "name": "Helvetica Neue",
+                            "weight": {
+                                "name": "Regular",
+                                "num": 400
+                            },
+                            "size": "16rem",
+                            "line": "2.4rem",
+                            "spacing": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "family_phrase": "ABCDEFGHIJKLMNOPQRSTUVWXYZ<br />abcdefghijklmnopqrstuvwxyz0123456789",
+        "families": [
+            {
+                "name": "Helvetica Neue",
+                "weight": {
+                    "name": "Thin",
+                    "num": 100
+                }
+            }, {
+                "name": "Helvetica Neue",
+                "weight": {
+                    "name": "Light",
+                    "num": 300
+                }
+            }, {
+                "name": "Helvetica Neue",
+                "weight": {
+                    "name": "Regular",
+                    "num": 400
+                }
+            }, {
+                "name": "Helvetica Neue",
+                "weight": {
+                    "name": "Bold",
+                    "num": 700
+                }
+            }, {
+                "name": "Helvetica Neue",
+                "weight": {
+                    "name": "Black",
+                    "num": 900
+                }
+            }
+        ]
+    }
+}
+

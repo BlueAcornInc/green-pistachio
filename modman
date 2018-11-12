@@ -1,5 +1,6 @@
 blueacornui/    blueacornui/
-Gruntfile.js    Gruntfile.js
+Gulpfile.js     Gulpfile.js
+gulp-config.js  gulp-config.js
 package.json    package.json
 app/code/BlueAcorn/Example/view/frontend/web/js/source/source-example.js    app/code/BlueAcorn/Example/view/frontend/web/js/source/source-example.js
 app/design/frontend/BlueAcorn/site/web/js/source/source-example.js  app/design/frontend/BlueAcorn/site/web/js/source/source-example.js

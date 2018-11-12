@@ -1,16 +1,57 @@
-//**
-//* @package     BlueAcorn/GreenPistachio2
-//* @version     2.0.1
-//* @author      Blue Acorn, LLC. <code@blueacorn.com>
-//* @author      Greg Harvell <greg@blueacorn.com>
-//* @copyright   Copyright © 2018 Blue Acorn, LLC.
-//*/
+// @package     BlueAcorn/GreenPistachio2
+// @version     3.0.0
+// @author      Blue Acorn, LLC. <code@blueacorn.com>
+// @author      Greg Harvell <greg@blueacorn.com>
+// @copyright   Copyright © 2018 Blue Acorn, LLC.
 
-{{#sprites}}
-.png-sprite-{{name}}() {
-    background-image: url({{{escaped_image}}});
-    background-position: {{px.offset_x}} {{px.offset_y}};
-    width: {{px.width}};
-    height: {{px.height}};
+@png-sprite-url: "../images/spritesheet.png";
+@png-sprite-width: {{spritesheet.px.width}};
+@png-sprite-height: {{spritesheet.px.height}};
+
+{{#block "sprites"}}
+{{#each sprites}}
+@png-{{name}}-x: {{px.offset_x}};
+@png-{{name}}-y: {{px.offset_y}};
+@png-{{name}}-width: {{px.width}};
+@png-{{name}}-height: {{px.height}};
+{{/each}}
+{{/block}}
+
+{{#block "spritesheet"}}
+.png-sprite() {
+    background-image: url("@{sprite-url}");
+    background-repeat: no-repeat;
 }
-{{/sprites}}
+{{/block}}
+
+[class*="png-icon-"] {
+    display: inline-block;
+}
+
+{{#block "sprites"}}
+{{#each sprites}}
+.png-{{name}}() {
+    background-position: @png-{{name}}-x @png-{{name}}-y;
+}
+
+.png-{{name}}-dims() {
+    width: @png-{{name}}-width;
+    height: @png-{{name}}-height;
+}
+
+.pngi-{{name}}() {
+    .png-sprite();
+    .png-{{name}}();
+    .png-{{name}}-dims();
+}
+{{/each}}
+{{/block}}
+
+{{#block "sprites"}}
+{{#each sprites}}
+.png-icon-{{name}} {
+    .pngi-{{name}}();
+}
+{{/each}}
+{{/block}}
+
