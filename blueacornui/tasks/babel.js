@@ -30,7 +30,7 @@ BabelTasks.prototype.init = (gulp) => {
                 presets: [`env`]
             }))
             .pipe(rename(path => {
-                path.dirname = path.dirname.replace('/source/', '/');
+                path.dirname = path.dirname.replace('/source', '');
             }))
             .pipe(gulp.dest(dest))
             .on('end', done);

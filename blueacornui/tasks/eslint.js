@@ -26,8 +26,7 @@ EsLintTasks.prototype.init = (gulp) => {
     function ExecuteEsLintTasks(src, done) {
         gulp.src(src)
             .pipe(eslint())
-            .pipe(eslint.format())
-            .pipe(eslint.failAfterError());
+            .pipe(eslint.format());
 
         done();
     }
