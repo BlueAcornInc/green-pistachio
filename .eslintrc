@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "./dev/tests/static/testsuite/Magento/Test/Js/_files/eslint/.eslintrc-magento"
+  ],
+  "env": {
+    "es6": true
+  },
+  "rules": {
+    "strict": 0,
+    "no-unused-vars": 0
+  }
+}
