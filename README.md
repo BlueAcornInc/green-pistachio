@@ -47,6 +47,6 @@ Once you've met the [requirements](#requirements), you may proceed with the inst
 
 		$: npm install
 
-# Grunt Workflow usage
+# Gulp Workflow usage
 
 To learn more about using the Blue Acorn Gulp workflow, refer to the following [README](blueacornui/README.md)
