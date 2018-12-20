@@ -54,6 +54,18 @@ WatchTasks.prototype.init = (gulp) => {
         }
     }
 
+    gulp.task(`watch:app`, () => {
+        gulp.watch(combo.appWatchFiles(), gulp.series(`exec:cache`));
+    });
+
+    tasks.push('watch:app');
+
+    gulp.task(`watch:appJs`, () => {
+        gulp.watch(combo.appWatchJsFiles(), gulp.series('babel:app'));
+    });
+
+    tasks.push('watch:appJs');
+
     gulp.task('watch:all', gulp.parallel(tasks));
 
     gulp.task('livereload', (done) => {

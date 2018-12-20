@@ -44,9 +44,14 @@ BabelTasks.prototype.init = (gulp) => {
         }
     }
 
+    gulp.task('babel:app', (done) => {
+       ExecuteBabelTasks('', combo.appJsSourceFiles(), combo.appCodePath(), done);
+    });
+
     gulp.task('babel:all', (done) => {
-        Object.keys(themes).map(theme => 
+        Object.keys(themes).map(theme =>
             ExecuteBabelTasks(theme, combo.jsSourceFiles(theme), combo.autoPathThemes(theme), done));
+        ExecuteBabelTasks('', combo.appJsSourceFiles(), combo.appCodePath(), done);
     });
 };
 

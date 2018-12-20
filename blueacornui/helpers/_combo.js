@@ -120,8 +120,18 @@ const combo = {
     },
 
     collector(themeName) {
-        let theme = themes[themeName],
-            command = `php bin/magento dev:source-theme:deploy ${theme.stylesheets.join(' ')} --type=less --locale=${theme.locale} --area=${theme.appPath} --theme=${theme.themePath}`;
+        const cmdPlus = /^win/.test(process.platform) ? ' & ' : ' && ';
+        const theme = themes[themeName];
+
+        let command = '';
+
+        theme.locales.forEach((locale, idx) => {
+            if(idx > 0) {
+                command += cmdPlus;
+            }
+
+            command += `php bin/magento dev:source-theme:deploy ${theme.stylesheets.join(' ')} --type=less --locale=${locale} --area=${theme.appPath} --theme=${theme.themePath}`;
+        });
 
         console.log(command);
         return command;
@@ -162,6 +172,14 @@ const combo = {
         return `${this.autoPathImageSrc(themeName)}**/*.{png,jpg,gif,jpeg,svg}`;
     },
 
+    appWatchFiles() {
+        return `${this.appCodePath()}/BlueAcorn/**/*.{phtml,php,xml}`;
+    },
+
+    appWatchJsFiles() {
+        return this.appJsSourceFiles();
+    },
+
     execMessages(task, stdout, stderror) {
         if (stdout) {
             console.log(chalk.green('Results of ' + task + ':\n\n' + stdout));
@@ -187,6 +205,10 @@ const combo = {
 
     jsSourceDestination(themeName) {
         return this.getThemePath(themeName, settings.jsThemeGlob.replace('source/', ''));
+    },
+
+    appJsSourceFiles() {
+        return `${this.appCodePath()}${settings.jsThemeGlob}`;
     },
 
     templateWatchFiles(themeName) {

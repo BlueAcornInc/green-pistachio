@@ -23,7 +23,7 @@ ExecTasks.prototype.init = (gulp) => {
     'use strict';
 
     for (let theme in themes) {
-        if(themes.hasOwnProperty(theme)) {
+        if (themes.hasOwnProperty(theme)) {
             gulp.task(`exec:${theme}`, (done) => {
                 combo.execCommands(combo.collector(theme), `exec:${theme}`, done);
             });
@@ -51,6 +51,21 @@ ExecTasks.prototype.init = (gulp) => {
 
     gulp.task('exec:xml', (done) => {
         combo.execCommands('vendor/bin/cache-clean.js layout full_page', 'exec:xml', done);
+    });
+
+    gulp.task('exec:sprites', (done) => {
+        let cmdPlus = /^win/.test(process.platform) === true ? ' & ' : ' && ';
+        let command = '';
+
+        Object.keys(themes).forEach((theme, idx) => {
+            if(idx > 0) {
+                command += cmdPlus;
+            }
+
+            command += `gulp svg-sprite:${theme}${cmdPlus}gulp png-sprite:${theme}`;
+        });
+
+        combo.execCommands(command, 'exec:sprites', done);
     });
 };
 

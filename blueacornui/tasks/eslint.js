@@ -39,8 +39,13 @@ EsLintTasks.prototype.init = (gulp) => {
         }
     }
 
+    gulp.task('eslint:app', (done) => {
+        ExecuteEsLintTasks(combo.appJsSourceFiles(), done);
+    });
+
     gulp.task('eslint:all', (done) => {
         Object.keys(themes).map(theme => ExecuteEsLintTasks(combo.jsSourceFiles(theme), done));
+        ExecuteEsLintTasks(combo.appJsSourceFiles(), done);
     });
 };
 

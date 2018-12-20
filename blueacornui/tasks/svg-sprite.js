@@ -25,6 +25,8 @@ util.inherits(SvgSpriteTasks, DefaultRegistry);
 SvgSpriteTasks.prototype.init = (gulp) => {
     'use strict';
 
+    let tasks = [];
+
     const config = {
         svg: {
             percision: 4,
@@ -64,27 +66,26 @@ SvgSpriteTasks.prototype.init = (gulp) => {
         }
     };
 
-    function ExecuteSvgSpriteTasks(theme, done) {
-        gulp.src('**/*.svg', {
-                cwd: combo.autoPathSpriteSrc(theme)
+    function ExecuteSvgSpriteTasks(theme) {
+        return new Promise((resolve) => {
+            gulp.src('**/*.svg', {
+                cwd: combo.autoPathSpriteSrc(theme),
             })
-            .pipe(plumber())
-            .pipe(svgSprite(config))
-            .pipe(gulp.dest(combo.autoPathImageSrc(theme)))
-            .on('end', done);
+                .pipe(plumber())
+                .pipe(svgSprite(config))
+                .pipe(gulp.dest(combo.autoPathImageSrc(theme)))
+                .on('end', resolve);
+            resolve();
+        });
     }
 
     for (let theme in themes) {
-        if(themes.hasOwnProperty(theme)) {
+        if (themes.hasOwnProperty(theme)) {
             gulp.task(`svg-sprite:${theme}`, (done) => {
-                ExecuteSvgSpriteTasks(theme, done);
+                ExecuteSvgSpriteTasks(theme).then(done);
             });
         }
     }
-
-    gulp.task('svg-sprite:all', (done) => {
-        Object.keys(themes).map(theme => ExecuteSvgSpriteTasks(theme, done));
-    });
 };
 
 module.exports = new SvgSpriteTasks();
