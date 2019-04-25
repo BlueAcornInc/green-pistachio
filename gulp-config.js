@@ -15,6 +15,7 @@ module.exports = {
         themePath: 'BlueAcorn/site',
         dev_url: 'm2.test',
         locale: 'en_US',
+        locales: ['en_US'],
         stylesheets: [
             'css/styles-m',
             'css/styles-l',
