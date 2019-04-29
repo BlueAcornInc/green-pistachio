@@ -38,9 +38,10 @@ Once you've met the [requirements](#requirements), you may proceed with the inst
         $: modman clone git@github.com:BlueAcornInc/green-pistachio-2.git -b 'gulp'
         $: modman deploy --copy green-pistachio-2 --force
 
-2. Update your `_theme.js` file to point to your theme to compile, see: [additional readme](blueacornui/README.md).
+2. Update your `gulp-config.js` file to point to your theme to compile, see: [additional readme](blueacornui/README.md).
+If you're pointing to an existing theme that's not in the BlueAcorn namespace, you may need to update the `blueacornui/healpers/_settings.js` file.
 
-3. Copy `source-example.js` to your theme's web dir (if your Vendor & Theme are not BlueAcorn/site):
+3. If they didn't install automatically.  Copy `source-example.js` to your theme's web dir (if your Vendor & Theme are not BlueAcorn/site):
 `app/design/frontend/BlueAcorn/site/web/js/source/source-example.js` copy to `app/design/frontend/<VENDOR>/<THEME>/web/js/source/source-example.js`
 
 4. Install your node dependencies:
