@@ -3,7 +3,7 @@
  * @version     3.0.1
  * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @copyright   Copyright © Blue Acorn.
  */
 
 const less = require('gulp-less');
@@ -25,7 +25,7 @@ util.inherits(LessTasks, DefaultRegistry);
 LessTasks.prototype.init = (gulp) => {
     'use strict';
 
-    function ExecuteLessTasks(theme, files, destination, done) {
+    function executeLessTasks(theme, files, destination, done) {
         gulp.src(files)
             .pipe(sourcemaps.init())
             .pipe(less())
@@ -36,29 +36,35 @@ LessTasks.prototype.init = (gulp) => {
     }
 
     for (let theme in themes) {
-        if(themes.hasOwnProperty(theme)) {
+        if (themes.hasOwnProperty(theme)) {
             gulp.task(`less:${theme}`, (done) => {
-                ExecuteLessTasks(
-                    theme,
-                    combo.lessFiles(theme),
-                    `${combo.autoPathAssets(theme)}/css`,
-                    done
-                );
+                combo.lessFiles(theme).forEach((lessFile) => {
+                    executeLessTasks(
+                        theme,
+                        lessFile,
+                        `${lessFile.substring(0, lessFile.lastIndexOf("/"))}`,
+                        done
+                    );
+                });
             });
         }
     }
 
     gulp.task('less:all', (done) => {
-        Object.keys(themes).map(theme => ExecuteLessTasks(
-            theme,
-            combo.lessFiles(theme),
-            `${combo.autoPathAssets(theme)}/css`,
-            done
-        ));
+        Object.keys(themes).map((theme) => {
+            combo.lessFiles(theme).forEach((lessFile) => {
+                executeLessTasks(
+                    theme,
+                    lessFile,
+                    `${lessFile.substring(0, lessFile.lastIndexOf("/"))}`,
+                    done
+                );
+            });
+        });
     });
 
     gulp.task('less:admin', (done) => {
-        ExecuteLessTasks('', combo.appLessFiles(), `${combo.adminAutoPathAssets()}/css`, done);
+        executeLessTasks('', combo.appLessFiles(), `${combo.adminAutoPathAssets()}/css`, done);
     });
 };
 

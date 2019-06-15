@@ -3,7 +3,7 @@
  * @version     3.0.1
  * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @copyright   Copyright © Blue Acorn.
  */
 
 const path = require('path');
@@ -130,7 +130,7 @@ const combo = {
         let command = '';
 
         theme.locales.forEach((locale, idx) => {
-            if(idx > 0) {
+            if (idx > 0) {
                 command += cmdPlus;
             }
 
@@ -151,7 +151,7 @@ const combo = {
 
         if (theme.stylesheets.length) {
             let lessFiles = theme.stylesheets.map((stylesheet) => {
-                return `${assetsPath}/${stylesheet}.less`;
+                return `${assetsPath}/${stylesheet.replace('::','/')}.less`;
             });
 
             return lessFiles;
