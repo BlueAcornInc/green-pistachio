@@ -2,9 +2,9 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
  * @version     2.0.1
- * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © 2019, All Rights Reserved.
  */
 -->
 <p align="center"><img src="../.readme/logo.png" width="220" height="46" alt="Blue Acorn" align="center" /></p>
