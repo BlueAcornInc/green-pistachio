@@ -48,6 +48,10 @@ const combo = {
         return this.autoPath(theme, settings.pub);
     },
 
+    adminAutoPathAssets() {
+        return path.join(this.rootPath(), settings.pub, settings.backend, '/Magento/backend/en_US');
+    },
+
     autoPathImages(theme) {
         return this.getThemePath(theme, '/web/images/');
     },
@@ -154,6 +158,11 @@ const combo = {
         }
     },
 
+    appLessFiles() {
+        let assetsPath = this.adminAutoPathAssets();
+        return [`${assetsPath}/css/styles.less`];
+    },
+
     lessWatchFiles(themeName) {
         let theme = themes[themeName],
             assetsPath = this.autoPathThemes(themeName),
@@ -163,7 +172,15 @@ const combo = {
             files.push(`${assetsPath}/**/*.less`);
         }
 
-        files.push(`${this.appCodePath()}/**/*.less`);
+        files.push(`${this.appCodePath()}/**/frontend/**/*.less`);
+
+        return files;
+    },
+
+    appLessWatchFiles() {
+        const files = [];
+
+        files.push(`${this.appCodePath()}/**/adminhtml/**/*.less`);
 
         return files;
     },

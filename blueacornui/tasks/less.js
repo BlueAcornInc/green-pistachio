@@ -25,12 +25,12 @@ util.inherits(LessTasks, DefaultRegistry);
 LessTasks.prototype.init = (gulp) => {
     'use strict';
 
-    function ExecuteLessTasks(theme, done) {
-        gulp.src(combo.lessFiles(theme))
+    function ExecuteLessTasks(theme, files, destination, done) {
+        gulp.src(files)
             .pipe(sourcemaps.init())
             .pipe(less())
             .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest(`${combo.autoPathAssets(theme)}/css`))
+            .pipe(gulp.dest(destination))
             .pipe(livereload())
             .on('end', done);
     }
@@ -38,13 +38,27 @@ LessTasks.prototype.init = (gulp) => {
     for (let theme in themes) {
         if(themes.hasOwnProperty(theme)) {
             gulp.task(`less:${theme}`, (done) => {
-                ExecuteLessTasks(theme, done);
+                ExecuteLessTasks(
+                    theme,
+                    combo.lessFiles(theme),
+                    `${combo.autoPathAssets(theme)}/css`,
+                    done
+                );
             });
         }
     }
 
     gulp.task('less:all', (done) => {
-        Object.keys(themes).map(theme => ExecuteLessTasks(theme, done));
+        Object.keys(themes).map(theme => ExecuteLessTasks(
+            theme,
+            combo.lessFiles(theme),
+            `${combo.autoPathAssets(theme)}/css`,
+            done
+        ));
+    });
+
+    gulp.task('less:admin', (done) => {
+        ExecuteLessTasks('', combo.appLessFiles(), `${combo.adminAutoPathAssets()}/css`, done);
     });
 };
 

@@ -1,12 +1,13 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.0
+ * @version     3.0.1
  * @author      Blue Acorn, LLC. <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © Blue Acorn.
  */
 
 const gulp = require('gulp');
+
 const tasks = [
     'babel',
     'clean',
@@ -26,7 +27,7 @@ tasks.forEach((task) => {
 
 gulp.task('default', gulp.series(
     gulp.parallel('clean:js', 'clean:all'),
-    gulp.parallel('svg-sprite:all', 'png-sprite:all'),
+    'exec:sprites',
     'exec:all',
     gulp.parallel('less:all', 'imagemin:all', 'eslint:all'),
     gulp.parallel('babel:all', 'exec:cache'),
@@ -34,7 +35,7 @@ gulp.task('default', gulp.series(
 ));
 
 gulp.task('noexec', gulp.series(
-    gulp.parallel('svg-sprite:all', 'png-sprite:all'),
+    'exec:sprites',
     gulp.parallel('less:all', 'imagemin:all', 'eslint:all'),
     gulp.parallel('babel:all', 'exec:cache'),
     'watch'

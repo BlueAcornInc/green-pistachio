@@ -42,15 +42,15 @@ ExecTasks.prototype.init = (gulp) => {
     });
 
     gulp.task('exec:cache', (done) => {
-        combo.execCommands('vendor/bin/cache-clean.js config layout block_html full_page', 'exec:cache', done);
+        combo.execCommands('vendor/bin/cache-clean.js', 'exec:cache', done);
     });
 
     gulp.task('exec:block', (done) => {
-        combo.execCommands('vendor/bin/cache-clean.js block_html full_page', 'exec:block', done);
+        combo.execCommands('vendor/bin/cache-clean.js', 'exec:block', done);
     });
 
     gulp.task('exec:xml', (done) => {
-        combo.execCommands('vendor/bin/cache-clean.js layout full_page', 'exec:xml', done);
+        combo.execCommands('vendor/bin/cache-clean.js', 'exec:xml', done);
     });
 
     gulp.task('exec:sprites', (done) => {

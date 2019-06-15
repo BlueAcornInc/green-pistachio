@@ -41,7 +41,7 @@ module.exports = {
     appDir: 'app',
     codeDir: 'code',
     frontend: 'design/frontend',
-    backend: 'design/adminhtml',
+    backend: 'adminhtml',
     nodeModulesPath: 'node_modules',
     bauiDir: 'blueacornui',
     base: './',
