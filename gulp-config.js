@@ -9,6 +9,16 @@
 'use strict';
 
 module.exports = {
+    admin: {
+        gulp: false,
+        appPath: 'adminhtml',
+        themePath: 'Magento/backend',
+        locale: 'en_US',
+        locales: ['en_US'],
+        stylesheets: [
+            'css/styles',
+        ]
+    },
     site: {
         gulp: true,
         appPath: 'frontend',
