@@ -50,7 +50,7 @@ site: {
 	stylesheets: [
 		'css/styles-m',
 		'css/styles-l',
-		'css/grid'
+		'BlueAcorn_CmsFramework::css/grid'
 	]
 }
 ```
