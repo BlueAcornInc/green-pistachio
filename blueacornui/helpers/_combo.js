@@ -1,9 +1,9 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.0
- * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @version     3.0.1
+ * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © Blue Acorn.
  */
 
 const path = require('path');
@@ -46,6 +46,10 @@ const combo = {
 
     autoPathAssets(theme) {
         return this.autoPath(theme, settings.pub);
+    },
+
+    adminAutoPathAssets() {
+        return path.join(this.rootPath(), settings.pub, settings.backend, '/Magento/backend/en_US');
     },
 
     autoPathImages(theme) {
@@ -126,7 +130,7 @@ const combo = {
         let command = '';
 
         theme.locales.forEach((locale, idx) => {
-            if(idx > 0) {
+            if (idx > 0) {
                 command += cmdPlus;
             }
 
@@ -147,11 +151,16 @@ const combo = {
 
         if (theme.stylesheets.length) {
             let lessFiles = theme.stylesheets.map((stylesheet) => {
-                return `${assetsPath}/${stylesheet}.less`;
+                return `${assetsPath}/${stylesheet.replace('::','/')}.less`;
             });
 
             return lessFiles;
         }
+    },
+
+    appLessFiles() {
+        let assetsPath = this.adminAutoPathAssets();
+        return [`${assetsPath}/css/styles.less`];
     },
 
     lessWatchFiles(themeName) {
@@ -163,7 +172,15 @@ const combo = {
             files.push(`${assetsPath}/**/*.less`);
         }
 
-        files.push(`${this.appCodePath()}/**/*.less`);
+        files.push(`${this.appCodePath()}/**/frontend/**/*.less`);
+
+        return files;
+    },
+
+    appLessWatchFiles() {
+        const files = [];
+
+        files.push(`${this.appCodePath()}/**/adminhtml/**/*.less`);
 
         return files;
     },

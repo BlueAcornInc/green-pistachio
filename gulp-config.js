@@ -1,14 +1,24 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.0
- * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @version     3.0.1
+ * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <code@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © 2019, All Rights Reserved.
  */
 
 'use strict';
 
 module.exports = {
+    admin: {
+        gulp: false,
+        appPath: 'adminhtml',
+        themePath: 'Magento/backend',
+        locale: 'en_US',
+        locales: ['en_US'],
+        stylesheets: [
+            'css/styles',
+        ]
+    },
     site: {
         gulp: true,
         appPath: 'frontend',

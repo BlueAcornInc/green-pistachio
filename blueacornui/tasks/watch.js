@@ -1,9 +1,9 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.0
- * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @version     3.0.1
+ * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © 2019, All Rights Reserved.
  */
 
 const livereload = require('gulp-livereload');
@@ -26,7 +26,7 @@ WatchTasks.prototype.init = (gulp) => {
     let tasks = [];
 
     for (let theme in themes) {
-        if (themes.hasOwnProperty(theme)) {
+        if (themes.hasOwnProperty(theme) && themes[theme].gulp) {
 
             gulp.task(`watch:${theme}Less`, () => {
                 gulp.watch(combo.lessWatchFiles(theme), gulp.series(`less:${theme}`));
@@ -56,6 +56,7 @@ WatchTasks.prototype.init = (gulp) => {
 
     gulp.task(`watch:app`, () => {
         gulp.watch(combo.appWatchFiles(), gulp.series(`exec:cache`));
+        gulp.watch(combo.appLessWatchFiles(), gulp.series('less:admin'));
     });
 
     tasks.push('watch:app');

@@ -1,9 +1,9 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.0
- * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @version     3.0.1
+ * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © 2019, All Rights Reserved.
  */
 
 const clean = require('gulp-clean');
