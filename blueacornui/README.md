@@ -205,9 +205,9 @@ Runs the following commands:
 2. `gulp clean:js` & `gulp clean:all` cleans out any compiled assets.
 2. `gulp svg-site:all` & `gulp png-sprite:all` - Generates svg & png sprites sheets.
 3. `gulp less:all`, `gulp imagemin:all` & `gulp eslint:all` - Compiles Less & Babel for the Theme, Minifies Images in app/design/frontend/[vendor]/[theme]/web/src to app/design/frontend/[vendor]/[theme]/web/images, validates theme js.
-5. `grunt babel:all` - Compiles Babel from theme source directories.
+5. `gulp babel:all` - Compiles Babel from theme source directories.
 6. `gulp exec:cache` - Clears caches.
-6. `gulp watch` - Starts the file watchers.
+7. `gulp watch` - Starts the file watchers.
 
 ### Compile Everything, without resymlinking it, Watch It All
 
