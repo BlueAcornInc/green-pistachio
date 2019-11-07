@@ -1,9 +1,9 @@
 /**
  * @package     BlueAcorn/GreenPistachio2
- * @version     2.0.1
- * @author      Blue Acorn, LLC. <code@blueacorn.com>
+ * @version     3.0.1
+ * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2018 Blue Acorn, LLC.
+ * @copyright   Copyright © 2019, All Rights Reserved.
  */
 
 'use strict';
@@ -41,13 +41,13 @@ module.exports = {
     appDir: 'app',
     codeDir: 'code',
     frontend: 'design/frontend',
-    backend: 'design/adminhtml',
+    backend: 'adminhtml',
     nodeModulesPath: 'node_modules',
     bauiDir: 'blueacornui',
     base: './',
     configsDir: 'configs',
     taskDir: 'task',
-    gruntRoot: '../../',
+    root: '../../',
     jsThemeGlob: '/**/js/**/source/**/*.js',
     jsModuleGlob: '/BlueAcorn/**/view/frontend/web/js/**/source/**/*.js',
     lessThemeGlob: '/**/css/source/**/*.less',

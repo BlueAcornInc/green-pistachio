@@ -1,71 +1,52 @@
 {
   "name": "blueacornui",
-  "version": "4.6.0",
-  "description": "Common Workflow for Front-end Development",
-  "private": "true",
-  "namespace": "Blue Acorn",
-  "homepage": "https://github.com/BlueAcornInc/green-pistachio#readme",
-  "bugs": {
-    "email": "greg@blueacorn.com",
-    "url": "https://github.com/BlueAcornInc/green-pistachio/issues"
+  "version": "3.0.1",
+  "description": "Gulp Build System for Magento 2 Projects",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "start": "node blueacornui/start.js && gulp",
+    "watch": "gulp",
+    "watch-noexec": "gulp noexec"
   },
-  "author": {
-    "name": "Greg Harvell @ Blue Acorn, Inc.",
-    "email": "greg@blueacorn.com",
-    "copyright": "Copyright © 2017 Blue Acorn, Inc."
+  "directories": {
+    "lib": "lib"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/BlueAcornInc/green-pistachio.git"
-  },
-  "keywords": [
-    "grunt",
-    "browsersync",
-    "autoprefixer",
-    "svgmin",
-    "imagemin",
-    "compilation",
-    "preprocessor"
+  "author": "Blue Acorn <code@blueacorn.com> (http://www.blueacorn.com/)",
+  "contributors": [
+    "Greg Harvell <greg@blueacorn.com>"
   ],
   "dependencies": {
-    "autoprefixer": "^8.6.2",
-    "babel-polyfill": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
-    "grunt-babel": "^7.0.0",
-    "grunt-banner": "^0.6.0",
-    "grunt-browser-sync": "^2.2.0",
-    "grunt-concurrent": "^2.3.1",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-contrib-connect": "^1.0.2",
-    "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-imagemin": "^2.0.1",
-    "grunt-contrib-jasmine": "^2.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-contrib-less": "^1.4.1",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-eslint": "^20.2.0",
-    "grunt-exec": "^3.0.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-newer": "^1.3.0",
-    "grunt-newer-less": "^1.0.2",
-    "grunt-postcss": "^0.9.0",
-    "grunt-replace": "^1.0.1",
-    "grunt-shell": "^2.1.0",
-    "grunt-spritesmith": "^6.6.2",
-    "grunt-styledocco": "^0.3.0",
-    "grunt-svg-sprite": "^1.4.0",
-    "grunt-svgmin": "^5.0.0",
-    "grunt-template-jasmine-requirejs": "^0.2.3",
-    "imagemin-svgo": "^6.0.0",
-    "jit-grunt": "^0.10.0",
-    "load-grunt-config": "^0.19.2",
-    "morgan": "^1.9.0",
-    "node-minify": "^3.0.1",
-    "serve-static": "^1.13.2",
-    "strip-json-comments": "^2.0.1",
-    "time-grunt": "^1.4.0"
+    "chalk": "^2.4.2",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
+    "fancy-log": "^1.3.3",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-eslint": "^5.0.0",
+    "gulp-hub": "^4.1.0",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-less": "^4.0.1",
+    "gulp-livereload": "^4.0.1",
+    "gulp-mustache": "^4.1.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-svg-sprite": "^1.5.0",
+    "gulp.spritesmith": "^6.10.1",
+    "merge-stream": "^1.0.1",
+    "parseArgs": "0.0.2"
   },
-  "devDependencies": {
-    "grunt": "^1.0.3"
-  }
+  "browserlist": [
+    "Explorer 11",
+    "last 2 Edge versions",
+    "last 2 Chrome versions",
+    "last 2 Safari versions",
+    "last 2 Firefox versions",
+    "last 2 iOS versions",
+    "last 2 ChromeAndroid versions"
+  ]
 }
