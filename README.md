@@ -35,8 +35,8 @@ Once you've met the [requirements](#requirements), you may proceed with the inst
 1. From the root Magento 2 installation directory, run the following commands to install Green Pistachio 2 with Modman:
 
         $: modman init
-        $: modman clone git@bitbucket.org:blueacorn/green-pistachio.git -b 'gulp'
-        $: modman deploy --copy green-pistachio-2 --force
+        $: modman clone git@bitbucket.org:blueacorn/green-pistachio.git
+        $: modman deploy --copy green-pistachio --force
 
 2. Update your `gulp-config.js` file to point to your theme to compile, see: [additional readme](blueacornui/README.md).
 If you're pointing to an existing theme that's not in the BlueAcorn namespace, you may need to update the `blueacornui/healpers/_settings.js` file.
