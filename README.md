@@ -27,6 +27,7 @@ To begin installation, you will need to have the following tools installed first
 * [modman](https://github.com/colinmollenhour/modman)
 * [node](https://nodejs.org/en/)
 * [grunt](https://gruntjs.com/)
+* [magento-cache-clean](https://github.com/mage2tv/magento-cache-clean)
 
 # Installation
 
