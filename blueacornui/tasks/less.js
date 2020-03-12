@@ -1,71 +1,54 @@
 /**
- * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.1
+ * @package     BlueAcorn/GreenPistachio
+ * @version     4.0.0
  * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © Blue Acorn.
+ * @author      Michael Bottens <michael.bottens@blueacorn.com>
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-const less = require('gulp-less');
-const livereload = require('gulp-livereload');
-const util = require('util');
-const combo = require('../helpers/_combo');
-const themes = require('../../gulp-config');
-const DefaultRegistry = require('undertaker-registry');
-const sourcemaps = require('gulp-sourcemaps');
+import { src, dest, task, series, parallel, watch } from 'gulp';
+import sourcemaps from 'gulp-sourcemaps';
+import livereload from 'gulp-livereload';
+import chalk from 'chalk';
+import less from 'gulp-less';
+import activeThemes from '../utils/activeThemes';
+import { lessFiles, lessWatchFiles } from '../utils/combo';
 
-function LessTasks() {
-    'use strict';
-
-    DefaultRegistry.call(this);
-}
-
-util.inherits(LessTasks, DefaultRegistry);
-
-LessTasks.prototype.init = (gulp) => {
-    'use strict';
-
-    function executeLessTasks(theme, files, destination, done) {
-        gulp.src(files)
-            .pipe(sourcemaps.init())
-            .pipe(less())
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest(destination))
-            .pipe(livereload())
-            .on('end', done);
-    }
-
-    for (let theme in themes) {
-        if (themes.hasOwnProperty(theme)) {
-            gulp.task(`less:${theme}`, (done) => {
-                combo.lessFiles(theme).forEach((lessFile) => {
-                    executeLessTasks(
-                        theme,
-                        lessFile,
-                        `${lessFile.substring(0, lessFile.lastIndexOf("/"))}`,
-                        done
-                    );
-                });
-            });
-        }
-    }
-
-    gulp.task('less:all', (done) => {
-        Object.keys(themes).map((theme) => {
-            combo.lessFiles(theme).forEach((lessFile) => {
-                executeLessTasks(
-                    theme,
-                    lessFile,
-                    `${lessFile.substring(0, lessFile.lastIndexOf("/"))}`,
-                    done
-                );
-            });
-        });
-    });
-
-    gulp.task('less:admin', (done) => {
-        executeLessTasks('', combo.appLessFiles(), `${combo.adminAutoPathAssets()}/css`, done);
-    });
+const ExecuteLessTask = (theme, files, destination, done) => {
+    src(files)
+        .pipe(sourcemaps.init())
+        .pipe(less().on('error', (error) => {
+            console.log(chalk.red(`Error compiling ${theme.name}:\n\n${error.message}`));
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(dest(destination))
+        .pipe(livereload())
+        .on('finish', done);
 };
 
-module.exports = new LessTasks();
+activeThemes.forEach((theme) => {
+    if (theme.stylesheets.length > 0) {
+        task(`less.${theme.name}`, (done) => {
+            lessFiles(theme).map((lessFile) => ExecuteLessTask(
+                theme,
+                lessFile,
+                `${lessFile.substring(0, lessFile.lastIndexOf('/'))}`,
+                done
+            ));
+        });
+    }
+});
+
+export const lessAll = (done) => {
+    const lessTasks = activeThemes.map((theme) => `less.${theme.name}`);
+
+    return series(parallel(...lessTasks), (seriesDone) => {
+        seriesDone();
+        done();
+    })();
+};
+
+export const watchLess = (done) => {
+    watch(lessWatchFiles(), (done) => lessAll(done));
+};

@@ -1,58 +1,83 @@
 /**
- * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.1
+ * @package     BlueAcorn/GreenPistachio
+ * @version     4.0.0
  * @author      Blue Acorn iCi <code@blueacorn.com>
  * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @author      Michael Bottens <michael.bottens@blueacorn.com>
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-const babel = require('gulp-babel');
-const rename = require('gulp-rename');
-const util = require('util');
-const combo = require('../helpers/_combo');
-const themes = require('../../gulp-config');
-const DefaultRegistry = require('undertaker-registry');
+import {
+    src,
+    dest,
+    series,
+    parallel,
+    task,
+    watch
+} from 'gulp';
+import babel from 'gulp-babel';
+import rename from 'gulp-rename';
+import activeThemes from '../utils/activeThemes';
+import { eslintApp, eslintAll } from './eslint';
+import {
+    autoPathThemes,
+    jsSourceFiles,
+    appJsSourceFiles,
+    appCodePath,
+    jsWatchFiles,
+    appJsWatchFiles
+} from '../utils/combo';
 
-function BabelTasks() {
-    'use strict';
-
-    DefaultRegistry.call(this);
-}
-
-util.inherits(BabelTasks, DefaultRegistry);
-
-BabelTasks.prototype.init = (gulp) => {
-    'use strict';
-
-    function ExecuteBabelTasks(theme, src, dest, done) {
-        gulp.src(src)
-            .pipe(babel({
-                presets: [`env`]
-            }))
-            .pipe(rename(path => {
-                path.dirname = path.dirname.replace('/source', '');
-            }))
-            .pipe(gulp.dest(dest))
-            .on('end', done);
-    }
-
-    for (let theme in themes) {
-        if (themes.hasOwnProperty(theme)) {
-            gulp.task(`babel:${theme}`, (done) => {
-                ExecuteBabelTasks(theme, combo.jsSourceFiles(theme), combo.autoPathThemes(theme), done);
-            });
-        }
-    }
-
-    gulp.task('babel:app', (done) => {
-       ExecuteBabelTasks('', combo.appJsSourceFiles(), combo.appCodePath(), done);
-    });
-
-    gulp.task('babel:all', (done) => {
-        Object.keys(themes).map(theme =>
-            ExecuteBabelTasks(theme, combo.jsSourceFiles(theme), combo.autoPathThemes(theme), done));
-        ExecuteBabelTasks('', combo.appJsSourceFiles(), combo.appCodePath(), done);
-    });
+const ExecuteBabelTasks = (files, destination, done) => {
+    src(files, {
+        allowEmpty: true
+    })
+        .pipe(babel())
+        .pipe(rename((path) => {
+            // eslint-disable-next-line no-param-reassign
+            path.dirname = path.dirname.replace('/source', '');
+        }))
+        .pipe(dest(destination))
+        .on('finish', done);
 };
 
-module.exports = new BabelTasks();
+activeThemes.forEach((theme) => {
+    task(`babel.${theme.name}`, (done) => {
+        ExecuteBabelTasks(
+            jsSourceFiles(theme),
+            autoPathThemes(theme),
+            done
+        );
+    });
+});
+
+export const babelAll = (done) => {
+    const babelTasks = activeThemes.map((theme) => `babel.${theme.name}`);
+
+    return series(parallel(...babelTasks), (seriesDone) => {
+        seriesDone();
+        done();
+    })();
+};
+
+export const babelApp = (done) => {
+    ExecuteBabelTasks(
+        appJsSourceFiles(),
+        appCodePath(),
+        done
+    );
+};
+
+export const watchJs = (done) => {
+    watch(jsWatchFiles(), (done) => series(eslintAll, babelAll, (seriesDone) => {
+        seriesDone();
+        done();
+    })());
+};
+
+export const watchAppJs = (done) => {
+    watch(appJsWatchFiles(), (done) => series(eslintApp, babelApp, (seriesDone) => {
+        seriesDone();
+        done();
+    })());
+};

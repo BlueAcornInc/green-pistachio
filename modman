@@ -1,7 +1,6 @@
-blueacornui/    blueacornui/
-Gulpfile.js     Gulpfile.js
-gulp-config.js  gulp-config.js
-.eslintrc       .eslintrc
-package.json    package.json
-app/code/BlueAcorn/Example/view/frontend/web/js/source/source-example.js    app/code/BlueAcorn/Example/view/frontend/web/js/source/source-example.js
-app/design/frontend/BlueAcorn/site/web/js/source/source-example.js  app/design/frontend/BlueAcorn/site/web/js/source/source-example.js
+blueacornui/          blueacornui/
+gulpfile.babel.js     gulpfile.babel.js
+gulp-config.js        gulp-config.js
+.eslintrc             .eslintrc
+package.json          package.json
+package-lock.json     package-lock.json

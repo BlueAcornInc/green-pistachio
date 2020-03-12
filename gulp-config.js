@@ -1,35 +1,47 @@
 /**
- * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.1
+ * @package     BlueAcorn/GreenPistachio
+ * @version     4.0.0
  * @author      Blue Acorn iCi <code@blueacorn.com>
- * @author      Greg Harvell <code@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @author      Greg Harvell <greg@blueacorn.com>
+ * @author      Michael Bottens <michael.bottens@blueacorn.com>
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
 'use strict';
 
-module.exports = {
-    admin: {
+export default [
+    {
+        name: "admin",
         gulp: false,
-        appPath: 'adminhtml',
-        themePath: 'Magento/backend',
-        locale: 'en_US',
+        appPath: "adminhtml",
+        themePath: "Magento/backend",
         locales: ['en_US'],
         stylesheets: [
-            'css/styles',
+            'css/styles'
         ]
     },
-    site: {
+    {
+        name: "site",
         gulp: true,
-        appPath: 'frontend',
-        themePath: 'BlueAcorn/site',
-        dev_url: 'm2.test',
-        locale: 'en_US',
+        appPath: "frontend",
+        themePath: "BlueAcorn/site",
+        locales: ['en_US'],
+        stylesheets: [
+            'css/styles-m',
+            'css/styles-l'
+        ]
+    },
+    {
+        name: "siteWithGrid",
+        gulp: false,
+        appPath: "frontend",
+        themePath: "BlueAcorn/site",
         locales: ['en_US'],
         stylesheets: [
             'css/styles-m',
             'css/styles-l',
-            'css/grid'
+            'BlueAcorn_CmsFramework::css/grid-l',
+            'BlueAcorn_CmsFramework::css/grid-m'
         ]
     }
-};
+];
