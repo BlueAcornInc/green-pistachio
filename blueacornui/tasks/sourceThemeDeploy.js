@@ -7,6 +7,7 @@
  * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
+import { task } from 'gulp';
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import { execMessages } from '../utils/combo';
@@ -42,3 +43,5 @@ export default function sourceThemeDeploy(done) {
         done(error);
     });
 }
+
+task('sourceThemeDeploy', (done) => sourceThemeDeploy(done));

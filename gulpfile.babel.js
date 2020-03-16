@@ -17,8 +17,8 @@ import { imageminAll, watchImages } from "./blueacornui/tasks/imagemin";
 import { eslintAll, eslintApp } from "./blueacornui/tasks/eslint";
 import { babelAll, babelApp, watchAppJs, watchJs } from "./blueacornui/tasks/babel";
 import { watchLivereload } from "./blueacornui/tasks/watch";
-import { svgSpriteAll } from "./blueacornui/tasks/svgSprite";
-import { pngSpriteAll } from "./blueacornui/tasks/pngSprite";
+import { svgSpriteAll, watchSvgSprites } from "./blueacornui/tasks/svgSprite";
+import { pngSpriteAll, watchPngSprites } from "./blueacornui/tasks/pngSprite";
 import watchCache from "./blueacornui/tasks/cache";
 
 const prepareTasks = series(
@@ -41,6 +41,8 @@ const watchTasks = parallel(
     watchImages,
     watchJs,
     watchAppJs,
+    watchSvgSprites,
+    watchPngSprites,
     watchLivereload,
     watchCache
 );
@@ -49,6 +51,16 @@ export const defaultTasks = series(
     prepareTasks,
     compileTasks,
     watchTasks,
+    (seriesDone) => {
+        seriesDone();
+    }
+);
+
+export const compile = series(
+    parallel(svgSpriteAll, pngSpriteAll),
+    parallel(imageminAll, eslintAll, eslintApp),
+    parallel(babelAll, babelApp),
+    lessAll,
     (seriesDone) => {
         seriesDone();
     }

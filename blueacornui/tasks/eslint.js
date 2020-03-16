@@ -49,7 +49,11 @@ export const eslintAll = (done) => {
     })();
 };
 
+task('eslintAll', (done) => eslintAll(done));
+
 export const eslintApp = (done) => {
     ExecuteEslintTasks(appJsSourceFiles(), done);
     done();
 };
+
+task('eslintApp', (done) => eslintApp(done));

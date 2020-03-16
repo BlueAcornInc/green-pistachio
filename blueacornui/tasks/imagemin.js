@@ -23,16 +23,17 @@ import {
     imageWatchSrcFiles
 } from '../utils/combo';
 
-const ExecuteImageminTasks = (theme, done) => src(imageminSrc(theme))
-    .pipe(imagemin([
-        imagemin.gifsicle(),
-        imagemin.mozjpeg(),
-        imagemin.optipng({ optimizationLevel: 7 }),
-        imagemin.svgo()
-    ]))
-    .pipe(dest(autoPathImages(theme)))
-    .on('end', done)
-    .on('finish', done);
+const ExecuteImageminTasks = (theme, done) => {
+    src(`${imageminSrc(theme)}**/*.{png,jpg,gif,jpeg,svg,jpeg}`)
+        .pipe(imagemin([
+            imagemin.gifsicle(),
+            imagemin.mozjpeg(),
+            imagemin.optipng({ optimizationLevel: 7 }),
+            imagemin.svgo()
+        ]))
+        .pipe(dest(autoPathImages(theme)))
+        .on('end', done);
+};
 
 activeThemes.forEach((theme) => {
     task(`imagemin.${theme.name}`, (done) => {
@@ -51,6 +52,8 @@ export const imageminAll = (done) => {
         done();
     })();
 };
+
+task('imageminAll', (done) => imageminAll(done));
 
 export const watchImages = (done) => {
     watch(imageWatchSrcFiles(), (done) => imageminAll(done));

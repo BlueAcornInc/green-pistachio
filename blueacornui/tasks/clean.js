@@ -59,6 +59,8 @@ export const cleanJs = (done) => {
         .on('finish', done);
 };
 
+task('cleanJs', (done) => cleanJs(done));
+
 activeThemes.forEach((theme) => {
     task(`clean.${theme.name}`, (done) => {
         ExecuteCleanTasks(
@@ -80,3 +82,5 @@ export const cleanAll = (done) => {
         done();
     })();
 };
+
+task('cleanAll', (done) => cleanAll(done));

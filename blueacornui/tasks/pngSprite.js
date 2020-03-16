@@ -20,39 +20,32 @@ import {
 import spriteSmith from 'gulp.spritesmith';
 import activeThemes from '../utils/activeThemes';
 import {
-    themeCssPath,
     imageminSrc,
-    spriteSourceFiles,
-    pngSpriteFiles
+    pngSpriteFiles,
+    autoPathThemes
 } from '../utils/combo';
 
 const config = {
-    cssName: '_png-sprites.less',
+    cssName: 'web/css/source/blueacorn/_png-sprites.less',
     imgName: 'spritesheet.png',
+    imgPath: 'web/src/',
     cssTemplate: path.join(__dirname, '../assets/tmpl/_png-sprite-mixins.less')
 };
 
 const ExecutePngSpriteTasks = (theme, themeCwd, themeDest, done) => {
-    const spriteData = src('**/*.png', {
+    src('web/spritesrc/**/*.png', {
         cwd: themeCwd
-    }).pipe(spriteSmith(config));
-
-    const imgStream = spriteData.img
-        .pipe(dest(themeDest))
+    })
+        .pipe(spriteSmith(config))
+        .pipe(dest(autoPathThemes(theme)))
         .on('end', done);
-
-    const cssStream = spriteData.css
-        .pipe(dest(themeCssPath(theme)))
-        .on('end', done);
-
-    return merge(imgStream, cssStream);
 };
 
 activeThemes.forEach((theme) => {
     task(`pngSprite.${theme.name}`, (done) => {
         ExecutePngSpriteTasks(
             theme,
-            spriteSourceFiles(theme),
+            autoPathThemes(theme),
             imageminSrc(theme),
             done
         );
@@ -67,6 +60,8 @@ export const pngSpriteAll = (done) => {
         done();
     })();
 };
+
+task('pngSpriteAll', (done) => pngSpriteAll(done));
 
 export const watchPngSprites = (done) => {
     watch(pngSpriteFiles(), (done) => pngSpriteAll(done));

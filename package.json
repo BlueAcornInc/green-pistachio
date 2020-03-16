@@ -2,18 +2,19 @@
     "name": "blueacornui",
     "version": "4.0.0",
     "description": "Gulp Build System for Magento 2 Projects",
-    "main": "Gulpfile.js",
+    "main": "gulpfile.babel.js",
     "scripts": {
-        "start": "node blueacornui/start.js && gulp",
-        "watch": "gulp",
-        "watch-noexec": "gulp noexec"
+        "compile": "gulp compile",
+        "watch": "gulp watch",
+        "start": "gulp"
     },
     "directories": {
         "lib": "lib"
     },
-    "author": "Blue Acorn <code@blueacorn.com> (http://www.blueacorn.com/)",
+    "author": "Blue Acorn iCi <code@blueacorn.com> (http://www.blueacornici.com/)",
     "contributors": [
-        "Greg Harvell <greg@blueacorn.com>"
+        "Greg Harvell <greg@blueacorn.com>",
+        "Michael Bottens <michael.bottens@blueacorn.com>"
     ],
     "browserslist": [
         "defaults"

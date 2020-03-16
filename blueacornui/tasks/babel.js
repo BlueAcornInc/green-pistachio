@@ -60,6 +60,8 @@ export const babelAll = (done) => {
     })();
 };
 
+task('babelAll', (done) => babelAll(done));
+
 export const babelApp = (done) => {
     ExecuteBabelTasks(
         appJsSourceFiles(),
@@ -67,6 +69,8 @@ export const babelApp = (done) => {
         done
     );
 };
+
+task('babelApp', (done) => babelApp(done));
 
 export const watchJs = (done) => {
     watch(jsWatchFiles(), (done) => series(eslintAll, babelAll, (seriesDone) => {

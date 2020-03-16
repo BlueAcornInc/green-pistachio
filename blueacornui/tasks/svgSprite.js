@@ -65,9 +65,6 @@ const config = {
 };
 
 const ExecuteSvgSpriteTasks = (themeCwd, themeDest, done) => {
-    console.log(themeCwd);
-    console.log(themeDest);
-
     src('**/*.svg', {
         cwd: themeCwd
     })
@@ -95,6 +92,8 @@ export const svgSpriteAll = (done) => {
         done();
     })();
 };
+
+task('svgSpriteAll', (done) => svgSpriteAll(done));
 
 export const watchSvgSprites = (done) => {
     watch(svgSpriteFiles(), (done) => svgSpriteAll(done));

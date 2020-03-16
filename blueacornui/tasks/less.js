@@ -49,6 +49,8 @@ export const lessAll = (done) => {
     })();
 };
 
+task('lessAll', (done) => lessAll(done));
+
 export const watchLess = (done) => {
     watch(lessWatchFiles(), (done) => lessAll(done));
 };
