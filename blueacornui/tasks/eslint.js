@@ -1,52 +1,57 @@
 /**
- * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.1
+ * @package     BlueAcorn/GreenPistachio
+ * @version     4.0.0
  * @author      Blue Acorn iCi <code@blueacorn.com>
- * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-const eslint = require('gulp-eslint');
-const util = require('util');
-const combo = require('../helpers/_combo');
-const themes = require('../../gulp-config');
-const DefaultRegistry = require('undertaker-registry');
+import {
+    src,
+    task,
+    parallel,
+    series
+} from 'gulp';
+import eslint from 'gulp-eslint';
+import activeThemes from '../utils/activeThemes';
+import {
+    jsSourceFiles,
+    appJsSourceFiles
+} from '../utils/combo';
 
-function EsLintTasks() {
-    'use strict';
-
-    DefaultRegistry.call(this);
-}
-
-util.inherits(EsLintTasks, DefaultRegistry);
-
-EsLintTasks.prototype.init = (gulp) => {
-    'use strict';
-
-    function ExecuteEsLintTasks(src, done) {
-        gulp.src(src)
-            .pipe(eslint())
-            .pipe(eslint.format());
-
-        done();
-    }
-
-    for (let theme in themes) {
-        if(themes.hasOwnProperty(theme)) {
-            gulp.task(`eslint:${theme}`, (done) => {
-                ExecuteEsLintTasks(combo.jsSourceFiles(theme), done);
-            });
-        }
-    }
-
-    gulp.task('eslint:app', (done) => {
-        ExecuteEsLintTasks(combo.appJsSourceFiles(), done);
-    });
-
-    gulp.task('eslint:all', (done) => {
-        Object.keys(themes).map(theme => ExecuteEsLintTasks(combo.jsSourceFiles(theme), done));
-        ExecuteEsLintTasks(combo.appJsSourceFiles(), done);
-    });
+const ExecuteEslintTasks = (files, done) => {
+    src(files, {
+        allowEmpty: true
+    })
+        .pipe(eslint())
+        .pipe(eslint.format())
+        .on('error', (error) => done(error))
+        .on('done', done)
+        .on('finish', done);
 };
 
-module.exports = new EsLintTasks();
+activeThemes.forEach((theme) => {
+    task(`eslint.${theme.name}`, (done) => {
+        ExecuteEslintTasks(
+            jsSourceFiles(theme),
+            done
+        );
+    });
+});
+
+export const eslintAll = (done) => {
+    const eslintTasks = activeThemes.map((theme) => `eslint.${theme.name}`);
+
+    return series(parallel(...eslintTasks), (seriesDone) => {
+        seriesDone();
+        done();
+    })();
+};
+
+task('eslintAll', (done) => eslintAll(done));
+
+export const eslintApp = (done) => {
+    ExecuteEslintTasks(appJsSourceFiles(), done);
+    done();
+};
+
+task('eslintApp', (done) => eslintApp(done));

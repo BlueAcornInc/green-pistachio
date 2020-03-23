@@ -1,59 +1,58 @@
 /**
- * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.1
+ * @package     BlueAcorn/GreenPistachio
+ * @version     4.0.0
  * @author      Blue Acorn iCi <code@blueacorn.com>
- * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-const imagemin = require('gulp-imagemin');
-const util = require('util');
-const combo = require('../helpers/_combo');
-const themes = require('../../gulp-config');
-const DefaultRegistry = require('undertaker-registry');
+import {
+    task,
+    src,
+    dest,
+    series,
+    parallel,
+    watch
+} from 'gulp';
+import imagemin from 'gulp-imagemin';
+import activeThemes from '../utils/activeThemes';
+import {
+    imageminSrc,
+    autoPathImages,
+    imageWatchSrcFiles
+} from '../utils/combo';
 
-function ImageminTasks() {
-    'use strict';
-
-    DefaultRegistry.call(this);
-}
-
-util.inherits(ImageminTasks, DefaultRegistry);
-
-const imageminOptions = {
-    png: {
-        optimizationLevel: 7
-    }
+const ExecuteImageminTasks = (theme, done) => {
+    src(`${imageminSrc(theme)}**/*.{png,jpg,gif,jpeg,svg,jpeg}`)
+        .pipe(imagemin([
+            imagemin.gifsicle(),
+            imagemin.mozjpeg(),
+            imagemin.optipng({ optimizationLevel: 7 }),
+            imagemin.svgo()
+        ]))
+        .pipe(dest(autoPathImages(theme)))
+        .on('end', done);
 };
 
-ImageminTasks.prototype.init = (gulp) => {
-    'use strict';
-
-    function ExecuteImageminTasks(theme, done) {
-        gulp.src(`${combo.autoPathImageSrc(theme)}**/*.{png,jpg,gif,jpeg,svg}`)
-            .pipe(imagemin([
-                imagemin.gifsicle(),
-                imagemin.jpegtran(),
-                imagemin.optipng(imageminOptions.png),
-                imagemin.svgo()
-            ]))
-            .pipe(gulp.dest(combo.autoPathImages(theme)))
-            .on('end', done);
-    }
-
-    for (let theme in themes) {
-        if(themes.hasOwnProperty(theme)) {
-            gulp.task(`imagemin:${theme}`, (done) => {
-                ExecuteImageminTasks(theme, done);
-                done();
-            });
-        }
-    }
-
-    gulp.task('imagemin:all', (done) => {
-        Object.keys(themes).map(theme => ExecuteImageminTasks(theme, done));
-        done();
+activeThemes.forEach((theme) => {
+    task(`imagemin.${theme.name}`, (done) => {
+        ExecuteImageminTasks(
+            theme,
+            done
+        );
     });
+});
+
+export const imageminAll = (done) => {
+    const imageminTasks = activeThemes.map((theme) => `imagemin.${theme.name}`);
+
+    return series(parallel(...imageminTasks), (seriesDone) => {
+        seriesDone();
+        done();
+    })();
 };
 
-module.exports = new ImageminTasks();
+task('imageminAll', (done) => imageminAll(done));
+
+export const watchImages = (done) => {
+    watch(imageWatchSrcFiles(), (done) => imageminAll(done));
+};

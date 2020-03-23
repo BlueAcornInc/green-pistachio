@@ -5,9 +5,6 @@
  * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-import livereload from 'gulp-livereload';
+import themes from '../../gulp-config';
 
-export const watchLivereload = (done) => {
-    livereload.listen();
-    done();
-};
+export default themes.filter((theme) => theme.gulp);

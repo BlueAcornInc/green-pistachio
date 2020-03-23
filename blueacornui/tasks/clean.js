@@ -1,79 +1,84 @@
 /**
- * @package     BlueAcorn/GreenPistachio2
- * @version     3.0.1
+ * @package     BlueAcorn/GreenPistachio
+ * @version     4.0.0
  * @author      Blue Acorn iCi <code@blueacorn.com>
- * @author      Greg Harvell <greg@blueacorn.com>
- * @copyright   Copyright © 2019, All Rights Reserved.
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-const clean = require('gulp-clean');
-const util = require('util');
-const combo = require('../helpers/_combo');
-const themes = require('../../gulp-config');
-const DefaultRegistry = require('undertaker-registry');
-const settings = require('../helpers/_settings');
+import {
+    src,
+    series,
+    parallel,
+    task
+} from 'gulp';
+import clean from 'gulp-clean';
+import settings from '../utils/settings';
+import { cleanPaths } from '../utils/combo';
+import activeThemes from '../utils/activeThemes';
 
-function CleanTasks() {
-    'use strict';
-
-    DefaultRegistry.call(this);
+/**
+ * Clean Execution Task
+ * @param theme
+ * @param done
+ * @returns {*}
+ * @constructor
+ */
+const ExecuteCleanTasks = (files, done) => {
+    src(files, {
+        allowEmpty: true
+    })
+        .pipe(clean({
+            force: true,
+            allowEmpty: true
+        }))
+        .on('end', done)
+        .on('finish', done);
 };
 
-util.inherits(CleanTasks, DefaultRegistry);
+/**
+ * Cleans JS Files when spinning up Gulp
+ * @param done
+ * @returns {*}
+ */
+export const cleanJs = (done) => {
+    src([
+        `${settings.pub}**/*.js`,
+        `${settings.pub}**/*.html`,
+        `${settings.pub}_requirejs/**/*`,
+        `${settings.deployedVersion}`
+    ], {
+        allowEmpty: true
+    })
+        .pipe(clean({
+            force: true,
+            allowEmpty: true
+        }))
+        .on('end', done)
+        .on('finish', done);
+};
 
-CleanTasks.prototype.init = (gulp) => {
-    'use strict';
+task('cleanJs', (done) => cleanJs(done));
 
-    function ExecuteCleanTasks(theme, done) {
-        return gulp.src(combo.cleanPaths(theme), {
-                allowEmpty: true
-            })
-            .pipe(clean({
-                force: true,
-                allowEmpty: true
-            }))
-            .on('end', done);
-    }
+activeThemes.forEach((theme) => {
+    task(`clean.${theme.name}`, (done) => {
+        ExecuteCleanTasks(
+            cleanPaths(theme),
+            done
+        );
+    });
+});
 
-    for (let theme in themes) {
-        if(themes.hasOwnProperty(theme)) {
-            gulp.task(`clean:${theme}`, (done) => {
-                ExecuteCleanTasks(theme, done);
-            });
-        }
-    }
+/**
+ * Cleans all Themes
+ * @param done
+ */
+export const cleanAll = (done) => {
+    const cleanTasks = activeThemes.map((theme) => `clean.${theme.name}`);
 
-    gulp.task('clean:all', (done) => {
-        Object.keys(themes).map(theme => ExecuteCleanTasks(theme, done));
+    return series(parallel(...cleanTasks), (seriesDone) => {
+        seriesDone();
         done();
-    });
-
-    gulp.task(`clean:var`, (done) => {
-        return gulp.src(combo.varPaths(), {
-                allowEmpty: true
-            })
-            .pipe(clean({
-                force: true,
-                allowEmpty: true
-            }))
-            .on('end', done);
-    });
-
-    gulp.task(`clean:js`, (done) => {
-        return gulp.src([
-                `${settings.pub}**/*.js`,
-                `${settings.pub}**/*.html`,
-                `${settings.pub}_requirejs/**/*`,
-                `${settings.deployedVersion}`
-            ], {
-                allowEmpty: true
-            })
-            .pipe(clean({
-                force: true,
-                allowEmpty: true
-            }))
-            .on('end', done);
-    });
+    })();
 };
 
-module.exports = new CleanTasks();
+task('cleanAll', (done) => cleanAll(done));
