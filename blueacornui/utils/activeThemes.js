@@ -5,6 +5,6 @@
  * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
  */
 
-import themes from '../../gulp-config';
+const themes = require(`${process.cwd()}/gulp-config`);
 
 export default themes.filter((theme) => theme.gulp);

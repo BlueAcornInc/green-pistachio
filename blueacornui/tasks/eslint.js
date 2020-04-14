@@ -12,6 +12,7 @@ import {
     series
 } from 'gulp';
 import eslint from 'gulp-eslint';
+import path from 'path';
 import activeThemes from '../utils/activeThemes';
 import {
     jsSourceFiles,
@@ -22,7 +23,13 @@ const ExecuteEslintTasks = (files, done) => {
     src(files, {
         allowEmpty: true
     })
-        .pipe(eslint())
+        .pipe(eslint({
+            configFile: path.resolve(__dirname, '..', '..', '.eslintrc'),
+            extends: [
+                require.resolve(`${process.cwd()}/dev/tests/static/testsuite/Magento/Test/Js/_files/eslint/.eslintrc-magento`)
+            ],
+            resolvePluginsRelativeTo: path.resolve(__dirname, '..', '..')
+        }))
         .pipe(eslint.format())
         .on('error', (error) => done(error))
         .on('done', done)

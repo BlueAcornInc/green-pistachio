@@ -8,13 +8,12 @@
 import path from 'path';
 import chalk from 'chalk';
 import settings from './settings';
-import themes from '../../gulp-config';
 import activeThemes from './activeThemes';
+const themes = require(`${process.cwd()}/gulp-config`);
 
 function rootPath() {
-    return path.join(__dirname, settings.root);
+    return process.cwd();
 }
-
 
 function appCodePath() {
     return path.join(rootPath(), settings.appDir, settings.codeDir);

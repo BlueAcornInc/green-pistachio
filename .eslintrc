@@ -1,7 +1,4 @@
 {
-  "extends": [
-    "./dev/tests/static/testsuite/Magento/Test/Js/_files/eslint/.eslintrc-magento"
-  ],
   "plugins": [
     "babel"
   ],
