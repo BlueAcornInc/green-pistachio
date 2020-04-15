@@ -22,8 +22,9 @@ import {
     spriteSourceFiles,
     svgSpriteFiles
 } from '../utils/combo';
+import compat from '../helpers/compat';
 
-const config = {
+const config = compat('svgSprite', {
     svg: {
         percision: 4,
         xmlDeclaration: true,
@@ -60,7 +61,7 @@ const config = {
             }
         }
     }
-};
+});
 
 const ExecuteSvgSpriteTasks = (themeCwd, themeDest, done) => {
     src('**/*.svg', {
