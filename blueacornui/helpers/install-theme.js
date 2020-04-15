@@ -14,8 +14,6 @@ export const getAppThemeDir = () => path.resolve(process.cwd(), 'app', 'design',
 
 export const rimrafP = async (dir) => new Promise(resolve => rimraf(dir, resolve));
 
-export const mkdirpP = async (dir) => new Promise(resolve => mkdirp(dir, resolve));
-
 export const copyP = async (source, destination) => new Promise((resolve, reject) => {
     copy(source, destination, (err) => {
         if (err) {
@@ -42,11 +40,11 @@ export const createBaseTheme = async () => {
     const homeThemeDir = getHomeThemeDir();
     const appThemeDir = getAppThemeDir();
     await rimrafP(homeThemeDir);
-    await mkdirpP(homeThemeDir);
+    await mkdirp(homeThemeDir);
 
     try {
         await cloneRepo(homeThemeDir);
-        await mkdirpP(path.join(process.cwd(), 'app', 'design', 'frontend', 'BlueAcorn'));
+        await mkdirp(path.join(process.cwd(), 'app', 'design', 'frontend', 'BlueAcorn'));
         await copyP(
             path.resolve(homeThemeDir, 'app', 'design', 'frontend', 'BlueAcorn', 'site'),
             appThemeDir
