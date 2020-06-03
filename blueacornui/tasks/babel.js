@@ -30,7 +30,15 @@ const ExecuteBabelTasks = (files, destination, done) => {
     src(files, {
         allowEmpty: true
     })
-        .pipe(babel())
+        .pipe(babel({
+            presets: [
+                ["@babel/preset-env", {
+                    "targets": {
+                        "browsers": "defaults"
+                    }
+                }]
+            ]
+        }))
         .pipe(rename((path) => {
             // eslint-disable-next-line no-param-reassign
             path.dirname = path.dirname.replace('/source', '');

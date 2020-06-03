@@ -1,5 +1,5 @@
 {
-    "name": "blueacornui",
+    "name": "@blueacorn/blueacornui",
     "version": "4.0.0",
     "description": "Gulp Build System for Magento 2 Projects",
     "main": "gulpfile.babel.js",
