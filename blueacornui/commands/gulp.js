@@ -9,7 +9,7 @@ export default async (program) => {
     if (installed) {
         const gulp = require('gulp');
         logEvents(gulp);
-        logSyncTask(gulp);
+        logSyncTask(gulp, {});
         toConsole(log, {});
         const namedTasks = require('../../gulpfile.babel');
 
