@@ -12,10 +12,12 @@ import chalk from 'chalk';
 import less from 'gulp-less';
 import activeThemes from '../utils/activeThemes';
 import { lessFiles, lessWatchFiles } from '../utils/combo';
+import transformReference from '../utils/less-transform-reference';
 
 const ExecuteLessTask = (theme, files, destination, done) => {
     src(files)
         .pipe(sourcemaps.init())
+        .pipe(transformReference())
         .pipe(less().on('error', (error) => {
             console.log(chalk.red(`Error compiling ${theme.name}:\n\n${error.message}`));
         }))
