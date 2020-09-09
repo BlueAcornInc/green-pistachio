@@ -6,7 +6,8 @@
     "scripts": {
         "compile": "gulp compile",
         "watch": "gulp watch",
-        "start": "gulp"
+        "start": "gulp",
+        "docs": "npx docsify serve ./docs"
     },
     "directories": {
         "lib": "lib"
