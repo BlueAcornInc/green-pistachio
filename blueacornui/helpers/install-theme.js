@@ -4,7 +4,7 @@ import mkdirp from 'mkdirp';
 import { userInfo } from 'os';
 import path from 'path';
 import exec from '../helpers/exec';
-import {error, info} from './reporter';
+import { error, info } from './reporter';
 import inquirer from 'inquirer';
 
 export const getHomeDir = () => path.resolve(userInfo().homedir, '.green-pistachio');

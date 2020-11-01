@@ -3,7 +3,7 @@ import glob from 'glob';
 import isInstalled, { isComposerPackageInstalled } from '../helpers/is-installed';
 import { createBaseTheme, installComposerPackage } from '../helpers/install-theme';
 import inquirer from 'inquirer';
-import {success, info, error} from '../helpers/reporter';
+import { success, info, error } from '../helpers/reporter';
 
 const settingsLookup = (theme) => {
     const files = [];
