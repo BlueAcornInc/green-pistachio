@@ -3,7 +3,7 @@ import glob from 'glob';
 import isInstalled, { isComposerPackageInstalled } from '../helpers/is-installed';
 import { createBaseTheme, installComposerPackage } from '../helpers/install-theme';
 import inquirer from 'inquirer';
-import { success, info } from '../helpers/reporter';
+import { success, info, error } from '../helpers/reporter';
 
 const settingsLookup = (theme) => {
     const files = [];
@@ -69,28 +69,28 @@ const collectThemes = async () => {
 
 export default async (program) => {
     const installed = await isInstalled();
-    if (!installed) {
-        program
-            .command('install')
-            .description('installs green-pistachio build tools')
-            .action(async () => {
+
+    program
+        .command('install')
+        .description('installs green-pistachio build tools')
+        .action(async () => {
+            if (installed) {
+                error('Green Pistachio Build Tools have already been installed. To rerun the installer, delete your project\'s gulp-config.js file.');
+            } else {
                 info('collecting installed themes');
                 let themes = await collectThemes();
 
-                if (!themes.find((theme) => theme.name === 'site' && theme.vendor === 'BlueAcorn')) {
-                    const { should_install_base } = await inquirer
-                        .prompt([{
-                            type: 'confirm',
-                            name: 'should_install_base',
-                            message: 'Do you wish to install the blueacorn site base theme now?'
-                        }]);
+                const { should_install_base } = await inquirer
+                    .prompt([{
+                        type: 'confirm',
+                        name: 'should_install_base',
+                        message: 'Do you wish to install a base theme now?'
+                    }]);
 
-                    if (should_install_base) {
-                        info('installing blueacorn site base theme');
-                        await createBaseTheme();
-                        themes = await collectThemes();
-                        success('blueacorn site base theme successfully installed');
-                    }
+                if (should_install_base) {
+                    await createBaseTheme();
+                    themes = await collectThemes();
+                    success('Base theme successfully installed.');
                 }
 
                 const cacheCleanInstalled = await isComposerPackageInstalled('mage2tv/magento-cache-clean');
@@ -112,8 +112,9 @@ export default async (program) => {
                     selected_themes.map(selected_theme => themes.find(theme => theme.fullName === selected_theme))
                 );
                 success('created config file');
-            })
-    }
+            }
+        })
+
 
     return program;
 };
