@@ -13,9 +13,12 @@ import {
     task,
     watch
 } from 'gulp';
+import { promises as fs } from 'fs';
+import { join } from 'path';
 import babel from 'gulp-babel';
 import rename from 'gulp-rename';
 import activeThemes from '../utils/activeThemes';
+import { info } from '../helpers/reporter';
 import { eslintApp, eslintAll } from './eslint';
 import {
     autoPathThemes,
@@ -26,11 +29,25 @@ import {
     appJsWatchFiles
 } from '../utils/combo';
 
-const ExecuteBabelTasks = (files, destination, done) => {
-    src(files, {
-        allowEmpty: true
-    })
-        .pipe(babel({
+let babelMessageSent = false;
+
+const resolveBabelConfig = async () => {
+    const babelrcPath = join(process.cwd(), '.babelrc');
+    try {
+        await fs.stat(babelrcPath);
+
+        return null;
+    } catch (err) {
+        if (!babelMessageSent) {
+            info(`.babelrc does not exist, using default configuration, please create: ${babelrcPath} for customizations`);
+            info(`Example content: `);
+            info(`{
+    "presets": ["@babel/preset-env"]
+}`);
+            babelMessageSent = true;
+        }
+
+        return {
             presets: [
                 ["@babel/preset-env", {
                     "targets": {
@@ -38,13 +55,23 @@ const ExecuteBabelTasks = (files, destination, done) => {
                     }
                 }]
             ]
-        }))
-        .pipe(rename((path) => {
-            // eslint-disable-next-line no-param-reassign
-            path.dirname = path.dirname.replace('/source', '');
-        }))
-        .pipe(dest(destination))
-        .on('finish', done);
+        };
+    }
+};
+
+const ExecuteBabelTasks = (files, destination, done) => {
+    resolveBabelConfig().then((config) => {
+        src(files, {
+            allowEmpty: true
+        })
+            .pipe(babel(config))
+            .pipe(rename((path) => {
+                // eslint-disable-next-line no-param-reassign
+                path.dirname = path.dirname.replace('/source', '');
+            }))
+            .pipe(dest(destination))
+            .on('finish', done);
+    });
 };
 
 activeThemes.forEach((theme) => {
