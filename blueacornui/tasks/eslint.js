@@ -42,6 +42,7 @@ activeThemes.forEach((theme) => {
             jsSourceFiles(theme),
             done
         );
+        done();
     });
 });
 
