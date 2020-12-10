@@ -47,6 +47,14 @@ module.exports = ${JSON.stringify(themeConfig, null, 4)};`;
     await fs.writeFile(`${process.cwd()}/gulp-config.js`, content);
 };
 
+const createBabelRcConfigFile = async () => {
+    const content = `{
+    "presets": ["@babel/preset-env"]
+}`;
+
+    await fs.writeFile(`${process.cwd()}/.babelrc`, content);
+};
+
 const collectThemes = async () => {
     const appThemes = glob.sync(`${process.cwd()}/app/design/frontend/*/*/registration.php`);
     const vendorThemes = glob.sync(`${process.cwd()}/vendor/*/theme-*/registration.php`);
@@ -111,6 +119,7 @@ export default async (program) => {
                 await createConfigFile(
                     selected_themes.map(selected_theme => themes.find(theme => theme.fullName === selected_theme))
                 );
+                await createBabelRcConfigFile();
                 success('created config file');
             }
         })
