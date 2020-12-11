@@ -64,6 +64,13 @@ export const compile = series(
     }
 );
 
+export const lint = series(
+    eslintAll,
+    (seriesDone) => {
+        seriesDone();
+    }
+);
+
 export const watch = series(
     compileTasks,
     watchTasks,
