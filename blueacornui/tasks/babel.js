@@ -18,7 +18,7 @@ import { join } from 'path';
 import babel from 'gulp-babel';
 import rename from 'gulp-rename';
 import activeThemes from '../utils/activeThemes';
-import { info } from '../helpers/reporter';
+import { info, warn } from '../helpers/reporter';
 import { eslintApp, eslintAll } from './eslint';
 import {
     autoPathThemes,
@@ -28,10 +28,17 @@ import {
     jsWatchFiles,
     appJsWatchFiles
 } from '../utils/combo';
+import { checkTypescriptConfigurationState } from '../helpers/typescript';
 
 let babelMessageSent = false;
 
 const resolveBabelConfig = async () => {
+    const typescriptEnabled = await checkTypescriptConfigurationState();
+
+    if (typescriptEnabled) {
+        return null;
+    }
+
     const babelrcPath = join(process.cwd(), '.babelrc');
     try {
         await fs.stat(babelrcPath);
@@ -67,7 +74,7 @@ const ExecuteBabelTasks = (files, destination, done) => {
             .pipe(babel(config))
             .pipe(rename((path) => {
                 // eslint-disable-next-line no-param-reassign
-                path.dirname = path.dirname.replace('/source', '');
+                path.dirname = path.dirname.replace('/source', '').replace('.ts', '.js');
             }))
             .pipe(dest(destination))
             .on('finish', done);

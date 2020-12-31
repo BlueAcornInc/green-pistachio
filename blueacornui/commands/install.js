@@ -4,6 +4,7 @@ import isInstalled, { isComposerPackageInstalled } from '../helpers/is-installed
 import { createBaseTheme, installComposerPackage } from '../helpers/install-theme';
 import inquirer from 'inquirer';
 import { success, info, error } from '../helpers/reporter';
+import { createTypescriptConfigFiles } from '../helpers/typescript';
 
 const settingsLookup = (theme) => {
     const files = [];
@@ -45,14 +46,6 @@ const createConfigFile = async (themes) => {
 
 module.exports = ${JSON.stringify(themeConfig, null, 4)};`;
     await fs.writeFile(`${process.cwd()}/gulp-config.js`, content);
-};
-
-const createBabelRcConfigFile = async () => {
-    const content = `{
-    "presets": ["@babel/preset-env"]
-}`;
-
-    await fs.writeFile(`${process.cwd()}/.babelrc`, content);
 };
 
 const collectThemes = async () => {
@@ -119,8 +112,8 @@ export default async (program) => {
                 await createConfigFile(
                     selected_themes.map(selected_theme => themes.find(theme => theme.fullName === selected_theme))
                 );
-                await createBabelRcConfigFile();
-                success('created config file');
+                await createTypescriptConfigFiles();
+                success('created config files');
             }
         })
 

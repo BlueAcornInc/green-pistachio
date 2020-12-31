@@ -17,5 +17,5 @@ export default {
     tmp: 'var',
     tmpCache: 'var/cache',
     deployedVersion: 'pub/static/deployed_version.txt',
-    jsThemeGlob: '/**/js/**/source/**/*.js'
+    jsThemeGlob: '/**/js/**/source/**/*.{js|ts}'
 };
