@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gulp: Less should compile less 1`] = `
+"p {
+  color: blue;
+}
+
+/*# sourceMappingURL=styles.css.map */
+"
+`;

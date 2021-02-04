@@ -1,7 +1,4 @@
 {
-  "plugins": [
-    "babel"
-  ],
   "parserOptions": {
     "sourceType": "script"
   },

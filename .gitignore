@@ -1,2 +1,8 @@
-.idea/
-node_modules/*
+*.js
+_dist
+_src
+node_modules
+coverage
+!jest.config.js
+!bin/gpc.js
+green-pistachio.tsconfig.json

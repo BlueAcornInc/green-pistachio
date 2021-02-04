@@ -1,0 +1,6 @@
+{
+  "extends": "../../../../../green-pistachio.tsconfig.json",
+  "include": [
+    "./app/design/**/*.ts"
+  ]
+}

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Theme should auto-detect stylesheets 1`] = `
+Array [
+  "css/styles-m.less",
+  "css/styles-r.less",
+  "css/styles.less",
+]
+`;
+
+exports[`Theme should auto-detect stylesheets 2`] = `
+Array [
+  "css/styles-l.less",
+  "css/styles-m.less",
+  "css/styles-r.less",
+  "css/styles.less",
+]
+`;

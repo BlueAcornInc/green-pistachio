@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gulp: SVG Sprite should generate svg sprite 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 121 17\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg>"`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 2`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\"><view id=\\"icon-stars\\" viewBox=\\"0 0 121 17\\"/><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" id=\\"icon-stars-\\" xmlns=\\"http://www.w3.org/2000/svg\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg></svg>"`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 3`] = `
+"//
+// @package     BlueAcorn/site
+// @author      Blue Acorn iCi <code@blueacorn.com>
+// @copyright   Copyright © Blue Acorn iCi. All rights reserved.
+//
+
+@sprite-url: \\"../images/sprites.svg\\";
+@sprite-width: 121px;
+@sprite-height: 17px;
+@svg-icon-stars-x: 0;
+@svg-icon-stars-y: 0;
+@svg-icon-stars-xy: 0 0;
+@svg-icon-stars-width: 121px;
+@svg-icon-stars-height: 17px;
+
+.svg() {
+    background-image: url(\\"@{sprite-url}\\");
+    background-repeat: no-repeat;
+}
+
+[class*=\\"svg-icon-\\"] {
+    display: inline-block;
+}
+
+.svg-icon-stars() {
+    background-position: @svg-icon-stars-xy;
+}
+
+.svg-icon-stars-dims() {
+    width: @svg-icon-stars-width;
+    height: @svg-icon-stars-height;
+}
+
+.svgi-icon-stars() {
+    .svg();
+    .svg-icon-stars();
+    .svg-icon-stars-dims();
+}
+
+& when (@media-common = true) {
+    .svg-icon-icon-stars {
+        .svgi-icon-stars();
+    }
+}
+"
+`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 4`] = `
+"<?php
+/**
+ * @package     BlueAcorn/site
+ * @author      Blue Acorn iCi <code@blueacorn.com>
+ * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
+ */
+
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+?>
+<section class=\\"sg-svg-sprites\\">
+    <h3 class=\\"sg-h\\">SVG Sprites</h3>
+    <div class=\\"ba-grid\\">
+        <div class=\\"item span-3\\">
+            <i class=\\"svg-icon-icon-stars\\"><span class=\\"visually-hidden\\">.svg-icon-icon-stars</span></i>
+            <span class=\\"icon-name\\">.svg-icon-icon-stars</span>
+        </div>
+    </div>
+</section>
+"
+`;

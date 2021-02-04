@@ -1,0 +1,44 @@
+//  @package     BlueAcorn/GreenPistachio2
+//  @version     3.0.1
+//  @author      Blue Acorn iCi. <code@blueacorn.com>,
+//  @author      Greg Harvell <greg@blueacorn.com>
+//  @copyright   Copyright © 2019. Rights reserved.
+
+@sprite-url: "../images/sprites.svg";
+@sprite-width: {{spriteWidth}}px;
+@sprite-height: {{spriteHeight}}px;
+{{#shapes}}
+@svg-{{name}}-x: {{position.absolute.x}};
+@svg-{{name}}-y: {{position.absolute.y}};
+@svg-{{name}}-xy: {{position.absolute.xy}};
+@svg-{{name}}-width: {{width.outer}}px;
+@svg-{{name}}-height: {{height.outer}}px;
+{{/shapes}}
+
+.{{mixinName}}() {
+    background-image: url("@{sprite-url}");
+    background-repeat: no-repeat;
+}
+
+{{#shapes}}
+.svg-{{name}}() {
+    background-position: @svg-{{name}}-xy;
+}
+
+.svg-{{name}}-dims() {
+    width: @svg-{{name}}-width;
+    height: @svg-{{name}}-height;
+}
+
+.svgi-{{name}}() {
+    .{{mixinName}}();
+    .svg-{{name}}();
+    .svg-{{name}}-dims();
+}
+{{/shapes}}
+
+{{#shapes}}
+.svg-icon-{{name}} {
+    .svgi-{{name}}();
+}
+{{/shapes}}
