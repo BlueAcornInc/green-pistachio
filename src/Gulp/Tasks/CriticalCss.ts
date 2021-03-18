@@ -165,15 +165,14 @@ export default class CriticalCss implements TaskInterface {
                 html: content,
                 ...CriticalCss.options,
                 ...(userConfig || {})
-            }, (err, a) => {
-                logger(a);
+            }, (err, { css }) => {
                 if (err) {
                     logger(err);
                     reject(err);
                     return;
                 }
 
-                resolve(a.css);
+                resolve(css);
             });
         });
     }

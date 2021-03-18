@@ -14,7 +14,6 @@ import SourceThemeDeploy from "../../Gulp/Tasks/SourceThemeDeploy";
 import Babel from "../../Gulp/Tasks/Babel";
 import BabelTypeScript from "../../Gulp/Tasks/BabelTypeScript";
 import Eslint from "../../Gulp/Tasks/Eslint";
-import CriticalCss from "../../Gulp/Tasks/CriticalCss";
 const logger = debug('gpc:gulp:runner');
 
 export default class GulpRunner {
@@ -30,7 +29,6 @@ export default class GulpRunner {
     private babel: Babel;
     private tsBabel: BabelTypeScript;
     private eslint: Eslint;
-    private criticalCss: CriticalCss;
 
     constructor() {
         this.clean = new Clean();
@@ -45,7 +43,6 @@ export default class GulpRunner {
         this.babel = new Babel();
         this.tsBabel = new BabelTypeScript();
         this.eslint = new Eslint();
-        this.criticalCss = new CriticalCss();
 
         // Prepare logger
         const gulp = require('gulp');
@@ -79,10 +76,7 @@ export default class GulpRunner {
 
     public compileTasks(project: Project, theme?: Theme) {
         return parallel(
-            series(
-                this.less.execute(project, theme),
-                this.criticalCss.execute(project, theme)
-            ),
+            this.less.execute(project, theme),
             this.webpack.execute(project, theme),
             this.babel.execute(project, theme),
             this.tsBabel.execute(project, theme),
@@ -92,7 +86,6 @@ export default class GulpRunner {
     public watchTasks(project: Project, theme?: Theme) {
         return parallel(
             this.less.watch(project, theme),
-            this.criticalCss.watch(project, theme),
             this.imageMin.watch(project, theme),
             this.svgSprite.watch(project, theme),
             this.pngSprite.watch(project, theme),
@@ -124,10 +117,7 @@ export default class GulpRunner {
             ),
             parallel(
                 this.imageMin.execute(project, theme),
-                series(
-                    this.less.execute(project, theme),
-                    this.criticalCss.execute(project, theme)
-                ),
+                this.less.execute(project, theme),
                 this.webpack.execute(project, theme),
                 this.babel.execute(project, theme),
                 this.tsBabel.execute(project, theme),
