@@ -26,6 +26,7 @@ export default class Project {
             pngSpriteConfig: new SyncHook(["config"]),
             svgSpriteConfig: new SyncHook(["config"]),
             eslintConfig: new SyncHook(["config"]),
+            criticalCssConfig: new SyncHook(["config"]),
         },
         webpack: {
             config: new SyncHook(["config"]),

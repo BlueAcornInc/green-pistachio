@@ -1,14 +1,12 @@
 import yargs, { Argv } from "yargs";
 import { Application } from "./Application";
 import Compile, { CompileCommandOptions } from "./Commands/Compile";
+import CriticalCss, { CriticalCssCommandOptions } from "./Commands/CriticalCss";
 import Default, { DefaultCommandOptions } from "./Commands/Default";
 import Install, { InstallCommandOptions } from "./Commands/Install";
 import Watch, { WatchCommandOptions } from "./Commands/Watch";
 
 require('yargs')
-    .command('default', 'Default command', (yargs: Argv) => {}, () => {
-        console.log('hello world');
-    })
     .command('compile [theme] [vendor]', 'Compile Command', (yargs: CompileCommandOptions & Argv) => {
         yargs.positional('theme', {
             describe: 'single theme to compile',
@@ -48,6 +46,18 @@ require('yargs')
         const app = new Application();
         const installCommand = new Install();
         await app.run(installCommand, yargs);
+    })
+    .command('criticalPath [theme]', 'Generate Critical CSS Files', (yargs: CriticalCssCommandOptions & Argv) => {
+        yargs.positional('theme', {
+            describe: 'single theme to compile',
+            type: 'string'
+        });
+        yargs.default('watch', false);
+        yargs.boolean('watch');
+    }, async (yargs: CriticalCssCommandOptions) => {
+        const app = new Application();
+        const criticalCssCommand = new CriticalCss();
+        await app.run(criticalCssCommand, yargs);
     })
     .command('default [theme]', 'Default Command', (yargs: DefaultCommandOptions & Argv) => {
         yargs.positional('theme', {
