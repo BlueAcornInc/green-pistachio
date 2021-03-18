@@ -7,11 +7,17 @@ type ThemeConstructorArgs = ThemeData & {
     parent?: Theme;
 };
 
+type CriticalCssInput = {
+    filepath: string;
+    urls: string[];
+};
+
 export type ThemeData = {
     area: string;
     path: string;
     locales?: string[];
     stylesheets?: string[];
+    criticalCss?: CriticalCssInput[];
 };
 
 export default class Theme {
@@ -27,7 +33,8 @@ export default class Theme {
             path,
             parent,
             locales,
-            stylesheets
+            stylesheets,
+            criticalCss
         } = config;
 
         this.sourceDirectory = sourceDirectory;
@@ -36,7 +43,8 @@ export default class Theme {
             area,
             path,
             locales,
-            stylesheets
+            stylesheets,
+            criticalCss
         };
     }
 
@@ -101,5 +109,15 @@ export default class Theme {
         logger(`${this.data.path}: Discovered the following stylesheets: ${stylesheets.join(', ')}`);
 
         return stylesheets;
+    }
+
+    public getCriticalPaths(): CriticalCssInput[] {
+        if (this.data.criticalCss) {
+            return this.data.criticalCss;
+        }
+
+        logger(`No critical path data available for: ${this.data.path}`);
+
+        return [];
     }
 }
