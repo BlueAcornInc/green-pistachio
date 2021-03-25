@@ -69,14 +69,18 @@ export default class GulpRunner implements CommandInterface {
         const taskMap = {
             [GulpCommands.DEFAULT]: this.default,
             [GulpCommands.COMPILE]: this.compile,
-            [GulpCommands.LINT]: this.eslint.execute,
+            [GulpCommands.LINT]: this.lint,
             [GulpCommands.WATCH]: this.watch
         };
         const gulpTask = taskMap[command] || this.default;
 
-        gulpTask(project, matchedTheme)(() => {});
+        gulpTask.call(this, project, matchedTheme)(() => {});
 
         return false;
+    }
+
+    private lint(project: Project, theme?: Theme) {
+        return this.eslint.execute(project, theme);
     }
 
     private prepareTasks(project: Project, theme?: Theme) {
