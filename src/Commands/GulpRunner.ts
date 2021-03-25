@@ -1,22 +1,34 @@
 import { parallel, series } from "gulp";
 import debug from 'debug';
-import Project from "../../Models/Project";
-import Theme from "../../Models/Theme";
-import Clean from '../../Gulp/Tasks/Clean';
-import Less from "../../Gulp/Tasks/Less";
-import ImageMinGulpTask from "../../Gulp/Tasks/Imagemin";
-import SvgSprite from "../../Gulp/Tasks/SvgSprite";
-import PngSprite from "../../Gulp/Tasks/PngSprite";
-import LiveReload from "../../Gulp/Tasks/LiveReload";
-import { Cache } from "../../Gulp/Tasks/Cache";
-import Webpack from "../../Gulp/Tasks/Webpack";
-import SourceThemeDeploy from "../../Gulp/Tasks/SourceThemeDeploy";
-import Babel from "../../Gulp/Tasks/Babel";
-import BabelTypeScript from "../../Gulp/Tasks/BabelTypeScript";
-import Eslint from "../../Gulp/Tasks/Eslint";
+import Project from "../Models/Project";
+import Theme from "../Models/Theme";
+import Clean from '../Gulp/Tasks/Clean';
+import Less from "../Gulp/Tasks/Less";
+import ImageMinGulpTask from "../Gulp/Tasks/Imagemin";
+import SvgSprite from "../Gulp/Tasks/SvgSprite";
+import PngSprite from "../Gulp/Tasks/PngSprite";
+import LiveReload from "../Gulp/Tasks/LiveReload";
+import { Cache } from "../Gulp/Tasks/Cache";
+import Webpack from "../Gulp/Tasks/Webpack";
+import SourceThemeDeploy from "../Gulp/Tasks/SourceThemeDeploy";
+import Babel from "../Gulp/Tasks/Babel";
+import BabelTypeScript from "../Gulp/Tasks/BabelTypeScript";
+import Eslint from "../Gulp/Tasks/Eslint";
+import { CommandInterface, CommandOptionsInterface } from "./CommandInterface";
 const logger = debug('gpc:gulp:runner');
 
-export default class GulpRunner {
+export enum GulpCommands {
+    DEFAULT = 'default',
+    LINT = 'lint',
+    WATCH = 'watch',
+    COMPILE = 'compile'
+};
+
+export interface GulpCommandOptions extends CommandOptionsInterface {
+    command: GulpCommands;
+};
+
+export default class GulpRunner implements CommandInterface {
     private clean: Clean;
     private less: Less;
     private imageMin: ImageMinGulpTask;
@@ -51,7 +63,23 @@ export default class GulpRunner {
         require('gulp-cli/lib/shared/log/to-console')(require('gulplog'), {});
     }
 
-    public prepareTasks(project: Project, theme?: Theme) {
+    public async run(options: GulpCommandOptions) {
+        const { project, theme, command } = options;
+        const matchedTheme = project.getThemes().find(projectTheme => projectTheme.getData().path === theme);
+        const taskMap = {
+            [GulpCommands.DEFAULT]: this.default,
+            [GulpCommands.COMPILE]: this.compile,
+            [GulpCommands.LINT]: this.eslint.execute,
+            [GulpCommands.WATCH]: this.watch
+        };
+        const gulpTask = taskMap[command] || this.default;
+
+        gulpTask(project, matchedTheme)(() => {});
+
+        return false;
+    }
+
+    private prepareTasks(project: Project, theme?: Theme) {
         const task = series(
             this.clean.execute(project, theme),
             parallel(
@@ -74,7 +102,7 @@ export default class GulpRunner {
         return task;
     }
 
-    public compileTasks(project: Project, theme?: Theme) {
+    private compileTasks(project: Project, theme?: Theme) {
         return parallel(
             this.less.execute(project, theme),
             this.webpack.execute(project, theme),
@@ -83,7 +111,7 @@ export default class GulpRunner {
         );
     }
 
-    public watchTasks(project: Project, theme?: Theme) {
+    private watchTasks(project: Project, theme?: Theme) {
         return parallel(
             this.less.watch(project, theme),
             this.imageMin.watch(project, theme),
@@ -98,7 +126,7 @@ export default class GulpRunner {
         );
     }
     
-    public defaultTasks(project: Project, theme?: Theme) {
+    private defaultTasks(project: Project, theme?: Theme) {
         const task = series(
             this.prepareTasks(project, theme),
             this.compileTasks(project, theme),
@@ -109,7 +137,7 @@ export default class GulpRunner {
         return task;
     }
 
-    public compile(project: Project, theme?: Theme) {
+    private compile(project: Project, theme?: Theme) {
         return series(
             parallel(
                 this.svgSprite.execute(project, theme),
@@ -125,14 +153,14 @@ export default class GulpRunner {
         );
     }
 
-    public watch(project: Project, theme?: Theme) {
+    private watch(project: Project, theme?: Theme) {
         return series(
             this.compileTasks(project, theme),
             this.watchTasks(project, theme)
         );
     }
 
-    public default(project: Project, theme?: Theme) {
+    private default(project: Project, theme?: Theme) {
         return this.defaultTasks(project, theme);
     }
 }
