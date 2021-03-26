@@ -2,7 +2,7 @@
 * Getting Started
   * [Installation](installation.md)
   * [Project Setup](project-setup.md)
-  * [Gulp Config](gulp-config.md)
+  * [Green Pistachio Config](green-pistachio-config.md)
 * Tasks
   * [Babel](task-babel.md)
   * [Sprites](task-sprites.md)
