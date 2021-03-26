@@ -44,7 +44,7 @@ export default class SvgSprite implements TaskInterface {
                         }
                     },
                     example: {
-                        dest: '../../BlueAcorn_GreenPistachio/templates/svg_sprites.phtml',
+                        dest: '../../BlueAcorn_CmsFramework/templates/framework/sprites.phtml',
                         template: join(__dirname, '../../../assets/tmpl/svg_sprites.phtml')
                     }
                 }
@@ -76,7 +76,7 @@ export default class SvgSprite implements TaskInterface {
     watch(project: Project, theme?: Theme): TaskFunction {
         return (done) => {
             const themes = theme ? [theme] : project.getThemes();
-    
+
             watch(
                 this.getSource(themes),
                 this.execute(project, theme)

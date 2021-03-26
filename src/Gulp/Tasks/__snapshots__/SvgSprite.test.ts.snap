@@ -55,22 +55,50 @@ exports[`Gulp: SVG Sprite should generate svg sprite 3`] = `
 exports[`Gulp: SVG Sprite should generate svg sprite 4`] = `
 "<?php
 /**
- * @package     BlueAcorn/site
+ * @package     BlueAcorn/CmsFramework
  * @author      Blue Acorn iCi <code@blueacorn.com>
- * @copyright   Copyright © Blue Acorn iCi. All rights reserved.
+ * @copyright   Copyright © Blue Acorn iCi. All Rights Reserved.
  */
 
+// @codingStandardsIgnoreFile
 // phpcs:disable Generic.Files.LineLength.TooLong
 
+/**
+ * CMS Framework Documentation Template
+ *
+ * @var $block \\\\BlueAcorn\\\\CmsFramework\\\\Block\\\\CmsFramework
+ */
 ?>
-<section class=\\"sg-svg-sprites\\">
-    <h3 class=\\"sg-h\\">SVG Sprites</h3>
-    <div class=\\"ba-grid\\">
-        <div class=\\"item span-3\\">
-            <i class=\\"svg-icon-icon-stars\\"><span class=\\"visually-hidden\\">.svg-icon-icon-stars</span></i>
-            <span class=\\"icon-name\\">.svg-icon-icon-stars</span>
+
+<div class=\\"ba-grid margin-bottom-40 padding-left-0 padding-right-0\\">
+    <h3 class=\\"item span-12\\">Sprites</h3>
+
+    <h4 class=\\"item span-12\\">icon-stars</h4>
+
+    <div class=\\"item span-s-12 d-flex flex-wrap margin-bottom-5\\">
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-white c-contrast-white\\">
+            <i class=\\"svg-icon-icon-stars\\"><span class=\\"visually-hidden\\">icon-stars</span></i>
         </div>
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-black c-contrast-black\\">
+            <i class=\\"svg-icon-icon-stars\\"><span class=\\"visually-hidden\\">icon-stars</span></i>
+        </div>
+        <dl class=\\"padding-10 float-left bg-white c-contrast-white\\">
+            <dt>Width</dt>
+            <dd>121</dd>
+            <dt>Height</dt>
+            <dd>17</dd>
+            <dt>Background Position Mixin</dt>
+            <dd>.svg-icon-stars()</dd>
+            <dt>Dimensions Mixin</dt>
+            <dd>.svg-icon-stars-dims()</dd>
+            <dt>Full Mixin</dt>
+            <dd>.svgi-icon-stars()</dd>
+            <dt>Class</dt>
+            <dd>.svg-icon-icon-stars()</dd>
+        </dl>
     </div>
-</section>
+
+    <pre class=\\"item span-s-12 margin-bottom-20\\"><code>&lt;i class=\\"svg-icon-icon-stars\\"&gt;&lt;span class=\\"visually-hidden\\"&gt;icon-stars&lt;/span&gt;&lt;/i&gt;</code></pre>
+</div>
 "
 `;
