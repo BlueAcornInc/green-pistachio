@@ -21,7 +21,8 @@ export enum GulpCommands {
     DEFAULT = 'default',
     LINT = 'lint',
     WATCH = 'watch',
-    COMPILE = 'compile'
+    COMPILE = 'compile',
+    WEBPACK = 'webpack',
 };
 
 export interface GulpCommandOptions extends CommandOptionsInterface {
@@ -70,7 +71,8 @@ export default class GulpRunner implements CommandInterface {
             [GulpCommands.DEFAULT]: this.default,
             [GulpCommands.COMPILE]: this.compile,
             [GulpCommands.LINT]: this.lint,
-            [GulpCommands.WATCH]: this.watch
+            [GulpCommands.WATCH]: this.watch,
+            [GulpCommands.WEBPACK]: this.webpackTask,
         };
         const gulpTask = taskMap[command] || this.default;
 
@@ -81,6 +83,10 @@ export default class GulpRunner implements CommandInterface {
 
     private lint(project: Project, theme?: Theme) {
         return this.eslint.execute(project, theme);
+    }
+
+    private webpackTask(project: Project, theme?: Theme) {
+        return this.webpack.execute(project, theme);
     }
 
     private prepareTasks(project: Project, theme?: Theme) {
@@ -96,8 +102,7 @@ export default class GulpRunner implements CommandInterface {
             ),
             parallel(
                 this.babel.execute(project, theme),
-                this.tsBabel.execute(project, theme),
-                this.webpack.execute(project, theme)
+                this.tsBabel.execute(project, theme)
             ),
             this.sourceThemeDeploy.execute(project, theme)
         );
@@ -109,7 +114,6 @@ export default class GulpRunner implements CommandInterface {
     private compileTasks(project: Project, theme?: Theme) {
         return parallel(
             this.less.execute(project, theme),
-            this.webpack.execute(project, theme),
             this.babel.execute(project, theme),
             this.tsBabel.execute(project, theme),
         );
@@ -123,7 +127,6 @@ export default class GulpRunner implements CommandInterface {
             this.pngSprite.watch(project, theme),
             this.liveReload.watch(),
             this.cache.watch(),
-            this.webpack.watch(project, theme),
             this.babel.watch(project, theme),
             this.tsBabel.watch(project, theme),
             this.eslint.watch(project, theme)
@@ -150,7 +153,6 @@ export default class GulpRunner implements CommandInterface {
             parallel(
                 this.imageMin.execute(project, theme),
                 this.less.execute(project, theme),
-                this.webpack.execute(project, theme),
                 this.babel.execute(project, theme),
                 this.tsBabel.execute(project, theme),
             ),

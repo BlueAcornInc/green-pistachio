@@ -1,3 +1,3 @@
-export default () => {
-    return "something";
+export default (content: string) => {
+    return `something: ${content}`;
 };

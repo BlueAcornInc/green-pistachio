@@ -128,7 +128,7 @@ echo json_encode([
                         new Theme({
                             sourceDirectory: themePaths[themeName],
                             parent: parentTheme,
-                            area,
+                            area: area as "frontend" | "adminhtml",
                             path: themePath
                         })
                     )

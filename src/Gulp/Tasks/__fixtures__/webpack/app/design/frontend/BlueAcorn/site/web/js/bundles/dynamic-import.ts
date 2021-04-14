@@ -1,0 +1,1 @@
+export default "This is a dynamic import, it should output into it's own file. See: test.bundle.js"

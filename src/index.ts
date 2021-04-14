@@ -16,6 +16,9 @@ const gulpCommands = [{
 }, {
     name: GulpCommands.WATCH,
     label: 'Watch Command'
+}, {
+    name: GulpCommands.WEBPACK,
+    label: 'Webpack Command'
 }];
 
 for (const gulpCommand of gulpCommands) {

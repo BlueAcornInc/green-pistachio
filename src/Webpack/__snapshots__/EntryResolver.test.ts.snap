@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Webpack Entry Resolver should get theme entries including module bundles 1`] = `
+Object {
+  "entries": Array [
+    Object {
+      "destinationPath": "/theme.bundle",
+      "sourcePath": "/web/js/bundles/theme.bundle.ts",
+    },
+  ],
+  "virtualEntries": Array [
+    Object {
+      "content": "export default 42;",
+      "destinationPath": "BlueAcorn_Test.module.bundle",
+      "module": Module {
+        "name": "BlueAcorn_Test",
+        "sourceDirectory": "vendor/blueacorn/module-test",
+      },
+      "sourcePath": "app/design/frontend/BlueAcorn/site/BlueAcorn_Test/web/js/bundles/module.bundle.ts",
+    },
+  ],
+}
+`;

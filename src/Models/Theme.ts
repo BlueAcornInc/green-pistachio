@@ -13,7 +13,7 @@ type CriticalCssInput = {
 };
 
 export type ThemeData = {
-    area: string;
+    area: "frontend" | "adminhtml";
     path: string;
     locales?: string[];
     stylesheets?: string[];

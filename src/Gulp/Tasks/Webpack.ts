@@ -3,7 +3,6 @@ import debug from 'debug';
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
 import WebpackConfigFactory from "../../Webpack/ConfigFactory";
-import EntryResolver from "../../Webpack/EntryResolver";
 import GetCompiler from "../../Webpack/GetCompiler";
 import { TaskInterface } from "./TaskInterface";
 import TsConfigBuilder from "../../Models/Project/TsConfigBuilder";
@@ -12,15 +11,12 @@ const logger = debug('gpc:gulp:webpack');
 export default class Webpack implements TaskInterface {
     private webpackConfigFactory: WebpackConfigFactory;
     private getCompiler: GetCompiler;
-    private entryResolver: EntryResolver;
     private tsConfigBuilder: TsConfigBuilder;
-    private currentWatchInstance?: any;
     private configFileExists: boolean = false;
 
     constructor() {
         this.webpackConfigFactory = new WebpackConfigFactory();
         this.getCompiler = new GetCompiler();
-        this.entryResolver = new EntryResolver();
         this.tsConfigBuilder = new TsConfigBuilder();
     }
 
@@ -60,35 +56,24 @@ export default class Webpack implements TaskInterface {
     }
 
     watch(project: Project, theme?: Theme): TaskFunction {
-        return (done) => {
-            const watchWebpack: TaskFunction = async (done) => {
-                if (!this.currentWatchInstance) {
-                    const config = await this.webpackConfigFactory.getConfig(project, theme);
-                    const compiler = this.getCompiler.execute(config);
+        return async (done) => {
+            const config = await this.webpackConfigFactory.getConfig(project, theme);
+            const compiler = this.getCompiler.execute(config);
 
-                    this.currentWatchInstance = compiler.watch({}, (err, stats) => {
-                        if (err) {
-                            logger(err);
-                            return;
-                        }
-    
-                        if (stats) {
-                            logger(stats.toString({
-                                colors: true
-                            }));
-                        }
-                    });
+            compiler.watch({}, (err, stats) => {
+                if (err) {
+                    logger(err);
+                    return;
                 }
-                
-                this.currentWatchInstance.invalidate();
 
-                done();
-            };
+                if (stats) {
+                    logger(stats.toString({
+                        colors: true
+                    }));
+                }
+            });
 
-            watch(
-                this.entryResolver.getGlobs(project, theme),
-                watchWebpack  
-            );
+            done();
         };
     }
 }
