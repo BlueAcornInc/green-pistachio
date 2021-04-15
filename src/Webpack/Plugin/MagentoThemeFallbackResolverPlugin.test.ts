@@ -75,7 +75,7 @@ describe('Magento Theme Fallback Webpack Resolver Plugin', () => {
                 if (err) {
                     return done(err);
                 }
-                expect(result).toBe('/project/path/app/design/frontend/BlueAcorn/site/web/js/some-file.js');
+                expect(result).toBe('/project/path/app/code/BlueAcorn/Module/view/frontend/web/js/module-file.js');
                 done();
             }
         );

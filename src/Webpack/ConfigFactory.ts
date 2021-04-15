@@ -9,6 +9,7 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import SpeedMeasurePlugin from 'speed-measure-webpack-plugin';
 import VirtualModulesPlugin from 'webpack-virtual-modules';
 import MagentoRequireJsManifestPlugin from "./Plugin/MagentoRequireJsManifestPlugin";
+import MagentoThemeFallbackResolverPlugin from "./Plugin/MagentoThemeFallbackResolverPlugin";
 const logger = debug('gpc:webpack:configFactory');
 
 type PathData = {
@@ -218,6 +219,13 @@ export default class WebpackConfigFactory {
                 new MagentoRequireJsManifestPlugin(virtualEntries),
                 new VirtualModulesPlugin(virtualModules)
             ],
+            resolve: {
+                ...(commonConfig.resolve || {}),
+                plugins: [
+                    ...(commonConfig.resolve && commonConfig.resolve.plugins || []),
+                    new MagentoThemeFallbackResolverPlugin(project, theme)
+                ]
+            },
             optimization: {
                 splitChunks: {
                     cacheGroups: {
