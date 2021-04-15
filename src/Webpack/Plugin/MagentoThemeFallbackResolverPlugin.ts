@@ -22,6 +22,10 @@ export default class MagentoThemeFallbackResolverPlugin {
             'MagentoThemeFallbackResolverPlugin',
             // @ts-ignore
             async (request, stack, callback) => {
+                if (!request.path.includes(this.theme.getSourceDirectory())) {
+                    return callback();
+                }
+
                 const result = await getThemeFallbackPaths.get(this.project, {
                     path: request.path,
                     theme: this.theme
