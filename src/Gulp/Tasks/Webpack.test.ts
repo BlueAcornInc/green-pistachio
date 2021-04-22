@@ -36,13 +36,13 @@ describe('Gulp: Webpack', () => {
     it('should compile webpack', async (done) => {
         const expectedOutputFiles = [
             `${root}/app/code/BlueAcorn/Module/view/frontend/web/js/module.bundle.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/test-ts.bundle.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/test.bundle.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/BlueAcorn_Module/theme.bundle.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/BlueAcorn_Module.module.bundle.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/dynamic-import.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/commons.js`,
-            `${root}/app/design/frontend/BlueAcorn/site/web/bundle/manifest.json`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/test-ts.bundle.js`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/test.bundle.js`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/BlueAcorn_Module/theme.bundle.js`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/BlueAcorn_Module/module.bundle.js`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/dynamic-import.js`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/commons.js`,
+            `${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/manifest.json`,
             `${root}/app/design/frontend/BlueAcorn/site/requirejs-config.js`,            
         ];
 
@@ -85,8 +85,8 @@ describe('Gulp: Webpack', () => {
             const contents = await fs.readFile(rjsfile);
             expect(contents.toString()).toMatchSnapshot();
             await fs.writeFile(rjsfile, originalContent.toString());
-            await fs.unlink(`${root}/app/design/frontend/BlueAcorn/siteExistingRjs/web/bundle/BlueAcorn_Module.module.bundle.js`);
-            await fs.unlink(`${root}/app/design/frontend/BlueAcorn/siteExistingRjs/web/bundle/manifest.json`);
+            await fs.unlink(`${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/BlueAcorn_Module/module.bundle.js`);
+            await fs.unlink(`${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/manifest.json`);
             done();
         });
     });
@@ -109,8 +109,8 @@ describe('Gulp: Webpack', () => {
             const contents = await fs.readFile(rjsfile);
             expect(contents.toString()).toMatchSnapshot();
             await fs.writeFile(rjsfile, originalContent.toString());
-            await fs.unlink(`${root}/app/design/frontend/BlueAcorn/siteExistingRjsWithManifest/web/bundle/BlueAcorn_Module.module.bundle.js`);
-            await fs.unlink(`${root}/app/design/frontend/BlueAcorn/siteExistingRjsWithManifest/web/bundle/manifest.json`);
+            await fs.unlink(`${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/BlueAcorn_Module/module.bundle.js`);
+            await fs.unlink(`${root}/pub/static/frontend/BlueAcorn/site/en_US/bundle/manifest.json`);
             done();
         });
     });

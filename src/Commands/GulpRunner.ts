@@ -86,7 +86,7 @@ export default class GulpRunner implements CommandInterface {
     }
 
     private webpackTask(project: Project, theme?: Theme) {
-        return this.webpack.execute(project, theme);
+        return this.webpack.watch(project, theme);
     }
 
     private prepareTasks(project: Project, theme?: Theme) {

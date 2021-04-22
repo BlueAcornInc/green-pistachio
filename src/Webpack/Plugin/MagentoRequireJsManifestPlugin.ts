@@ -3,7 +3,9 @@ import { Compiler } from 'webpack';
 import { WebpackManifestPlugin, getCompilerHooks } from 'webpack-manifest-plugin';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { VirtualEntry } from '../EntryResolver';
+import { Entry, EntryType } from '../EntryResolver';
+import Project from '../../Models/Project';
+import Theme from '../../Models/Theme';
 const logger = debug('gpc:webpack:MagentoRequireJsManifestPlugin');
 
 /**
@@ -14,10 +16,18 @@ export default class MagentoRequireJsManifestPlugin {
     static magicCommentRegex = /\/\*\* START: MagentoRequireJsManifestPlugin[\s\S]*\/\*\* END: MagentoRequireJsManifestPlugin \*\//g
 
     private compiler!: Compiler;
-    private virtualEntries: VirtualEntry[];
+    private project: Project;
+    private theme: Theme;
+    private entries: Entry[];
 
-    constructor(virtualEntries: VirtualEntry[]) {
-        this.virtualEntries = virtualEntries;
+    constructor(
+        project: Project,
+        theme: Theme,
+        entries: Entry[]
+    ) {
+        this.project = project;
+        this.theme = theme;
+        this.entries = entries;
     }
 
     /**
@@ -43,9 +53,7 @@ export default class MagentoRequireJsManifestPlugin {
         afterEmit.tap('MagentoRequireJsManifestPlugin', async (manifest: Record<string, string>) => {
             logger(manifest);
             const requirejsPath = join(
-                compiler.outputPath,
-                '..',
-                '..',
+                this.theme.getSourceDirectory(),
                 'requirejs-config.js'
             );
             const generatedCode = this.getGeneratedRequireJsCode(manifest);
@@ -89,6 +97,7 @@ export default class MagentoRequireJsManifestPlugin {
             'vendors.js',
             'styles.js',
             'commons.js',
+            'runtime.js',
         ];
         const discoveredDependencies = [];
         let generate = false;
@@ -112,15 +121,14 @@ export default class MagentoRequireJsManifestPlugin {
          * Module level compilation with theme level override support
          */
         const moduleMap: Record<string, string> = {};
-        
-        for (const virtualEntry of this.virtualEntries) {
-            logger(virtualEntry.sourcePath, this.compiler.outputPath);
-            moduleMap[`bundle/${virtualEntry.destinationPath}`] = virtualEntry.sourcePath
-                .replace(join(
-                    this.compiler.outputPath,
-                    '..',
-                    '..'
-                ), '')
+
+        for (const entry of this.entries) {
+            if (entry.type !== EntryType.ModuleOverride) {
+                continue;
+            }
+
+            moduleMap[`bundle/${entry.destinationPath}`] = entry.sourcePath
+                .replace(this.theme.getSourceDirectory(), '')
                 .replace(/^\//, '')
                 .replace('web/', '')
                 .replace('bundles/', '')

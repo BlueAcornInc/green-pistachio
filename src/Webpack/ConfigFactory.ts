@@ -1,4 +1,4 @@
-import { Configuration, RuleSetRule } from "webpack";
+import { Configuration, RuleSetRule, webpack, HotModuleReplacementPlugin } from "webpack";
 import debug from 'debug';
 import { promises as fs } from 'fs';
 import { join } from 'path';
@@ -10,7 +10,11 @@ import SpeedMeasurePlugin from 'speed-measure-webpack-plugin';
 import VirtualModulesPlugin from 'webpack-virtual-modules';
 import MagentoRequireJsManifestPlugin from "./Plugin/MagentoRequireJsManifestPlugin";
 import MagentoThemeFallbackResolverPlugin from "./Plugin/MagentoThemeFallbackResolverPlugin";
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 const logger = debug('gpc:webpack:configFactory');
+
+const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
+const reactRefreshOverlayEntry = require.resolve('react-dev-utils/refreshOverlayInterop');
 
 type PathData = {
     chunk: {
@@ -33,10 +37,14 @@ export default class WebpackConfigFactory {
     
     public async getConfig(project: Project, theme?: Theme): Promise<Configuration[]> {
         const themes = theme ? [theme] : project.getThemes();
+        let configs: Configuration[] = [];
 
-        const configs = await Promise.all(themes.map(theme => this.getConfigForTheme(project, theme)));
+        const allConfigurations = await Promise.all(themes.map(theme => this.getConfigForTheme(project, theme)));
+        for (const configuration of allConfigurations) {
+            configs = configs.concat(configuration);
+        };
+
         const moduleConfig = await this.getConfigForModules(project);
-
         configs.push(moduleConfig);
 
         const smp = new SpeedMeasurePlugin();
@@ -50,10 +58,10 @@ export default class WebpackConfigFactory {
             project.getRootDirectory(),
             'tsconfig.json'
         );
-        let mode: 'production' | 'development' = 'production';
+        let mode: 'production' | 'development' = project.isWebpackDevelopmentMode() ? 'development' : 'production';
 
-        if (process.env.DEVELOPMENT) {
-            mode = 'development';
+        if (!process.env.NODE_ENV) {
+            process.env.NODE_ENV = mode;
         }
 
         try {
@@ -87,6 +95,9 @@ export default class WebpackConfigFactory {
                 plugins: [
                     // TODO: This is used in CRA, determine what it is for
                     // require.resolve('babel-plugin-named-asset-import')
+                    ...(mode === 'development' && project.experiments.webpack.hmr ? [
+                        require.resolve('react-refresh/babel')
+                    ] : [])
                 ],
                 cacheDirectory: true,
                 cacheCompression: false,
@@ -129,10 +140,15 @@ export default class WebpackConfigFactory {
                 }),
                 new VirtualModulesPlugin({
                     'node_modules/@blueacornici/green-pistachio/webpack-public-path.js': '__webpack_public_path__ = `${global.requirejs.s.contexts._.config.baseUrl}/bundle/`;'
-                })
+                }),
+                ...(mode === 'development' && project.experiments.webpack.hmr ? [
+                    new HotModuleReplacementPlugin(),
+                    new ReactRefreshWebpackPlugin({
+                        overlay: false
+                    })
+                ] : [])
             ],
-            // TODO: Devtool in dev mode only
-            devtool: 'inline-source-map',
+            devtool: mode === 'development' ? 'inline-source-map' : false,
             resolve: {
                 extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
             }
@@ -148,8 +164,6 @@ export default class WebpackConfigFactory {
     private async getConfigForModules(project: Project): Promise<Configuration> {
         const {
             config,
-            babelLoader,
-            publicPathLoader
         } = await this.getCommonConfig(project);
         const entryData = await this.entryResolver.getEntriesForModules(project);
         const entries: Record<string, string> = {};
@@ -175,24 +189,24 @@ export default class WebpackConfigFactory {
         return moduleConfig;
     }
 
-    private async getConfigForTheme(project: Project, theme: Theme): Promise<Configuration> {
+    private async getConfigForTheme(project: Project, theme: Theme): Promise<Configuration[]> {
         const {
             config: commonConfig,
             babelLoader,
             publicPathLoader
         } = await this.getCommonConfig(project);
-        const { virtualEntries, entries } = await this.entryResolver.getEntriesForTheme(project, theme);
+        const entries = await this.entryResolver.getEntriesForTheme(project, theme);
         const allEntries: Record<string, string> = {};
-        const virtualModules: Record<string, string> = {};
+        // const virtualModules: Record<string, string> = {};
 
         for (const entry of entries) {
             allEntries[entry.destinationPath] = entry.sourcePath;
         }
 
-        for (const entry of virtualEntries) {
-            allEntries[entry.destinationPath] = entry.sourcePath;
-            virtualModules[entry.sourcePath] = entry.content;
-        }
+        // for (const entry of virtualEntries) {
+        //     allEntries[entry.destinationPath] = entry.sourcePath;
+        //     virtualModules[entry.sourcePath] = entry.content;
+        // }
 
         babelLoader.include = (babelLoader.include as string[] || []).concat(theme.getSourceDirectory());
         publicPathLoader.include = (publicPathLoader.include as string[] || []).concat(
@@ -202,59 +216,69 @@ export default class WebpackConfigFactory {
             ))
         );
 
-        const config: Configuration = {
-            ...commonConfig,
-            entry: () => allEntries,
-            context: theme.getSourceDirectory(),
-            output: {
-                ...commonConfig.output,
-                path: join(
-                    theme.getSourceDirectory(),
-                    'web',
-                    'bundle'
-                ),
-            },
-            plugins: [
-                ...(commonConfig.plugins || []),
-                new MagentoRequireJsManifestPlugin(virtualEntries),
-                new VirtualModulesPlugin(virtualModules)
-            ],
-            resolve: {
-                ...(commonConfig.resolve || {}),
+        const config: Configuration[] = [];
+
+        for (const pubDirectory of project.getWebpackPubDirectories(theme)) {
+            const localeConfig: Configuration = {
+                ...commonConfig,
+                entry: allEntries,
+                context: theme.getSourceDirectory(),
+                output: {
+                    ...commonConfig.output,
+                    // path: join(
+                    //     theme.getSourceDirectory(),
+                    //     'web',
+                    //     'bundle'
+                    // ),
+                    path: join(
+                        pubDirectory,
+                        'bundle',
+                    )
+                },
                 plugins: [
-                    ...(commonConfig.resolve && commonConfig.resolve.plugins || []),
-                    new MagentoThemeFallbackResolverPlugin(project, theme)
-                ]
-            },
-            optimization: {
-                splitChunks: {
-                    cacheGroups: {
-                        vendors: {
-                            test: /[\\/]node_modules[\\/]/,
-                            name: 'vendors',
-                            chunks: 'all'
-                        },
-                        styles: {
-                            test: /\.css$/,
-                            name: 'styles',
-                            chunks: 'all',
-                            enforce: true
-                        },
-                        commons: {
-                            chunks: 'all',
-                            name: 'commons',
-                            minChunks: 2,
-                            reuseExistingChunk: true,
-                            enforce: true
+                    ...(commonConfig.plugins || []),
+                    new MagentoRequireJsManifestPlugin(project, theme, entries),
+                    // new VirtualModulesPlugin(virtualModules)
+                ],
+                resolve: {
+                    ...(commonConfig.resolve || {}),
+                    plugins: [
+                        ...(commonConfig.resolve && commonConfig.resolve.plugins || []),
+                        new MagentoThemeFallbackResolverPlugin(project, theme)
+                    ]
+                },
+                optimization: {
+                    splitChunks: {
+                        cacheGroups: {
+                            vendors: {
+                                test: /[\\/]node_modules[\\/]/,
+                                name: 'vendors',
+                                chunks: 'all'
+                            },
+                            styles: {
+                                test: /\.css$/,
+                                name: 'styles',
+                                chunks: 'all',
+                                enforce: true
+                            },
+                            commons: {
+                                chunks: 'all',
+                                name: 'commons',
+                                minChunks: 2,
+                                reuseExistingChunk: true,
+                                enforce: true
+                            }
                         }
                     }
-                }
-            },
-        };
+                },
+            };
+    
+            project.hooks.webpack.config.call(localeConfig);
+    
+            logger(`Built Config: ${JSON.stringify(localeConfig)}`);
 
-        project.hooks.webpack.config.call(config);
-
-        logger(`Built Config: ${JSON.stringify(config)}`);
+            config.push(localeConfig);
+        }
 
         return config;
     }

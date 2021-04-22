@@ -192,6 +192,7 @@ Object {
   "modules": Array [],
   "root": Any<String>,
   "themes": Array [],
+  "webpackDevelopmentMode": false,
 }
 `;
 
@@ -385,6 +386,7 @@ Object {
   },
   "includePath": "app",
   "modules": Array [],
+  "proxyUrl": "",
   "root": Any<String>,
   "themes": Array [
     Theme {
@@ -420,6 +422,7 @@ Object {
       "sourceDirectory": "vendor/magento/theme-frontend-luma",
     },
   ],
+  "webpackDevelopmentMode": false,
 }
 `;
 
@@ -616,5 +619,6 @@ Object {
   "root": Any<String>,
   "someUserProvidedValue": 5,
   "themes": Array [],
+  "webpackDevelopmentMode": false,
 }
 `;

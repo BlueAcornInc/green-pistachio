@@ -80,4 +80,27 @@ describe('Magento Theme Fallback Webpack Resolver Plugin', () => {
             }
         );
     });
+
+    it('should prioritize theme overrides when requesting module files', async (done) => {
+        mock({
+            [`/project/path/app/code/BlueAcorn/Module/view/frontend/web/js/module-file.js`]: 'module.exports = "module source";',
+            [`/project/path/app/design/frontend/BlueAcorn/site/BlueAcorn_Module/web/js/module-file.js`]: 'module.exports= "theme override";'
+        });
+
+        const resolver = await createResolver();
+
+        resolver.resolve(
+            {},
+            '/project/path',
+            './app/code/BlueAcorn/Module/view/frontend/web/js/module-file',
+            {},
+            (err, result) => {
+                if (err) {
+                    return done(err);
+                }
+                expect(result).toBe('/project/path/app/design/frontend/BlueAcorn/site/BlueAcorn_Module/web/js/module-file.js');
+                done();
+            }
+        );
+    });
 });

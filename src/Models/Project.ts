@@ -3,6 +3,7 @@ import { SyncHook } from 'tapable';
 import debug from 'debug';
 import Module from "./Module";
 import Theme, { ThemeData } from "./Theme";
+import ProjectConfigBuilder from '../ProjectConfigBuilder';
 const logger = debug('gpc:project');
 
 type ProjectConstructorArgs = {
@@ -17,6 +18,8 @@ export default class Project {
     private themes: Theme[];
     private modules: Module[];
     private includePath: string;
+    private webpackDevelopmentMode: boolean = false;
+    private proxyUrl: string = '';
 
     public hooks = {
         // These hooks allow for modifying various gulp configurations
@@ -33,6 +36,13 @@ export default class Project {
             entryGlobs: new SyncHook(["globs"])
         },
         configure: new SyncHook(["project"])
+    };
+
+    public experiments = {
+        webpack: {
+            // Set to true in the the project.configure hook to enable unstable HMR functionality
+            hmr: false
+        }
     };
 
     constructor(config: ProjectConstructorArgs) {
@@ -103,11 +113,57 @@ export default class Project {
         ));
     }
 
+    public getWebpackPubDirectories(theme: Theme) {
+        return theme.getLocales().map(locale => join(
+            this.getRootDirectory(),
+            ...(
+                this.isWebpackDevelopmentMode()
+                ? ['static']
+                : ['pub', 'static']
+            ),
+            theme.getData().area,
+            theme.getData().path,
+            locale
+        ));
+    }
+
     public getStaticDirectory() {
         return join(
             this.getRootDirectory(),
             'pub',
             'static'
         );
+    }
+
+    public isWebpackDevelopmentMode() {
+        return this.webpackDevelopmentMode;
+    }
+
+    public setWebpackDevelopmentMode() {
+        this.webpackDevelopmentMode = true;
+    }
+
+    public setProxyUrl(url: string) {
+        this.proxyUrl = url;
+    }
+
+    public getProxyUrl(): string {
+        if (this.proxyUrl.length === 0) {
+            if (!debug.enabled('gpc:logger')) {
+                debug.enable('gpc:logger');
+            }
+            logger(`A project URL must be provided in your projects ${ProjectConfigBuilder.CONFIG_FILE}`);
+            logger(`\n\nExample:
+module.exports = project => {
+project.hooks.configure.tap("Set Product Url", () => {
+    project.setProxyUrl("https://example.test");
+});
+}
+            `);
+
+            throw new Error(`A project URL must be provided in your projects ${ProjectConfigBuilder.CONFIG_FILE}`);
+        }
+
+        return this.proxyUrl;
     }
 }

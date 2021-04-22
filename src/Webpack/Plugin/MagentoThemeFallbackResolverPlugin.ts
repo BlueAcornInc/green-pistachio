@@ -1,5 +1,6 @@
-import { Resolver } from 'enhanced-resolve';
+import { Resolver, ResolveRequest } from 'enhanced-resolve';
 import debug from 'debug';
+import  { join } from 'path';
 import GetThemeFallbackPaths from '../../MagentoFallbackHelpers/GetThemeFallbackPaths';
 import Project from '../../Models/Project';
 import Theme from '../../Models/Theme';
@@ -22,15 +23,17 @@ export default class MagentoThemeFallbackResolverPlugin {
             'MagentoThemeFallbackResolverPlugin',
             // @ts-ignore
             async (request, stack, callback) => {
-                if (!request.path.includes(this.theme.getSourceDirectory())) {
+                const { handle, path } = this.validateRequest(request);
+
+                if (!handle) {
                     return callback();
                 }
 
                 const result = await getThemeFallbackPaths.get(this.project, {
-                    path: request.path,
+                    path,
                     theme: this.theme
                 });
-                let resolvedPath = request.path;
+                let resolvedPath = path;
 
                 // No fallbacks
                 if (result.length === 0) {
@@ -81,5 +84,67 @@ export default class MagentoThemeFallbackResolverPlugin {
                 );
             }
         );
+    }
+
+    /**
+     * Determine if this resolver should handle the given request, and return the proper request path string
+     * 
+     * @param request ResolveRequest
+     * @returns { handle: boolean, path: string }
+     */
+    private validateRequest(request: ResolveRequest): { handle: boolean, path: string } {
+        if (request.path) {
+            if (request.path.includes(this.theme.getSourceDirectory())) {
+                return {
+                    handle: true,
+                    path: request.path
+                };
+            }
+
+            let parentTheme = this.theme.getParent();
+
+            while (parentTheme) {
+                if (request.path.includes(parentTheme.getSourceDirectory())) {
+                    return {
+                        handle: true,
+                        path: request.path.replace(
+                            parentTheme.getSourceDirectory(),
+                            this.theme.getSourceDirectory()
+                        )
+                    };
+                }
+
+                parentTheme = parentTheme.getParent();
+            }
+
+            for (const module of this.project.getAllModules()) {
+                if (request.path.includes(module.getSourceDirectory())) {
+                    const paths = [
+                        join(module.getSourceDirectory(), 'view', this.theme.getData().area),
+                        join(module.getSourceDirectory(), 'view', 'base'),
+                    ];
+
+                    let normalizedPath = request.path;
+
+                    for (const path of paths) {
+                        normalizedPath = normalizedPath.replace(path, '');
+                    }
+
+                    return {
+                        handle: true,
+                        path: join(
+                            this.theme.getSourceDirectory(),
+                            module.getName(),
+                            normalizedPath
+                        )
+                    };
+                }
+            }
+        }
+
+        return {
+            handle: false,
+            path: ''
+        };
     }
 }
