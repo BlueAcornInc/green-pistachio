@@ -198,6 +198,11 @@ Object {
 
 exports[`Project Config Builder should build themes 1`] = `
 Object {
+  "experiments": Object {
+    "webpack": Object {
+      "hmr": false,
+    },
+  },
   "hooks": Object {
     "configure": SyncHook {
       "_args": Array [

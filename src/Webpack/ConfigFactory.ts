@@ -6,11 +6,11 @@ import Project from "../Models/Project";
 import Theme from "../Models/Theme";
 import EntryResolver from "./EntryResolver";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import SpeedMeasurePlugin from 'speed-measure-webpack-plugin';
 import VirtualModulesPlugin from 'webpack-virtual-modules';
 import MagentoRequireJsManifestPlugin from "./Plugin/MagentoRequireJsManifestPlugin";
 import MagentoThemeFallbackResolverPlugin from "./Plugin/MagentoThemeFallbackResolverPlugin";
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 const logger = debug('gpc:webpack:configFactory');
 
 const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
@@ -25,11 +25,13 @@ type PathData = {
 type CommonConfigPayload = {
     config: Partial<Configuration>;
     babelLoader: RuleSetRule;
+    cssLoader: RuleSetRule;
     publicPathLoader: RuleSetRule;
 };
 
 export default class WebpackConfigFactory {
     private entryResolver: EntryResolver;
+    private miniCssExtractPlugin!: MiniCssExtractPlugin;
 
     constructor() {
         this.entryResolver = new EntryResolver();
@@ -47,10 +49,21 @@ export default class WebpackConfigFactory {
         const moduleConfig = await this.getConfigForModules(project);
         configs.push(moduleConfig);
 
-        const smp = new SpeedMeasurePlugin();
-
         // @ts-ignore
-        return configs.map(config => smp.wrap(config));
+        return configs;
+    }
+
+    /**
+     * There can be only one
+     * 
+     * @returns MiniCssExtractPlugin
+     */
+    private getMiniExtractTextPlugin(): MiniCssExtractPlugin {
+        if (!this.miniCssExtractPlugin) {
+            this.miniCssExtractPlugin = new MiniCssExtractPlugin();
+        }
+
+        return this.miniCssExtractPlugin;
     }
 
     private async getCommonConfig(project: Project): Promise<CommonConfigPayload> {
@@ -105,6 +118,23 @@ export default class WebpackConfigFactory {
             }
         };
 
+        const cssLoader = {
+            test: /\.css$/,
+            include: ([] as string[])
+                .concat(
+                    (project.getModules().map(module => module.getSourceDirectory()) as string[])
+                ),
+            use: [
+                mode === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {
+                        modules: true
+                    }
+                },
+            ],
+        };
+
         const publicPathLoader = {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
             include: ([] as string[]),
@@ -128,9 +158,14 @@ export default class WebpackConfigFactory {
             module: {
                 rules: [
                     babelLoader,
+                    cssLoader,
                     publicPathLoader
                 ]
             },
+            ...((mode === 'development') ? 
+                {
+                    target: 'web'
+                } : {}),
             plugins: [
                 new ForkTsCheckerWebpackPlugin({
                     typescript: {
@@ -141,6 +176,9 @@ export default class WebpackConfigFactory {
                 new VirtualModulesPlugin({
                     'node_modules/@blueacornici/green-pistachio/webpack-public-path.js': '__webpack_public_path__ = `${global.requirejs.s.contexts._.config.baseUrl}/bundle/`;'
                 }),
+                ...(mode === 'development' ? [
+                    this.getMiniExtractTextPlugin()
+                ] : []),
                 ...(mode === 'development' && project.experiments.webpack.hmr ? [
                     new HotModuleReplacementPlugin(),
                     new ReactRefreshWebpackPlugin({
@@ -157,6 +195,7 @@ export default class WebpackConfigFactory {
         return {
             config,
             babelLoader,
+            cssLoader,
             publicPathLoader
         };
     }
@@ -193,6 +232,7 @@ export default class WebpackConfigFactory {
         const {
             config: commonConfig,
             babelLoader,
+            cssLoader,
             publicPathLoader
         } = await this.getCommonConfig(project);
         const entries = await this.entryResolver.getEntriesForTheme(project, theme);
@@ -209,6 +249,7 @@ export default class WebpackConfigFactory {
         // }
 
         babelLoader.include = (babelLoader.include as string[] || []).concat(theme.getSourceDirectory());
+        cssLoader.include = (cssLoader.include as string [] || []).concat(theme.getSourceDirectory());
         publicPathLoader.include = (publicPathLoader.include as string[] || []).concat(
             Object.values(allEntries).map(entry => join(
                 theme.getSourceDirectory(),
@@ -233,7 +274,11 @@ export default class WebpackConfigFactory {
                     path: join(
                         pubDirectory,
                         'bundle',
-                    )
+                    ),
+                    publicPath: `${join(
+                        pubDirectory,
+                        'bundle',
+                    )}/`
                 },
                 plugins: [
                     ...(commonConfig.plugins || []),
