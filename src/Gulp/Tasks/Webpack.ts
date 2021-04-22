@@ -104,7 +104,9 @@ export default class Webpack implements TaskInterface {
                                     .replace(new RegExp(proxyUrl, 'g'), 'https://green-pistachio.test:8080')
                                     .replace(
                                         new RegExp(
-                                            proxyUrl.replace(':', '\\\\u003A').replace(/\//g, '\\\\u002F'),
+                                            proxyUrl.replace(/[^a-z0-9,\._]/iug, (a) => 
+                                                `\\\\u00${a.charCodeAt(0).toString(16).toUpperCase()}`
+                                            ),
                                             'g'
                                         ),
                                         'https://green-pistachio.test:8080'
