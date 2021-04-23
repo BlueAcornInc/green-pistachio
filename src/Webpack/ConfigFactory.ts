@@ -158,8 +158,10 @@ export default class WebpackConfigFactory {
             module: {
                 rules: [
                     babelLoader,
-                    cssLoader,
-                    publicPathLoader
+                    publicPathLoader,
+                    ...(project.experiments.webpack.cssModules ? [
+                        cssLoader
+                    ] : []),
                 ]
             },
             ...((mode === 'development') ? 
@@ -176,7 +178,7 @@ export default class WebpackConfigFactory {
                 new VirtualModulesPlugin({
                     'node_modules/@blueacornici/green-pistachio/webpack-public-path.js': '__webpack_public_path__ = `${global.requirejs.s.contexts._.config.baseUrl}/bundle/`;'
                 }),
-                ...(mode === 'development' ? [
+                ...((mode !== 'development' && project.experiments.webpack.cssModules) ? [
                     this.getMiniExtractTextPlugin()
                 ] : []),
                 ...(mode === 'development' && project.experiments.webpack.hmr ? [

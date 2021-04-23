@@ -23,6 +23,7 @@ export enum GulpCommands {
     WATCH = 'watch',
     COMPILE = 'compile',
     WEBPACK = 'webpack',
+    WEBPACK_BUILD = 'webpack:build',
 };
 
 export interface GulpCommandOptions extends CommandOptionsInterface {
@@ -73,6 +74,7 @@ export default class GulpRunner implements CommandInterface {
             [GulpCommands.LINT]: this.lint,
             [GulpCommands.WATCH]: this.watch,
             [GulpCommands.WEBPACK]: this.webpackTask,
+            [GulpCommands.WEBPACK_BUILD]: this.webpackBuildTask,
         };
         const gulpTask = taskMap[command] || this.default;
 
@@ -87,6 +89,10 @@ export default class GulpRunner implements CommandInterface {
 
     private webpackTask(project: Project, theme?: Theme) {
         return this.webpack.watch(project, theme);
+    }
+
+    private webpackBuildTask(project: Project, theme?: Theme) {
+        return this.webpack.execute(project, theme);
     }
 
     private prepareTasks(project: Project, theme?: Theme) {

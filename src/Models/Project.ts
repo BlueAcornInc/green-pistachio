@@ -41,7 +41,9 @@ export default class Project {
     public experiments = {
         webpack: {
             // Set to true in the the project.configure hook to enable unstable HMR functionality
-            hmr: false
+            hmr: false,
+            // Set to true to enable css modules
+            cssModules: false,
         }
     };
 
