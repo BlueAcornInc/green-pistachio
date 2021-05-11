@@ -93,29 +93,8 @@ export default class MagentoRequireJsManifestPlugin {
 
     private getGeneratedRequireJsCode(manifest: Record<string, string>): string
     {
-        const dependencies = [
-            'vendors.js',
-            'styles.js',
-            'commons.js',
-            'runtime.js',
-        ];
-        const discoveredDependencies = [];
         let generate = false;
         let code = `\nconfig = config || {};`;
-
-        for (const dependency of dependencies) {
-            if (manifest[dependency]) {
-                discoveredDependencies.push(`bundle/${dependency.replace('.js', '')}`);
-            }
-        }
-
-        /**
-         * Split chunk support via requirejs deps
-         */
-        if (discoveredDependencies.length > 0) {
-            generate = true;
-            code += `\nconfig.deps = (config.deps || []).concat(${JSON.stringify(discoveredDependencies, null, 4)});`;
-        }
 
         /**
          * Module level compilation with theme level override support

@@ -11,6 +11,7 @@ import MagentoRequireJsManifestPlugin from "./Plugin/MagentoRequireJsManifestPlu
 import MagentoThemeFallbackResolverPlugin from "./Plugin/MagentoThemeFallbackResolverPlugin";
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import MagentoAmdLibraryPlugin from "./Plugin/MagentoAmdLibraryPlugin";
 const logger = debug('gpc:webpack:configFactory');
 
 const webpackDevClientEntry = require.resolve('react-dev-utils/webpackHotDevClient');
@@ -153,7 +154,6 @@ export default class WebpackConfigFactory {
                 path: project.getRootDirectory(),
                 publicPath: '',
                 filename: '[name].js',
-                libraryTarget: 'amd'
             },
             module: {
                 rules: [
@@ -178,7 +178,8 @@ export default class WebpackConfigFactory {
                 new VirtualModulesPlugin({
                     'node_modules/@blueacornici/green-pistachio/webpack-public-path.js': '__webpack_public_path__ = `${global.requirejs.s.contexts._.config.baseUrl}/bundle/`;'
                 }),
-                ...((mode !== 'development' && project.experiments.webpack.cssModules) ? [
+                new MagentoAmdLibraryPlugin(),
+                ...((mode === 'production' && project.experiments.webpack.cssModules) ? [
                     this.getMiniExtractTextPlugin()
                 ] : []),
                 ...(mode === 'development' && project.experiments.webpack.hmr ? [
@@ -190,7 +191,11 @@ export default class WebpackConfigFactory {
             ],
             devtool: mode === 'development' ? 'inline-source-map' : false,
             resolve: {
-                extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
+                extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json'],
+                alias: (project.getAllModules().reduce((moduleAliases, magentoModule) => ({
+                    ...moduleAliases,
+                    [magentoModule.getName()]: magentoModule.getSourceDirectory()
+                }), {}))
             }
         };
 
@@ -277,10 +282,12 @@ export default class WebpackConfigFactory {
                         pubDirectory,
                         'bundle',
                     ),
-                    publicPath: `${join(
-                        pubDirectory,
-                        'bundle',
-                    )}/`
+                    ...(commonConfig.mode === 'development' ? {
+                        publicPath: `${join(
+                            pubDirectory,
+                            'bundle',
+                        )}/`
+                    } : {})
                 },
                 plugins: [
                     ...(commonConfig.plugins || []),

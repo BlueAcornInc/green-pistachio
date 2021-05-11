@@ -1,4 +1,4 @@
-import { ResolverFactory } from 'enhanced-resolve';
+import { ResolverFactory, ResolveOptions } from 'enhanced-resolve';
 import mock from "mock-fs"
 import Module from '../../Models/Module';
 import Project from '../../Models/Project';
@@ -9,7 +9,7 @@ afterEach(() => {
     mock.restore();
 });
 
-const createResolver = async () => {
+const createResolver = async (additionalConfig: Partial<ResolveOptions> = {}) => {
     const theme = new Theme({
         sourceDirectory: `/project/path/app/design/frontend/BlueAcorn/site`,
         area: 'frontend',
@@ -32,7 +32,8 @@ const createResolver = async () => {
         fileSystem: require('fs'),
         plugins: [
             new MagentoThemeFallbackResolverPlugin(project, theme)
-        ]
+        ],
+        ...additionalConfig
     });
 };
 

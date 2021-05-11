@@ -22,7 +22,7 @@ export default class MagentoThemeFallbackResolverPlugin {
         resolver.hooks.relative.tapAsync(
             'MagentoThemeFallbackResolverPlugin',
             // @ts-ignore
-            async (request, stack, callback) => {
+            async (request: ResolveRequest, stack, callback) => {
                 const { handle, path } = this.validateRequest(request);
 
                 if (!handle) {

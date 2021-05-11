@@ -200,6 +200,7 @@ exports[`Project Config Builder should build themes 1`] = `
 Object {
   "experiments": Object {
     "webpack": Object {
+      "cssModules": false,
       "hmr": false,
     },
   },
