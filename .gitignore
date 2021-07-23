@@ -6,3 +6,4 @@ coverage
 !jest.config.js
 !bin/gpc.js
 green-pistachio.tsconfig.json
+.idea

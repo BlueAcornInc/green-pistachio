@@ -1,17 +1,18 @@
 # Green Pistachio
 
-> Magento 2 Gulp Tools
+Magento 2 Front-end Build Tools
 
 ## What it is
 
-Green Pistachio provides an opinionated set of gulp configs
-that can be ran independently of a specific Magento 2 implementation.
+Green Pistachio provides an opinionated set of configs
+that can be run independently of a specific Magento 2 implementation.
 
 ## Features
 
-* Babel for ES6
-* SVG/PNG Sprite sheets
-* Automatic cache cleaning
+* Modern Javascript Compilations for ES6 & TypeScript compilation.
+* SVG/PNG Sprite sheeting with custom mixins.
+* Automatic cache cleaning with [Mage2TV Cache Clean](https://github.com/mage2tv/magento-cache-clean)
 * Linting for ES6
 * Image minification
-* Less
+* Less Compilation
+* Critical CSS Compilation
