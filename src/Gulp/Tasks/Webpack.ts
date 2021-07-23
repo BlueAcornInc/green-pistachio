@@ -64,12 +64,22 @@ export default class Webpack implements TaskInterface {
             const config = await this.webpackConfigFactory.getConfig(project, theme);
             const compiler = this.getCompiler.execute(config);
 
-            let ssl = await certificateFor('green-pistachio.test');
+            const {
+                proxyUrl,
+                devServerUrl,
+                devServerPort
+            } = project.getWebpackDevServerConfig();
+
+            let frontendDevServerUrl = `https://${devServerUrl}`;
+
+            if (devServerPort !== 80) {
+                frontendDevServerUrl += `:${devServerPort}`
+            }
+
+            let ssl = await certificateFor(devServerUrl);
 
             // Store magento cookies and append back with each proxy request
             let cookieData: string[] | null;
-
-            const proxyUrl = project.getProxyUrl();
 
             // @ts-ignore
             const server = new WebpackDevServer(compiler, {
@@ -79,7 +89,6 @@ export default class Webpack implements TaskInterface {
                 },
                 ...(project.experiments.webpack.hmr ? {
                     hot: true,
-                    transportMode: 'ws',
                 } : {}),
                 proxy: {
                     '/': {
@@ -99,9 +108,16 @@ export default class Webpack implements TaskInterface {
                                 cookieData = proxyCookie;
                             }
 
+                            if (proxyRes.headers['location']) {
+                                res.setHeader(
+                                    'location',
+                                    proxyRes.headers['location'].replace(proxyUrl, frontendDevServerUrl)
+                                );
+                            }
+
                             if ((proxyRes.headers['content-type'] || '').includes('text/html')) {
                                 let response =  buffer.toString()
-                                    .replace(new RegExp(proxyUrl, 'g'), 'https://green-pistachio.test:8080')
+                                    .replace(new RegExp(proxyUrl, 'g'), frontendDevServerUrl)
                                     .replace(
                                         new RegExp(
                                             proxyUrl.replace(/[^a-z0-9,\._]/iug, (a) => 
@@ -109,14 +125,14 @@ export default class Webpack implements TaskInterface {
                                             ),
                                             'g'
                                         ),
-                                        'https://green-pistachio.test:8080'
+                                        frontendDevServerUrl
                                     )
                                     .replace(
                                         new RegExp(
                                             proxyUrl.replace(/\//g, '\\\\/'),
                                             'g'
                                         ),
-                                        'https://green-pistachio.test:8080'
+                                        frontendDevServerUrl
                                     )
 
                                 return response;
@@ -128,7 +144,7 @@ export default class Webpack implements TaskInterface {
                 }
             });
 
-            server.listen(8080, 'green-pistachio.test', () => {
+            server.listen(devServerPort, devServerUrl, () => {
                 logger('dev server started');
             });
 
