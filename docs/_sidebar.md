@@ -17,6 +17,9 @@
   * [Compile & Watch](command-compile-watch.md)
   * [Compile Only](command-compile.md)
   * [Watch Only](command-watch.md)
+<!--
+TODO Add Additional Features Pages
+
 * Additional Features
   * [LiveReload](livereload.md)
-  * [Image Optimization](image-optimization.md)
+  * [Image Optimization](image-optimization.md) -->

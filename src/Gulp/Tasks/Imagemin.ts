@@ -12,13 +12,14 @@ import Project from '../../Models/Project';
 import Theme from '../../Models/Theme';
 import { TaskInterface } from './TaskInterface';
 const logger = debug('gpc:gulp:imageMin');
-
+import { Options as SvgoOptions } from 'imagemin-svgo';
 export default class ImageMinGulpTask implements TaskInterface {
     execute(project: Project, theme?: Theme) {
         const themes = theme ? [theme] : project.getThemes();
 
         const tasks: TaskFunction[] = themes.map(theme => {
-            const task: TaskFunction = (done) => {
+            const task: TaskFunction = async (done) => {
+                const svgoConfig = await this.getSvgoConfig(project);
                 const imageMinPaths = `${this.getImageMinSourceDirectory(theme)}/**/*.{png,jpg,gif,jpeg,svg,jpeg}`;
 
                 logger(`Paths: ${imageMinPaths}`);
@@ -28,7 +29,7 @@ export default class ImageMinGulpTask implements TaskInterface {
                         imagemin.gifsicle(),
                         imagemin.mozjpeg(),
                         imagemin.optipng({ optimizationLevel: 7 }),
-                        imagemin.svgo()
+                        imagemin.svgo(svgoConfig)
                     ]))
                     .pipe(dest(
                         join(
@@ -51,7 +52,7 @@ export default class ImageMinGulpTask implements TaskInterface {
     watch(project: Project, theme?: Theme): TaskFunction {
         return (done) => {
             const themes = theme ? [theme] : project.getThemes();
-    
+
             watch(
                 themes.map(theme => this.getImageMinSourceDirectory(theme)),
                 this.execute(project, theme)
@@ -61,5 +62,13 @@ export default class ImageMinGulpTask implements TaskInterface {
 
     private getImageMinSourceDirectory(theme: Theme): string {
         return join(theme.getSourceDirectory(), 'web', 'src')
+    }
+
+    protected async getSvgoConfig(project: Project) {
+        const config:Partial<SvgoOptions> = {};
+
+        project.hooks.gulp.svgoConfig.call(config);
+
+        return config;
     }
 }

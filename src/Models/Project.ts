@@ -30,6 +30,7 @@ export default class Project {
             svgSpriteConfig: new SyncHook(["config"]),
             eslintConfig: new SyncHook(["config"]),
             criticalCssConfig: new SyncHook(["config"]),
+            svgoConfig: new SyncHook(["config"])
         },
         webpack: {
             config: new SyncHook(["config"]),
@@ -67,7 +68,7 @@ export default class Project {
         }
 
         const theme = this.themes.find(theme => theme.getData().path === themeData.path);
-        
+
         if (!theme) {
             logger(`can not find theme with path = '${themeData.path}'`);
             return;
@@ -81,7 +82,7 @@ export default class Project {
     }
 
     public getThemes() {
-        return this.themes.filter(theme => 
+        return this.themes.filter(theme =>
             theme.getSourceDirectory()
                 .includes(join(this.getRootDirectory(), this.includePath))
         );
