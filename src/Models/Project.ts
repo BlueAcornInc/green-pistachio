@@ -13,6 +13,12 @@ type ProjectConstructorArgs = {
     includePath: string;
 };
 
+type WebpackDevServerConfig = {
+    proxyUrl: string;
+    devServerUrl: string;
+    devServerPort: number;
+};
+
 export default class Project {
     public root: string;
     private themes: Theme[];
@@ -20,6 +26,7 @@ export default class Project {
     private includePath: string;
     private webpackDevelopmentMode: boolean = false;
     private proxyUrl: string = '';
+    private devServerConfig: Partial<WebpackDevServerConfig> = {};
 
     public hooks = {
         // These hooks allow for modifying various gulp configurations
@@ -168,5 +175,22 @@ project.hooks.configure.tap("Set Product Url", () => {
         }
 
         return this.proxyUrl;
+    }
+
+    public setWebpackDevServerConfig(config: Partial<WebpackDevServerConfig>) {
+        if (config.proxyUrl) {
+            this.proxyUrl = config.proxyUrl;
+        }
+
+        this.devServerConfig = config;
+    }
+
+    public getWebpackDevServerConfig(): WebpackDevServerConfig {
+        return {
+            proxyUrl: this.getProxyUrl(),
+            devServerUrl: 'green-pistachio.test',
+            devServerPort: 8080,
+            ...(this.devServerConfig || {})
+        };
     }
 }
