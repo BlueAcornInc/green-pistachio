@@ -3,6 +3,13 @@
   * [Installation](installation.md)
   * [Project Setup](project-setup.md)
   * [Green Pistachio Config](green-pistachio-config.md)
+    * [configureTheme](configure-theme.md)
+    * [CriticalCSS](critical-css.md)
+    * [ESLint](eslint-config.md)
+    * [Babel](babel-config.md)
+    * [TypeScript](typescript-config.md)
+    * [Sprites](sprites-config.md)
+    * [Image Optimization](image-opt-config.md)
 * Tasks
   * [Babel](task-babel.md)
   * [Sprites](task-sprites.md)
@@ -10,3 +17,6 @@
   * [Compile & Watch](command-compile-watch.md)
   * [Compile Only](command-compile.md)
   * [Watch Only](command-watch.md)
+* Additional Features
+  * [LiveReload](livereload.md)
+  * [Image Optimization](image-optimization.md)

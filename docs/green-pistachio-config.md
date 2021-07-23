@@ -12,7 +12,7 @@ module.exports = project => {
     project.hooks.configure.tap('Green Pistachio - Configure', project => {
         project.configureTheme({
             path: 'BlueAcorn/site',
-            
+
             // By default Green Pistachio will gather styles from your theme's web/ directory that don't begin with _
             // and add them to an array to compile, but if you need to compile module specific CSS files you must
             // declare them in a tapable hook like so:
@@ -21,7 +21,7 @@ module.exports = project => {
                 'css/styles-l',
                 'BlueAcorn_CmsFramework::css/grid'
             ],
-            
+
             criticalCss: [{
                 filepath: join(__dirname, 'app', 'design', 'frontend', 'BlueAcorn', 'site', 'web', 'css', 'critical.css'),
                 urls: [
@@ -60,7 +60,7 @@ module.exports = project => {
 ```
 
 ## The `configureTheme` setup
-Within your `green-pistachio.config.js` you'll want to configure a general hook for each theme, by default when you use 
+Within your `green-pistachio.config.js` you'll want to configure a general hook for each theme, by default when you use
 `gpc install` a base `configureTheme` tap will be created for you for each of the themes you chose to have setup:
 
 ```javascript
@@ -72,7 +72,7 @@ project.hooks.configure.tap('Blue Acorn iCi - Green Pistachio - Configure', proj
 ```
 
 The object pass to configureTheme allows you to control information about your theme, whether or not it should be
-compiled with the build tools, what locales you want to compile to in `pub/static` and what stylesheets you want to 
+compiled with the build tools, what locales you want to compile to in `pub/static` and what stylesheets you want to
 compile.
 
 Add any of the options below to configure:
