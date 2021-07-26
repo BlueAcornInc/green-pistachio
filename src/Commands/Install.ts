@@ -98,11 +98,13 @@ export default class Install implements CommandInterface {
 
     private async generateBaseTsConfig(projectDirectory: string) {
         const config = {
-            include: "./app/**/*.ts",
+            include: ["./app/**/*.ts", "./app/**/*.tsx"],
             extends: "@blueacornici/green-pistachio/green-pistachio.tsconfig",
             compilerOptions: {
+                jsx: "react",
+                esModuleInterop: true,
                 paths: {
-                    "Magento_PageBuilder/*": ["./vendor/magento/module-page-builder/view/adminhtml/web/ts/*"]
+                    "Magento_PageBuilder/*": ["vendor/magento/module-page-builder/view/adminhtml/web/ts/*"]
                 }
             }
         };

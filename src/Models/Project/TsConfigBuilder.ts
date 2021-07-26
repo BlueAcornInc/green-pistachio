@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { join } from 'path';
+import { join, relative, dirname } from 'path';
 import debug from 'debug';
 import Project from "../Project";
 const logger = debug('gpc:typescript:configBuilder');
@@ -57,9 +57,13 @@ export default class TsConfigBuilder {
         logger(`Resolved module paths to: ${JSON.stringify(paths)}`);
 
         const writePath = this.getFilePath();
-        const config = this.getBaseConfig();
+        const config = this.getBaseConfig(project);
 
-        config.include = include.map(includePath => `./${includePath}`);
+        config.include = include.reduce((acc: string[], includePath) => acc.concat([
+            `.${includePath}.ts`,
+            `.${includePath}.tsx`,
+        ]), []);
+
         config.compilerOptions.paths = paths;
 
         try {
@@ -73,13 +77,14 @@ export default class TsConfigBuilder {
         return writePath;
     }
 
-    private getBaseConfig() {
+    private getBaseConfig(project: Project) {
         return {
             "include": [
-              "./app/**/*"
+              "./app/**/*.ts",
+              "./app/**/*.tsx"
             ],
             "compilerOptions": {
-              "baseUrl": ".",
+              "baseUrl": relative(dirname(this.getFilePath()), project.getRootDirectory()),
               "paths": {},
               "strict": true,
               "esModuleInterop": true,
