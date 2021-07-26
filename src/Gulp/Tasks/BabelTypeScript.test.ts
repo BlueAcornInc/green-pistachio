@@ -44,18 +44,18 @@ describe('Gulp: Babel', () => {
         const project = new Project({
             themes: [
                 new Theme({
-                    sourceDirectory: `vendor/magento/theme-frontend-blank`,
+                    sourceDirectory: `${process.cwd()}/vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
                     path: 'Magento/blank'
                 })
             ],
             modules: [
                 new Module({
-                    sourceDirectory: 'vendor/blueacorn/module',
+                    sourceDirectory: `${process.cwd()}/vendor/blueacorn/module`,
                     name: 'BlueAcorn_Module'
                 }),
                 new Module({
-                    sourceDirectory: 'vendor/magento/module-page-builder',
+                    sourceDirectory: `${process.cwd()}/vendor/magento/module-page-builder`,
                     name: 'Magento_PageBuilder'
                 }),
             ],

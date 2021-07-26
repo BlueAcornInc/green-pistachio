@@ -14,10 +14,8 @@ import { TaskInterface } from './TaskInterface';
 const logger = debug('gpc:gulp:imageMin');
 
 export default class ImageMinGulpTask implements TaskInterface {
-    execute(project: Project, theme?: Theme) {
-        const themes = theme ? [theme] : project.getThemes();
-
-        const tasks: TaskFunction[] = themes.map(theme => {
+    execute(project: Project) {
+        const tasks: TaskFunction[] = project.getThemes().map(theme => {
             const task: TaskFunction = (done) => {
                 const imageMinPaths = `${this.getImageMinSourceDirectory(theme)}/**/*.{png,jpg,gif,jpeg,svg,jpeg}`;
 
@@ -48,13 +46,11 @@ export default class ImageMinGulpTask implements TaskInterface {
         return parallel(...tasks);
     }
 
-    watch(project: Project, theme?: Theme): TaskFunction {
+    watch(project: Project): TaskFunction {
         return (done) => {
-            const themes = theme ? [theme] : project.getThemes();
-    
             watch(
-                themes.map(theme => this.getImageMinSourceDirectory(theme)),
-                this.execute(project, theme)
+                project.getThemes().map(theme => this.getImageMinSourceDirectory(theme)),
+                this.execute(project)
             );
         };
     }

@@ -9,9 +9,7 @@ import { TaskInterface } from "./TaskInterface";
 const logger = debug('gpc:gulp:svgSprite');
 
 export default class SvgSprite implements TaskInterface {
-    execute(project: Project, theme?: Theme): TaskFunction {
-        const themes = theme ? [theme] : project.getThemes();
-
+    execute(project: Project): TaskFunction {
         const config = {
             svg: {
                 percision: 4,
@@ -52,7 +50,7 @@ export default class SvgSprite implements TaskInterface {
         };
         project.hooks.gulp.svgSpriteConfig.call(config);
 
-        const tasks: TaskFunction[] = themes.map(theme => {
+        const tasks: TaskFunction[] = project.getThemes().map(theme => {
             const task: TaskFunction = done => {
                 src('**/*.svg', {
                     cwd: `${theme.getSourceDirectory()}/web/spritesrc/`
@@ -73,13 +71,11 @@ export default class SvgSprite implements TaskInterface {
         return parallel(...tasks);
     }
 
-    watch(project: Project, theme?: Theme): TaskFunction {
+    watch(project: Project): TaskFunction {
         return (done) => {
-            const themes = theme ? [theme] : project.getThemes();
-    
             watch(
-                this.getSource(themes),
-                this.execute(project, theme)
+                this.getSource(project.getThemes()),
+                this.execute(project)
             );
         };
     }
