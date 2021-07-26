@@ -1,7 +1,6 @@
 import { parallel, series } from "gulp";
 import debug from 'debug';
 import Project from "../Models/Project";
-import Theme from "../Models/Theme";
 import Clean from '../Gulp/Tasks/Clean';
 import Less from "../Gulp/Tasks/Less";
 import ImageMinGulpTask from "../Gulp/Tasks/Imagemin";
@@ -66,8 +65,7 @@ export default class GulpRunner implements CommandInterface {
     }
 
     public async run(options: GulpCommandOptions) {
-        const { project, theme, command } = options;
-        const matchedTheme = project.getThemes().find(projectTheme => projectTheme.getData().path === theme);
+        const { project, command } = options;
         const taskMap = {
             [GulpCommands.DEFAULT]: this.default,
             [GulpCommands.COMPILE]: this.compile,
@@ -78,101 +76,101 @@ export default class GulpRunner implements CommandInterface {
         };
         const gulpTask = taskMap[command] || this.default;
 
-        gulpTask.call(this, project, matchedTheme)(() => {});
+        gulpTask.call(this, project)(() => {});
 
         return false;
     }
 
-    private lint(project: Project, theme?: Theme) {
-        return this.eslint.execute(project, theme);
+    private lint(project: Project) {
+        return this.eslint.execute(project);
     }
 
-    private webpackTask(project: Project, theme?: Theme) {
-        return this.webpack.watch(project, theme);
+    private webpackTask(project: Project) {
+        return this.webpack.watch(project);
     }
 
-    private webpackBuildTask(project: Project, theme?: Theme) {
-        return this.webpack.execute(project, theme);
+    private webpackBuildTask(project: Project) {
+        return this.webpack.execute(project);
     }
 
-    private prepareTasks(project: Project, theme?: Theme) {
+    private prepareTasks(project: Project) {
         const task = series(
-            this.clean.execute(project, theme),
+            this.clean.execute(project),
             parallel(
-                this.svgSprite.execute(project, theme),
-                this.pngSprite.execute(project, theme)
+                this.svgSprite.execute(project),
+                this.pngSprite.execute(project)
             ),
             parallel(
-                this.imageMin.execute(project, theme),
-                this.eslint.execute(project, theme)
+                this.imageMin.execute(project),
+                this.eslint.execute(project)
             ),
             parallel(
-                this.babel.execute(project, theme),
-                this.tsBabel.execute(project, theme)
+                this.babel.execute(project),
+                this.tsBabel.execute(project)
             ),
-            this.sourceThemeDeploy.execute(project, theme)
+            this.sourceThemeDeploy.execute(project)
         );
         task.displayName = 'prepareTasks';
 
         return task;
     }
 
-    private compileTasks(project: Project, theme?: Theme) {
+    private compileTasks(project: Project) {
         return parallel(
-            this.less.execute(project, theme),
-            this.babel.execute(project, theme),
-            this.tsBabel.execute(project, theme),
+            this.less.execute(project),
+            this.babel.execute(project),
+            this.tsBabel.execute(project),
         );
     }
 
-    private watchTasks(project: Project, theme?: Theme) {
+    private watchTasks(project: Project) {
         return parallel(
-            this.less.watch(project, theme),
-            this.imageMin.watch(project, theme),
-            this.svgSprite.watch(project, theme),
-            this.pngSprite.watch(project, theme),
+            this.less.watch(project),
+            this.imageMin.watch(project),
+            this.svgSprite.watch(project),
+            this.pngSprite.watch(project),
             this.liveReload.watch(),
             this.cache.watch(),
-            this.babel.watch(project, theme),
-            this.tsBabel.watch(project, theme),
-            this.eslint.watch(project, theme)
+            this.babel.watch(project),
+            this.tsBabel.watch(project),
+            this.eslint.watch(project)
         );
     }
     
-    private defaultTasks(project: Project, theme?: Theme) {
+    private defaultTasks(project: Project) {
         const task = series(
-            this.prepareTasks(project, theme),
-            this.compileTasks(project, theme),
-            this.watchTasks(project, theme)
+            this.prepareTasks(project),
+            this.compileTasks(project),
+            this.watchTasks(project)
         );
         task.displayName = 'defaultTasks';
 
         return task;
     }
 
-    private compile(project: Project, theme?: Theme) {
+    private compile(project: Project) {
         return series(
             parallel(
-                this.svgSprite.execute(project, theme),
-                this.pngSprite.execute(project, theme)
+                this.svgSprite.execute(project),
+                this.pngSprite.execute(project)
             ),
             parallel(
-                this.imageMin.execute(project, theme),
-                this.less.execute(project, theme),
-                this.babel.execute(project, theme),
-                this.tsBabel.execute(project, theme),
+                this.imageMin.execute(project),
+                this.less.execute(project),
+                this.babel.execute(project),
+                this.tsBabel.execute(project),
             ),
         );
     }
 
-    private watch(project: Project, theme?: Theme) {
+    private watch(project: Project) {
         return series(
-            this.compileTasks(project, theme),
-            this.watchTasks(project, theme)
+            this.compileTasks(project),
+            this.watchTasks(project)
         );
     }
 
-    private default(project: Project, theme?: Theme) {
-        return this.defaultTasks(project, theme);
+    private default(project: Project) {
+        return this.defaultTasks(project);
     }
 }

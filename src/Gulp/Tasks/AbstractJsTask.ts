@@ -13,14 +13,13 @@ export default abstract class AbstractJsTask {
         this.taskDataProvider = new TaskDataProvider();
     }
 
-    execute(project: Project, theme?: Theme): TaskFunction {
+    execute(project: Project): TaskFunction {
         if (!process.env.BABEL_ENV) {
             process.env.BABEL_ENV = 'development';
         }
 
         const tasks: TaskFunction[] = this.taskDataProvider.getTasksData({
             project,
-            theme,
             moduleGlob: this.MODULE_GLOB,
             themeGlob: this.THEME_GLOB,
             getName: this.getName
@@ -33,10 +32,9 @@ export default abstract class AbstractJsTask {
         return parallel(...tasks);
     }
 
-    watch(project: Project, theme?: Theme): TaskFunction {
+    watch(project: Project): TaskFunction {
         const paths = this.taskDataProvider.getTasksData({
             project,
-            theme,
             moduleGlob: this.MODULE_GLOB,
             themeGlob: this.THEME_GLOB,
             getName: this.getName
@@ -45,7 +43,7 @@ export default abstract class AbstractJsTask {
         return (done) => {
             watch(
                 paths,
-                this.execute(project, theme)
+                this.execute(project)
             );
         };
     }

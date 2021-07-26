@@ -2,6 +2,14 @@
 
 exports[`Project Config Builder should build on empty project 1`] = `
 Object {
+  "devServerConfig": Object {},
+  "enabledThemes": Array [],
+  "experiments": Object {
+    "webpack": Object {
+      "cssModules": false,
+      "hmr": false,
+    },
+  },
   "hooks": Object {
     "configure": SyncHook {
       "_args": Array [
@@ -190,6 +198,7 @@ Object {
   },
   "includePath": "app",
   "modules": Array [],
+  "proxyUrl": "",
   "root": Any<String>,
   "themes": Array [],
   "webpackDevelopmentMode": false,
@@ -198,6 +207,41 @@ Object {
 
 exports[`Project Config Builder should build themes 1`] = `
 Object {
+  "devServerConfig": Object {},
+  "enabledThemes": Array [
+    Theme {
+      "data": Object {
+        "area": "frontend",
+        "criticalCss": undefined,
+        "locales": undefined,
+        "path": "Magento/blank",
+        "stylesheets": undefined,
+      },
+      "parent": undefined,
+      "sourceDirectory": "vendor/magento/theme-frontend-blank",
+    },
+    Theme {
+      "data": Object {
+        "area": "frontend",
+        "criticalCss": undefined,
+        "locales": undefined,
+        "path": "Magento/luma",
+        "stylesheets": undefined,
+      },
+      "parent": Theme {
+        "data": Object {
+          "area": "frontend",
+          "criticalCss": undefined,
+          "locales": undefined,
+          "path": "Magento/blank",
+          "stylesheets": undefined,
+        },
+        "parent": undefined,
+        "sourceDirectory": "vendor/magento/theme-frontend-blank",
+      },
+      "sourceDirectory": "vendor/magento/theme-frontend-luma",
+    },
+  ],
   "experiments": Object {
     "webpack": Object {
       "cssModules": false,
@@ -434,6 +478,14 @@ Object {
 
 exports[`Project Config Builder should load user provided config file 1`] = `
 Object {
+  "devServerConfig": Object {},
+  "enabledThemes": Array [],
+  "experiments": Object {
+    "webpack": Object {
+      "cssModules": false,
+      "hmr": false,
+    },
+  },
   "hooks": Object {
     "configure": SyncHook {
       "_args": Array [
@@ -622,6 +674,7 @@ Object {
   },
   "includePath": "app",
   "modules": Array [],
+  "proxyUrl": "",
   "root": Any<String>,
   "someUserProvidedValue": 5,
   "themes": Array [],

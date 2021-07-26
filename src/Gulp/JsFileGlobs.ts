@@ -12,7 +12,6 @@ export interface TaskData {
 
 interface GetTasksDataParam {
     project: Project;
-    theme?: Theme;
     moduleGlob: string;
     themeGlob: string;
     getName: (source: Theme | Module) => string
@@ -21,17 +20,14 @@ interface GetTasksDataParam {
 export default class TaskDataProvider {
     public getTasksData(config: GetTasksDataParam): TaskData[] {
         const {
-            theme,
             project,
             moduleGlob,
             themeGlob,
             getName
         } = config;
 
-        const themes = theme ? [theme] : project.getThemes();
-
         return ([] as (Theme | Module)[])
-            .concat(themes)
+            .concat(project.getThemes())
             .concat(project.getModules())
             .map((source) => {
                 const displayName = getName(source);

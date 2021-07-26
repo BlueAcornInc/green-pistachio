@@ -7,14 +7,13 @@ export interface CriticalCssCommandOptions extends CommandOptionsInterface {
 
 export default class CriticalCss implements CommandInterface {
     public async run(options: CriticalCssCommandOptions) {
-        const { watch, project, theme } = options;
-        const matchedTheme = project.getThemes().find(projectTheme => projectTheme.getData().path === theme);
+        const { watch, project } = options;
 
         const criticalCss = new CriticalCssTask();
         if (watch) {
-            criticalCss.watch(project, matchedTheme)(() => {});
+            criticalCss.watch(project)(() => {});
         } else {
-            criticalCss.execute(project, matchedTheme)(() => {});
+            criticalCss.execute(project)(() => {});
         }
 
         return false;

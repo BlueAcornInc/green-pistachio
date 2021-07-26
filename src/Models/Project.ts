@@ -11,6 +11,7 @@ type ProjectConstructorArgs = {
     themes: Theme[];
     modules: Module[];
     includePath: string;
+    enabledThemes?: string[];
 };
 
 type WebpackDevServerConfig = {
@@ -22,6 +23,7 @@ type WebpackDevServerConfig = {
 export default class Project {
     public root: string;
     private themes: Theme[];
+    private enabledThemes: Theme[];
     private modules: Module[];
     private includePath: string;
     private webpackDevelopmentMode: boolean = false;
@@ -55,12 +57,15 @@ export default class Project {
     };
 
     constructor(config: ProjectConstructorArgs) {
-        const { root, themes, modules, includePath } = config;
+        const { root, themes, modules, includePath, enabledThemes } = config;
 
         this.root = root;
         this.themes = themes;
         this.modules = modules;
         this.includePath = includePath;
+        this.enabledThemes = enabledThemes
+            ? themes.filter(theme => enabledThemes.includes(theme.getData().path))
+            : themes;
     }
 
     public configure() {
@@ -88,7 +93,7 @@ export default class Project {
     }
 
     public getThemes() {
-        return this.themes.filter(theme => 
+        return this.enabledThemes.filter(theme => 
             theme.getSourceDirectory()
                 .includes(join(this.getRootDirectory(), this.includePath))
         );
