@@ -46,7 +46,6 @@ describe('TS Config Builder', () => {
                 })
             ],
             root: '',
-            includePath: 'app'
         });
 
         const tsConfigBuilder = new TsConfigBuilder();

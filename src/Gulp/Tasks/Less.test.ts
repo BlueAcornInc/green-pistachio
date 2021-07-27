@@ -25,12 +25,12 @@ describe('Gulp: Less', () => {
                 new Theme({
                     sourceDirectory: `vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
-                    path: 'Magento/blank'
+                    path: 'Magento/blank',
+                    enabled: true,
                 })
             ],
             modules: [],
             root: '',
-            includePath: 'vendor'
         });
 
         const less = new Less();

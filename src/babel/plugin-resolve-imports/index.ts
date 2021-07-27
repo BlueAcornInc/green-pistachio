@@ -80,6 +80,7 @@ export default function babelResolveImports(project: Project): { visitor: Visito
     return {
         visitor: {
             ImportDeclaration(importPath, state) {
+                debugger;
                 const importNodeValue = importPath.node.source.value;
 
                 if (!project) {
@@ -93,7 +94,7 @@ export default function babelResolveImports(project: Project): { visitor: Visito
                             importPath.node.source.value = path.resolve(
                                 path.dirname(
                                     state.file.opts.filename.replace(
-                                        directory,
+                                        directory.replace(project.getRootDirectory(), ''),
                                         ''
                                     )
                                 ),

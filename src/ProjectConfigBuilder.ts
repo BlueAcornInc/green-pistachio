@@ -13,7 +13,6 @@ type MagentoPaths = {
 };
 
 type BuildOptions = {
-    includePath?: string;
     themes?: string[]
 };
 
@@ -28,7 +27,6 @@ export default class ProjectConfigBuilder {
     }
 
     public async build({
-        includePath = 'app',
         themes: enabledThemes
     }: BuildOptions): Promise<Project> {
         const { themes, modules } = await this.getPaths();
@@ -49,7 +47,6 @@ export default class ProjectConfigBuilder {
             root: this.rootDirectory,
             themes: themeObjects,
             modules: moduleObjects,
-            includePath,
             enabledThemes
         });
 

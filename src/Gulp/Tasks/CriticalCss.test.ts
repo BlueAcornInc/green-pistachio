@@ -21,6 +21,7 @@ describe('Gulp: Critical CSS', () => {
                     sourceDirectory: `${root}/vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
                     path: 'Magento/blank',
+                    enabled: true,
                     criticalCss: [{
                         filepath: `${root}/vendor/magento/theme-frontend-blank/web/css/critical.css`,
                         urls: ['']
@@ -29,7 +30,6 @@ describe('Gulp: Critical CSS', () => {
             ],
             modules: [],
             root,
-            includePath: 'vendor'
         });
 
         const criticalCss = new CriticalCss();

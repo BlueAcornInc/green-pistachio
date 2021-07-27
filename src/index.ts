@@ -27,11 +27,8 @@ const gulpCommands = [{
 for (const gulpCommand of gulpCommands) {
     require('yargs')
         .command(gulpCommand.name, gulpCommand.label, (yargs: GulpCommandOptions & Argv) => {
-            yargs.describe('includePath', 'include vendor modules and themes');
-            yargs.default('includePath', 'app');
             yargs.describe('themes', 'list of themes to execute against')
             yargs.array('themes');
-            yargs.string('includePath');
         }, async (yargs: GulpCommandOptions) => {
             const app = new Application();
             const gulpRunner = new GulpRunner();
