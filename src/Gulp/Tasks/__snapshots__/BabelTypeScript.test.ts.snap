@@ -35,7 +35,7 @@ exports[`Gulp: Babel should compile typescript 1`] = `
 `;
 
 exports[`Gulp: Babel should compile typescript 2`] = `
-"define([\\"exports\\", \\"/js/value\\", \\"Magento_PageBuilder/js/config\\"], function (_exports, _value, _config) {
+"define([\\"exports\\", \\"BlueAcorn_Module/js/value\\", \\"Magento_PageBuilder/js/config\\"], function (_exports, _value, _config) {
   \\"use strict\\";
 
   Object.defineProperty(_exports, \\"__esModule\\", {

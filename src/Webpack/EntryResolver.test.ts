@@ -30,7 +30,6 @@ describe('Webpack Entry Resolver', () => {
             modules: [module],
             themes: [theme],
             root: '',
-            includePath: ''
         });
 
         const entryResolver = new EntryResolver();

@@ -28,17 +28,18 @@ describe('Gulp: Babel', () => {
                 new Theme({
                     sourceDirectory: `vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
-                    path: 'Magento/blank'
+                    path: 'Magento/blank',
+                    enabled: true
                 })
             ],
             modules: [
                 new Module({
                     sourceDirectory: 'vendor/magento/module-test',
-                    name: 'Module_Test'
+                    name: 'Module_Test',
+                    enabled: true
                 })
             ],
             root: '',
-            includePath: 'vendor'
         });
 
         const babel = new Babel();

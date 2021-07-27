@@ -10,6 +10,7 @@ Array [
   Object {
     "destinationPath": "BlueAcorn_Test/module.bundle",
     "module": Module {
+      "enabled": false,
       "name": "BlueAcorn_Test",
       "sourceDirectory": "vendor/blueacorn/module-test",
     },

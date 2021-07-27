@@ -27,13 +27,12 @@ describe('Gulp: Clean', () => {
                     sourceDirectory: `vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
                     path: 'Magento/blank',
+                    enabled: true
                 })
             ],
             modules: [],
-            root: '',
-            includePath: 'vendor'
+            root: ''
         });
-
 
         const clean = new Clean();
         clean.execute(project)(async () => {

@@ -28,11 +28,11 @@ describe('Gulp: SVG Sprite', () => {
                     sourceDirectory: `${root}/vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
                     path: 'Magento/blank',
+                    enabled: true
                 })
             ],
             modules: [],
             root,
-            includePath: 'vendor'
         });
 
 

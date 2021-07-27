@@ -24,11 +24,11 @@ const prepareProject = (themes: Theme[]) => {
         modules: [
             new Module({
                 name: 'BlueAcorn_Module',
-                sourceDirectory: `${root}/app/code/BlueAcorn/Module`
+                sourceDirectory: `${root}/app/code/BlueAcorn/Module`,
+                enabled: true
             })
         ],
         root,
-        includePath: 'app'
     });
 };
 
@@ -50,7 +50,8 @@ describe('Gulp: Webpack', () => {
             new Theme({
                 sourceDirectory: `${root}/app/design/frontend/BlueAcorn/site`,
                 area: 'frontend',
-                path: 'BlueAcorn/site'
+                path: 'BlueAcorn/site',
+                enabled: true
             })
         ];
 
@@ -72,7 +73,8 @@ describe('Gulp: Webpack', () => {
             new Theme({
                 sourceDirectory: `${root}/app/design/frontend/BlueAcorn/siteExistingRjs`,
                 area: 'frontend',
-                path: 'BlueAcorn/site'
+                path: 'BlueAcorn/site',
+                enabled: true
             })
         ];
 
@@ -96,7 +98,8 @@ describe('Gulp: Webpack', () => {
             new Theme({
                 sourceDirectory: `${root}/app/design/frontend/BlueAcorn/siteExistingRjsWithManifest`,
                 area: 'frontend',
-                path: 'BlueAcorn/site'
+                path: 'BlueAcorn/site',
+                enabled: true
             })
         ];
 

@@ -17,13 +17,13 @@ describe('Source Theme Deploy', () => {
             sourceDirectory: 'vendor/magento/theme-frontend-blank',
             area: 'frontend',
             path: 'Magento/blank',
-            stylesheets: ['css/styles-m.less']
+            stylesheets: ['css/styles-m.less'],
+            enabled: true
         });
         const project = new Project({
             modules: [],
             themes: [theme],
-            root: '',
-            includePath: 'vendor'
+            root: ''
         });
 
         const spy = jest.spyOn(mockedCommandRunner.prototype, 'execute');

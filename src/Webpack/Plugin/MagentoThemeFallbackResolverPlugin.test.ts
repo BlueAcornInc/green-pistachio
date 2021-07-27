@@ -25,7 +25,6 @@ const createResolver = async (additionalConfig: Partial<ResolveOptions> = {}) =>
         modules: [module],
         themes: [theme],
         root: '/project/path',
-        includePath: ''
     });
 
     return ResolverFactory.createResolver({

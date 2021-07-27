@@ -55,11 +55,11 @@ describe('Gulp: Imagemin', () => {
                     sourceDirectory: `vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
                     path: 'Magento/blank',
+                    enabled: true
                 })
             ],
             modules: [],
             root: '',
-            includePath: 'vendor'
         });
 
 
