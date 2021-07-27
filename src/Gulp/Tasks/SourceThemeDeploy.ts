@@ -13,7 +13,7 @@ export default class SourceThemeDeploy implements TaskInterface {
 
         for (const theme of project.getThemes()) {
             for (const locale of theme.getLocales()) {
-                commandArray.push(`php -d memory_limit=1024M bin/magento dev:source-theme:deploy ${theme.getStyleSheets().map(stylesheet => stylesheet.replace('.less', '')).join(' ')} --type=less --locale=${locale} --area=${theme.getData().area} --theme=${theme.getData().path}`);
+                commandArray.push(`php -d memory_limit=-1 bin/magento dev:source-theme:deploy ${theme.getStyleSheets().map(stylesheet => stylesheet.replace('.less', '')).join(' ')} --type=less --locale=${locale} --area=${theme.getData().area} --theme=${theme.getData().path}`);
             }
         }
 

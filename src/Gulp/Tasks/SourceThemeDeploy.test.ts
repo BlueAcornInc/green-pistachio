@@ -30,7 +30,7 @@ describe('Source Theme Deploy', () => {
 
         const sourceThemeDeploy = new SourceThemeDeploy();
         sourceThemeDeploy.execute(project)(async () => {
-            expect(spy).toHaveBeenCalledWith(`php -d memory_limit=1024M bin/magento dev:source-theme:deploy css/styles-m --type=less --locale=en_US --area=frontend --theme=Magento/blank`);
+            expect(spy).toHaveBeenCalledWith(`php -d memory_limit=-1 bin/magento dev:source-theme:deploy css/styles-m --type=less --locale=en_US --area=frontend --theme=Magento/blank`);
             done();
         });
     });
