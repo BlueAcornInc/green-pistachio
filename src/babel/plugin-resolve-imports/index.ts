@@ -80,7 +80,6 @@ export default function babelResolveImports(project: Project): { visitor: Visito
     return {
         visitor: {
             ImportDeclaration(importPath, state) {
-                debugger;
                 const importNodeValue = importPath.node.source.value;
 
                 if (!project) {
