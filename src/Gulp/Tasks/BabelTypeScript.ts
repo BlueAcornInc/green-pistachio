@@ -8,6 +8,9 @@ import { TaskInterface } from "./TaskInterface";
 import Theme from "../../Models/Theme";
 import Module from "../../Models/Module";
 import babelResolveImports from "../../babel/plugin-resolve-imports";
+import debug from 'debug';
+import { join } from 'path';
+const logger = debug('gpc:gulp:babelTypescript');
 
 export default class BabelTypeScript extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/web/ts/**/*.ts';
@@ -38,6 +41,39 @@ export default class BabelTypeScript extends AbstractJsTask implements TaskInter
     }
 
     protected getBabelConfig(project: Project): any {
+        const magentoPagebuilderPlugins = [];
+
+        try {
+            /**
+             * Instead of re-inventing the wheel, we will re-use the Magento Pagebuilder babel plugin
+             * that transforms ES6 imports into AMD in a way that is friendly with data-mage-init and
+             * text/x-magento-init
+             */
+            const pageBuilderModule = project.getAllModules().find(
+                magentoModule => magentoModule.getName() === 'Magento_PageBuilder'
+            );
+
+            if (!pageBuilderModule) {
+                throw new Error('Pagebuilder module not found.');
+            }
+
+            const pluginPath = join(
+                pageBuilderModule.getSourceDirectory(),
+                'view',
+                'adminhtml',
+                'web',
+                'ts',
+                'babel',
+                'plugin-amd-to-magento-amd'
+            );
+
+            require.resolve(pluginPath);
+
+            magentoPagebuilderPlugins.push(pluginPath);
+        } catch (err) {
+            logger('Unable to resolve pagebuilder amd plugin.');
+        }
+
         const babelConfig = {
             presets: [
                 ["babel-preset-react-app", {
@@ -45,8 +81,8 @@ export default class BabelTypeScript extends AbstractJsTask implements TaskInter
                 }]
             ],
             plugins: [
-                // doesn't work as expected, might not be psosible
                 "@babel/plugin-transform-modules-amd",
+                ...magentoPagebuilderPlugins,
                 babelResolveImports(project)
             ],
             babelrc: false,

@@ -6,7 +6,6 @@ import critical from 'critical';
 import purge from 'css-purge';
 import debug from 'debug';
 import Project from "../../Models/Project";
-import Theme from "../../Models/Theme";
 import { TaskInterface } from "./TaskInterface";
 import glob from "fast-glob";
 const logger = debug('gpc:gulp:criticalCss');
@@ -39,8 +38,8 @@ export default class CriticalCss implements TaskInterface {
      * @param theme | Theme
      * @returns TaskFunction
      */
-    execute(project: Project, theme?: Theme): TaskFunction {
-        const themes = theme ? [ theme ] : project.getThemes();
+    execute(project: Project): TaskFunction {
+        const themes = project.getThemes();
 
         const tasks: TaskFunction[] = themes.map(theme => {
             const task: TaskFunction = async (done) => {
@@ -110,13 +109,11 @@ export default class CriticalCss implements TaskInterface {
      * @param theme | Theme[]
      * @returns TaskFunction
      */
-    watch(project: Project, theme?: Theme): TaskFunction {
+    watch(project: Project): TaskFunction {
         return () => {
-            const themes = theme ? [ theme ] : project.getThemes();
-    
             watch(
-                this.getWatchFiles(project, themes),
-                this.execute(project, theme)
+                this.getWatchFiles(project),
+                this.execute(project)
             )
         };
     }
@@ -128,10 +125,10 @@ export default class CriticalCss implements TaskInterface {
      * @param themes | Themes[]
      * @returns string[]
      */
-    private getWatchFiles(project: Project, themes: Theme[]) {
+    private getWatchFiles(project: Project) {
         let files: string[] = [];
 
-        for (const theme of themes) {
+        for (const theme of project.getThemes()) {
             for (const publicDirectory of project.getThemePubDirectories(theme)) {
                 files = files.concat(
                     theme.getStyleSheets()

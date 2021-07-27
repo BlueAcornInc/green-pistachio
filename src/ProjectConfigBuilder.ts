@@ -12,6 +12,11 @@ type MagentoPaths = {
     themes: Record<string, string>;
 };
 
+type BuildOptions = {
+    includePath?: string;
+    themes?: string[]
+};
+
 export default class ProjectConfigBuilder {
     public static CONFIG_FILE = 'green-pistachio.config.js';
     private rootDirectory: string;
@@ -22,7 +27,10 @@ export default class ProjectConfigBuilder {
         this.rootDirectory = rootDirectory;
     }
 
-    public async build({ includePath = 'app' }): Promise<Project> {
+    public async build({
+        includePath = 'app',
+        themes: enabledThemes
+    }: BuildOptions): Promise<Project> {
         const { themes, modules } = await this.getPaths();
         const moduleObjects: Module[] = [];
 
@@ -41,7 +49,8 @@ export default class ProjectConfigBuilder {
             root: this.rootDirectory,
             themes: themeObjects,
             modules: moduleObjects,
-            includePath
+            includePath,
+            enabledThemes
         });
 
         const projectConfigFile = join(

@@ -1505,6 +1505,18 @@
   dependencies:
     "@types/node" "*"
 
+"@types/css-tree@*":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@types/css-tree/-/css-tree-1.0.6.tgz#1eeb4838bb7ae2db2c223206f9ca4814610944b8"
+  integrity sha512-zjSMDm4C7J1azi9SdT1XwNaVCzeHZx+Y5AVebcg/mrtUULNxZjeamc8oQpUDKpaudM5R+Sy7RFvm2xphfwN64w==
+
+"@types/csso@^3.5.1":
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/@types/csso/-/csso-3.5.2.tgz#1e2bdeb54c69c38198754829e72769c44e1ee91c"
+  integrity sha512-Ou6PegjBPB4Jdz4w1NkrBAximhK9MJE4k3ii8qbtW/ypvzF4RrMIYgac8naLLp+opCgOgZ8LDx3NmdYLNhWhFA==
+  dependencies:
+    "@types/css-tree" "*"
+
 "@types/debug@^0.0.30":
   version "0.0.30"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
@@ -1680,6 +1692,13 @@
     "@types/vinyl-fs" "*"
     chokidar "^3.3.1"
 
+"@types/html2canvas@0.0.35":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@types/html2canvas/-/html2canvas-0.0.35.tgz#a009681a3207a7a8302e65de034ff8d42c949cf7"
+  integrity sha512-28p0/yNwXnvGWQK3rEIBj7NHNQoBXuX0ymcCNjSYR/i0Vk9z+xrKCQZPvsrEmurx9vs4B/eHGbOaJY/a9CXdSg==
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/http-cache-semantics@*":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/http-cache-semantics/-/http-cache-semantics-4.0.0.tgz#9140779736aa2655635ee756e2467d787cfe8a2a"
@@ -1755,6 +1774,25 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
+"@types/jquery@*":
+  version "3.5.6"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.6.tgz#97ac8e36dccd8ad8ed3f3f3b48933614d9fd8cf0"
+  integrity sha512-SmgCQRzGPId4MZQKDj9Hqc6kSXFNWZFHpELkyK8AQhf8Zr6HKfCzFv9ZC1Fv3FyQttJZOlap3qYb12h61iZAIg==
+  dependencies:
+    "@types/sizzle" "*"
+
+"@types/jquery@1.10.27":
+  version "1.10.27"
+  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-1.10.27.tgz#49ef535f89559408761261a9cd23252cbb6e374b"
+  integrity sha1-Se9TX4lVlAh2EmGpzSMlLLtuN0s=
+
+"@types/jqueryui@^1.12.13":
+  version "1.12.16"
+  resolved "https://registry.yarnpkg.com/@types/jqueryui/-/jqueryui-1.12.16.tgz#9e319f7db39490db950cba77fe83887e0ad3e1d9"
+  integrity sha512-6huAQDpNlso9ayaUT9amBOA3kj02OCeUWs+UvDmbaJmwkHSg/HLsQOoap/D5uveN9ePwl72N45Bl+Frp5xyG1Q==
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/json-schema@*", "@types/json-schema@^7.0.4", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.6":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
@@ -1772,10 +1810,19 @@
   dependencies:
     "@types/node" "*"
 
+"@types/knockout@^3.4.69":
+  version "3.4.71"
+  resolved "https://registry.yarnpkg.com/@types/knockout/-/knockout-3.4.71.tgz#32d7109d0d1f330d799a5e552988010300dfda39"
+  integrity sha512-Yf6LzL15MfQQ6mIMPtn+jBHaV2raWOBJYw6o8OfeQ+f3OsyTH8JwlbsiVvuxJacrUiw1DjtuGEGMfQj/viIN9g==
+
 "@types/lodash@^4.14.92":
   version "4.14.168"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
+
+"@types/magento2@git+https://github.com/magento/ts-types.git":
+  version "1.0.4"
+  resolved "git+https://github.com/magento/ts-types.git#c9af66f31c20984e631472f264aa546bd9e07d2a"
 
 "@types/mime-types@^2.1.0":
   version "2.1.0"
@@ -1842,6 +1889,11 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/object-path@^0.11.0":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@types/object-path/-/object-path-0.11.1.tgz#eea5b357518597fc9c0a067ea3147f599fc1514f"
+  integrity sha512-219LSCO9HPcoXcRTC6DbCs0FRhZgBnEMzf16RRqkT40WbkKx3mOeQuz3e2XqbfhOz/AHfbru0kzB1n1RCAsIIg==
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -1866,6 +1918,11 @@
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
+
+"@types/requirejs@^2.1.32":
+  version "2.1.33"
+  resolved "https://registry.yarnpkg.com/@types/requirejs/-/requirejs-2.1.33.tgz#19c680baa01ae484d31561b5fa8d1937573eabd7"
+  integrity sha512-1ZUCLJY3BztlR+HZWpoOkUt/n0YES/TuiBsW5dnk6OXUJSjbYfRJyiSf1yyyWMNWeX1RR7mTso2piU/dP1hgsw==
 
 "@types/resolve@^1.17.1":
   version "1.19.0"
@@ -1910,6 +1967,18 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
+"@types/sizzle@*":
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
+  integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
+
+"@types/slick-carousel@^1.6.34":
+  version "1.6.37"
+  resolved "https://registry.yarnpkg.com/@types/slick-carousel/-/slick-carousel-1.6.37.tgz#d59a472b211629071ea4168f3c9db99de6c08c18"
+  integrity sha512-RCvwJyOSxgTV3c+YxXYdQFV93cnFc+BN+tJKWyNZdIU9gijbz8PGZa8GpFh9cE39g3sZQZ1oigw//pJcCSXIPg==
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/source-list-map@*":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@types/source-list-map/-/source-list-map-0.1.2.tgz#0078836063ffaf17412349bba364087e0ac02ec9"
@@ -1939,6 +2008,18 @@
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.7.tgz#545158342f949e8fd3bfd813224971ecddc3fac4"
   integrity sha512-0VBprVqfgFD7Ehb2vd8Lh9TG3jP98gvr8rgehQqzztZNI7o8zS8Ad4jyZneKELphpuE212D8J70LnSNQSyO6bQ==
 
+"@types/tinycolor@^1.1.27":
+  version "1.1.27"
+  resolved "https://registry.yarnpkg.com/@types/tinycolor/-/tinycolor-1.1.27.tgz#d01d05a681d0ce28923b021d5f3d752ea0478089"
+  integrity sha1-0B0FpoHQziiSOwIdXz11LqBHgIk=
+
+"@types/tinymce@^4.6.0":
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/@types/tinymce/-/tinymce-4.6.4.tgz#c31d72ba55147233e2b8fa8ebb81960f23d74c32"
+  integrity sha512-7xo9AnZO9DXdS41zxmKHDzOEo+yxdj9KaZXokSLDYeZ9KcbzIHJJBppRrCoDA8PH2+k79Qj68B+Yj/ye2xQzow==
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/tmp@^0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.0.33.tgz#1073c4bc824754ae3d10cfab88ab0237ba964e4d"
@@ -1950,6 +2031,11 @@
   integrity sha512-7npvPKV+jINLu1SpSYVWG8KvyJBhBa8tmzMMdDoVc2pWUYHN8KIXlPJhjJ4LT97c4dXJA2SHL/q6ADbDriZN+Q==
   dependencies:
     source-map "^0.6.1"
+
+"@types/underscore@^1.10.24":
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/@types/underscore/-/underscore-1.11.3.tgz#d6734f3741ce41b2630018c6b61c6745f6188c07"
+  integrity sha512-Fl1TX1dapfXyDqFg2ic9M+vlXRktcPJrc4PR7sRc7sdVrjavg/JHlbUXBt8qWWqhJrmSqg3RNAkAPRiOYw6Ahw==
 
 "@types/undertaker-registry@*":
   version "1.0.1"

@@ -2,7 +2,6 @@ import Project from "../Models/Project";
 
 export interface CommandOptionsInterface {
     project: Project;
-    theme?: string;
     includePath?: string;
 };
 

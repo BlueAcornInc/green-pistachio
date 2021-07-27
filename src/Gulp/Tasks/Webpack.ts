@@ -3,7 +3,6 @@ import debug from 'debug';
 import WebpackDevServer from 'webpack-dev-server';
 import { certificateFor } from 'devcert';
 import Project from "../../Models/Project";
-import Theme from "../../Models/Theme";
 import WebpackConfigFactory from "../../Webpack/ConfigFactory";
 import GetCompiler from "../../Webpack/GetCompiler";
 import { TaskInterface } from "./TaskInterface";
@@ -23,7 +22,7 @@ export default class Webpack implements TaskInterface {
         this.tsConfigBuilder = new TsConfigBuilder();
     }
 
-    execute(project: Project, theme?: Theme): TaskFunction {
+    execute(project: Project): TaskFunction {
         const webpackTask: TaskFunction = async (done) => {
             if (!this.configFileExists) {
                 const exists = await this.tsConfigBuilder.configFileExists();
@@ -35,7 +34,7 @@ export default class Webpack implements TaskInterface {
                 this.configFileExists = true;
             }
 
-            const config = await this.webpackConfigFactory.getConfig(project, theme);
+            const config = await this.webpackConfigFactory.getConfig(project);
             const compiler = this.getCompiler.execute(config);
 
             compiler.run((err, stats) => {
@@ -58,10 +57,10 @@ export default class Webpack implements TaskInterface {
         return webpackTask;
     }
 
-    watch(project: Project, theme?: Theme): TaskFunction {
+    watch(project: Project): TaskFunction {
         return async (done) => {
             project.setWebpackDevelopmentMode();
-            const config = await this.webpackConfigFactory.getConfig(project, theme);
+            const config = await this.webpackConfigFactory.getConfig(project);
             const compiler = this.getCompiler.execute(config);
 
             const {

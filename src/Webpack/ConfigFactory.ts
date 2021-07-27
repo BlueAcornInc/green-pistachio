@@ -38,11 +38,10 @@ export default class WebpackConfigFactory {
         this.entryResolver = new EntryResolver();
     }
     
-    public async getConfig(project: Project, theme?: Theme): Promise<Configuration[]> {
-        const themes = theme ? [theme] : project.getThemes();
+    public async getConfig(project: Project): Promise<Configuration[]> {
         let configs: Configuration[] = [];
 
-        const allConfigurations = await Promise.all(themes.map(theme => this.getConfigForTheme(project, theme)));
+        const allConfigurations = await Promise.all(project.getThemes().map(theme => this.getConfigForTheme(project, theme)));
         for (const configuration of allConfigurations) {
             configs = configs.concat(configuration);
         };

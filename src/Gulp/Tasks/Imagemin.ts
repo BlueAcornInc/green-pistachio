@@ -12,14 +12,11 @@ import Project from '../../Models/Project';
 import Theme from '../../Models/Theme';
 import { TaskInterface } from './TaskInterface';
 const logger = debug('gpc:gulp:imageMin');
-import { Options as SvgoOptions } from 'imagemin-svgo';
-export default class ImageMinGulpTask implements TaskInterface {
-    execute(project: Project, theme?: Theme) {
-        const themes = theme ? [theme] : project.getThemes();
 
-        const tasks: TaskFunction[] = themes.map(theme => {
-            const task: TaskFunction = async (done) => {
-                const svgoConfig = await this.getSvgoConfig(project);
+export default class ImageMinGulpTask implements TaskInterface {
+    execute(project: Project) {
+        const tasks: TaskFunction[] = project.getThemes().map(theme => {
+            const task: TaskFunction = (done) => {
                 const imageMinPaths = `${this.getImageMinSourceDirectory(theme)}/**/*.{png,jpg,gif,jpeg,svg,jpeg}`;
 
                 logger(`Paths: ${imageMinPaths}`);
@@ -29,7 +26,7 @@ export default class ImageMinGulpTask implements TaskInterface {
                         imagemin.gifsicle(),
                         imagemin.mozjpeg(),
                         imagemin.optipng({ optimizationLevel: 7 }),
-                        imagemin.svgo(svgoConfig)
+                        imagemin.svgo()
                     ]))
                     .pipe(dest(
                         join(
@@ -49,26 +46,16 @@ export default class ImageMinGulpTask implements TaskInterface {
         return parallel(...tasks);
     }
 
-    watch(project: Project, theme?: Theme): TaskFunction {
+    watch(project: Project): TaskFunction {
         return (done) => {
-            const themes = theme ? [theme] : project.getThemes();
-
             watch(
-                themes.map(theme => this.getImageMinSourceDirectory(theme)),
-                this.execute(project, theme)
+                project.getThemes().map(theme => this.getImageMinSourceDirectory(theme)),
+                this.execute(project)
             );
         };
     }
 
     private getImageMinSourceDirectory(theme: Theme): string {
         return join(theme.getSourceDirectory(), 'web', 'src')
-    }
-
-    protected async getSvgoConfig(project: Project) {
-        const config:Partial<SvgoOptions> = {};
-
-        project.hooks.gulp.svgoConfig.call(config);
-
-        return config;
     }
 }
