@@ -19,7 +19,7 @@ describe('Gulp: SVG Sprite', () => {
             `${root}/vendor/magento/theme-frontend-blank/web/src/intermediate-svg/icon-stars.svg`,
             `${root}/vendor/magento/theme-frontend-blank/web/src/sprites.svg`,
             `${root}/vendor/magento/theme-frontend-blank/web/css/source/blueacorn/_sprites.less`,
-            `${root}/vendor/magento/theme-frontend-blank/BlueAcorn_CmsFramework/templates/framework/sprites.phtml`,
+            `${root}/vendor/magento/theme-frontend-blank/Magento_Theme/templates/framework/sprites.phtml`,
         ];
 
         const project = new Project({

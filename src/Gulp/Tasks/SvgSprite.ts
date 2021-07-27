@@ -42,7 +42,7 @@ export default class SvgSprite implements TaskInterface {
                         }
                     },
                     example: {
-                        dest: '../../BlueAcorn_CmsFramework/templates/framework/sprites.phtml',
+                        dest: '../../Magento_Theme/templates/framework/sprites.phtml',
                         template: join(__dirname, '../../../assets/tmpl/svg_sprites.phtml')
                     }
                 }
