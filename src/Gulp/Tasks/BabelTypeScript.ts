@@ -1,12 +1,8 @@
-import { dest, src, TaskFunction } from "gulp";
 import rename from "gulp-rename";
 import babel from "gulp-babel";
 import Project from "../../Models/Project";
-import { TaskData } from "../JsFileGlobs";
 import AbstractJsTask from "./AbstractJsTask";
 import { TaskInterface } from "./TaskInterface";
-import Theme from "../../Models/Theme";
-import Module from "../../Models/Module";
 import babelResolveImports from "../../babel/plugin-resolve-imports";
 import debug from 'debug';
 import { join } from 'path';
@@ -15,29 +11,15 @@ const logger = debug('gpc:gulp:babelTypescript');
 export default class BabelTypeScript extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/web/ts/**/*.ts';
     protected MODULE_GLOB = '**/web/ts/**/*.ts';
+    protected TASK_NAME = 'Babel TypeScript';
 
-    getName(source: Theme | Module): string {
-        if (source instanceof Theme) {
-            return `BabelTS<Theme<${source.getData().path}>>`;
-        }
-
-        return `BabelTS<Module<${source.getName()}>>`;
-    }
-
-    getTask(taskData: TaskData): TaskFunction {
-        const task: TaskFunction = (done) => {
-            src(taskData.sources, { allowEmpty: true })
-                // @ts-ignore
-                .pipe(babel(this.getBabelConfig(taskData.project)))
-                .pipe(rename((path) => {
-                    path.dirname = path.dirname.replace('/ts', '');
-                }))
-                .pipe(dest(taskData.outputDirectory))
-                .on('finish', done);
-        };
-        task.displayName = taskData.displayName;
-
-        return task;
+    getTask(project: Project, gulpStream: NodeJS.ReadWriteStream): NodeJS.ReadWriteStream {
+        return gulpStream
+            // @ts-ignore
+            .pipe(babel(this.getBabelConfig(project)))
+            .pipe(rename((path) => {
+                path.dirname = path.dirname.replace('/ts', '');
+            }));
     }
 
     protected getBabelConfig(project: Project): any {

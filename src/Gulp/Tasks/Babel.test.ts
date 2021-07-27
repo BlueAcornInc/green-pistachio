@@ -20,13 +20,14 @@ describe('Gulp: Babel', () => {
             'vendor/magento/theme-frontend-blank/web/js/source/test.js': 'console.log("hello world");',
             'vendor/magento/theme-frontend-blank/web/js/source/test-ts-dep.js': 'export default "hello world"',
             'vendor/magento/theme-frontend-blank/web/js/source/test-ts.js': 'import msg from "./test-ts-dep"; console.log(msg); export default (msg) => { console.log(msg) }',
-            'vendor/magento/module-test/view/adminhtml/web/js/source/module-file.js': 'console.log("module")'
+            'vendor/magento/module-test/view/adminhtml/web/js/source/module-file.js': 'console.log("module")',
+            'app/code/BlueAcorn/SomeModule/view/frontend/web/js/source/test-file.js': 'console.log("some test file");'
         });
 
         const project = new Project({
             themes: [
                 new Theme({
-                    sourceDirectory: `vendor/magento/theme-frontend-blank`,
+                    sourceDirectory: `${process.cwd()}/vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
                     path: 'Magento/blank',
                     enabled: true
@@ -34,12 +35,17 @@ describe('Gulp: Babel', () => {
             ],
             modules: [
                 new Module({
-                    sourceDirectory: 'vendor/magento/module-test',
+                    sourceDirectory: `${process.cwd()}/vendor/magento/module-test`,
                     name: 'Module_Test',
+                    enabled: true
+                }),
+                new Module({
+                    sourceDirectory: `${process.cwd()}/app/code/BlueAcorn/SomeModule`,
+                    name: 'BlueAcorn_SomeModule',
                     enabled: true
                 })
             ],
-            root: '',
+            root: process.cwd(),
         });
 
         const babel = new Babel();
@@ -49,8 +55,11 @@ describe('Gulp: Babel', () => {
             const themeTs = await fs.readFile(`vendor/magento/theme-frontend-blank/web/js/test-ts.js`);
             expect(themeTs.toString()).toMatchSnapshot();
             
-            const moduleJs = await fs.readFile(`vendor/magento/module-test/view/adminhtml/web/js/module-file.js`);
-            expect(moduleJs.toString()).toMatchSnapshot();
+            const vendorModuleJs = await fs.readFile(`vendor/magento/module-test/view/adminhtml/web/js/module-file.js`);
+            expect(vendorModuleJs.toString()).toMatchSnapshot();
+            
+            const appModuleJs = await fs.readFile(`app/code/BlueAcorn/SomeModule/view/frontend/web/js/test-file.js`);
+            expect(appModuleJs.toString()).toMatchSnapshot();
             done();
         });
     });

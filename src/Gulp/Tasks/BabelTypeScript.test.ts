@@ -69,6 +69,7 @@ describe('Gulp: Babel', () => {
             'vendor/magento/theme-frontend-blank/web/js/test.js',
             'vendor/blueacorn/module/view/base/web/js/test.js',
             'vendor/blueacorn/module/view/base/web/js/value.js',
+            'vendor/magento/module-page-builder/view/adminhtml/web/js/config.js'
         ];
 
         const babel = new BabelTypeScript();

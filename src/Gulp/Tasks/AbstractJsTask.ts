@@ -1,44 +1,39 @@
-import { parallel, TaskFunction, watch } from "gulp";
+import { src, TaskFunction, watch, dest } from "gulp";
 import Module from "../../Models/Module";
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
-import TaskDataProvider, { TaskData } from "../JsFileGlobs";
+
+export interface TaskData {
+    sources: string[];
+    outputDirectory: string;
+}
 
 export default abstract class AbstractJsTask {
-    protected taskDataProvider: TaskDataProvider;
     protected MODULE_GLOB: string = '';
     protected THEME_GLOB: string = '';
-
-    constructor() {
-        this.taskDataProvider = new TaskDataProvider();
-    }
+    protected TASK_NAME: string = '';
 
     execute(project: Project): TaskFunction {
         if (!process.env.BABEL_ENV) {
             process.env.BABEL_ENV = 'development';
         }
 
-        const tasks: TaskFunction[] = this.taskDataProvider.getTasksData({
-            project,
-            moduleGlob: this.MODULE_GLOB,
-            themeGlob: this.THEME_GLOB,
-            getName: this.getName
-        }).map(this.getTask.bind(this));
+        const taskData = this.getTaskData(project);
 
-        if (tasks.length === 0) {
-            return (done) => done();
-        }
+        const task: TaskFunction = (done) => {
+            const gulpStream = src(taskData.sources, { allowEmpty: true });
+            
+            this.getTask(project, gulpStream)
+                .pipe(dest(taskData.outputDirectory))
+                .on('finish', done);
+        };
+        task.displayName = this.TASK_NAME;
 
-        return parallel(...tasks);
+        return task;
     }
 
     watch(project: Project): TaskFunction {
-        const paths = this.taskDataProvider.getTasksData({
-            project,
-            moduleGlob: this.MODULE_GLOB,
-            themeGlob: this.THEME_GLOB,
-            getName: this.getName
-        }).map(({ sources }) => sources);
+        const paths = this.getTaskData(project).sources;
 
         return (done) => {
             watch(
@@ -48,7 +43,25 @@ export default abstract class AbstractJsTask {
         };
     }
 
-    abstract getName(source: Theme | Module): string;
+    protected getTaskData(project: Project) {
+        const compilableObjects = ([] as (Theme | Module)[])
+            .concat(project.getThemes())
+            .concat(project.getModules());
 
-    abstract getTask(taskData: TaskData): TaskFunction;
+        return compilableObjects.reduce<TaskData>((memo, compilableObject) => ({
+            ...memo,
+            sources: [
+                ...memo.sources,
+                compilableObject instanceof Theme ? this.THEME_GLOB : this.MODULE_GLOB
+            ]
+        }), {
+            sources: [],
+            outputDirectory: project.getRootDirectory()
+        });
+    } 
+
+    abstract getTask(
+        project: Project,
+        gulpStream: NodeJS.ReadWriteStream
+    ): NodeJS.ReadWriteStream;
 }

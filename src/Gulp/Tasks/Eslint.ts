@@ -3,10 +3,7 @@ import eslint from 'gulp-eslint';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import debug from 'debug';
-import Module from "../../Models/Module";
 import Project from "../../Models/Project";
-import Theme from "../../Models/Theme";
-import { TaskData } from "../JsFileGlobs";
 import AbstractJsTask from "./AbstractJsTask";
 import { TaskInterface } from "./TaskInterface";
 const logger = debug('gpc:gulp:eslint');
@@ -14,18 +11,17 @@ const logger = debug('gpc:gulp:eslint');
 export default class Eslint extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/source/**/*.js';
     protected MODULE_GLOB = '**/web/**/source/**/*.js';
+    protected TASK_NAME = 'Eslint';
 
-    getName(source: Theme | Module): string {
-        if (source instanceof Theme) {
-            return `Eslint<Theme<${source.getData().path}>>`;
+    execute(project: Project): TaskFunction {
+        if (!process.env.BABEL_ENV) {
+            process.env.BABEL_ENV = 'development';
         }
 
-        return `Eslint<Module<${source.getName()}>>`;
-    }
+        const taskData = this.getTaskData(project);
 
-    getTask(taskData: TaskData): TaskFunction {
         const task: TaskFunction = async (done) => {
-            const eslintConfig = await this.getLintConfig(taskData.project);
+            const eslintConfig = await this.getLintConfig(project);
             src(taskData.sources, {
                 allowEmpty: true
             })
@@ -37,9 +33,14 @@ export default class Eslint extends AbstractJsTask implements TaskInterface {
                 .on('done', done);
             done();
         };
-        task.displayName = taskData.displayName;
+
+        task.displayName = this.TASK_NAME;
 
         return task;
+    }
+
+    getTask(project: Project, gulpStream: NodeJS.ReadWriteStream): NodeJS.ReadWriteStream {
+        return gulpStream;
     }
 
     protected async getLintConfig(project: Project) {
