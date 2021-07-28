@@ -41,7 +41,7 @@ for (const gulpCommand of gulpCommands) {
 
 require('yargs')
     .command('install', 'Install Command', (yargs: InstallCommandOptions & Argv) => {
-        yargs.default('installBaseTheme', true);
+        yargs.default('installBaseTheme', false);
         yargs.default('baseThemeUrl', 'git@github.com:BlueAcornInc/ba-green-pistachio-theme-m2.git')
         yargs.string('baseThemeUrl');
         yargs.boolean('installBaseTheme');

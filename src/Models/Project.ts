@@ -4,6 +4,7 @@ import debug from 'debug';
 import Module from "./Module";
 import Theme, { ThemeData } from "./Theme";
 import ProjectConfigBuilder from '../ProjectConfigBuilder';
+import ConfigLoader from './Project/ConfigLoader';
 const logger = debug('gpc:project');
 
 type ProjectConstructorArgs = {
@@ -200,7 +201,7 @@ export default class Project {
             if (!debug.enabled('gpc:logger')) {
                 debug.enable('gpc:logger');
             }
-            logger(`A project URL must be provided in your projects ${ProjectConfigBuilder.CONFIG_FILE}`);
+            logger(`A project URL must be provided in your projects ${ConfigLoader.CONFIG_FILE}`);
             logger(`\n\nExample:
 module.exports = project => {
 project.hooks.configure.tap("Set Product Url", () => {
@@ -209,7 +210,7 @@ project.hooks.configure.tap("Set Product Url", () => {
 }
             `);
 
-            throw new Error(`A project URL must be provided in your projects ${ProjectConfigBuilder.CONFIG_FILE}`);
+            throw new Error(`A project URL must be provided in your projects ${ConfigLoader.CONFIG_FILE}`);
         }
 
         return this.proxyUrl;

@@ -65,29 +65,4 @@ describe('Project Config Builder', () => {
             root: expect.any(String)
         });
     });
-
-    it('should load user provided config file', async () => {
-        mockedCommandRunner.prototype.execute.mockImplementation(async () => {
-            return {
-                error: null,
-                stdout: '{"modules": {}, "themes": {}}'
-            };
-        });
-
-        const configFilePath = join(process.cwd(), ProjectConfigBuilder.CONFIG_FILE);
-        await fs.writeFile(configFilePath, `module.exports = (project) => {
-            project.someUserProvidedValue = 5;
-        }`);
-
-        const projectConfigBuilder = new ProjectConfigBuilder();
-        const projectConfig: Project = await projectConfigBuilder.build({});
-
-        await fs.unlink(configFilePath);
-
-        expect((projectConfig as Project & { someUserProvidedValue: number } ).someUserProvidedValue).toBe(5);
-
-        expect(projectConfig).toMatchSnapshot({
-            root: expect.any(String)
-        });
-    });
 });

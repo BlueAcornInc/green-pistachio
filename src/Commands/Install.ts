@@ -1,9 +1,11 @@
-import { resolve } from 'path';
+import { resolve, join } from 'path';
 import { userInfo } from 'os';
 import { promises as fs } from 'fs';
 import rimraf from 'rimraf';
 import mkdirp from 'mkdirp';
 import debug from 'debug';
+import Project from '../Models/Project';
+import ConfigLoader from '../Models/Project/ConfigLoader';
 import CommandRunner from "../CommandRunner";
 import { CommandInterface, CommandOptionsInterface } from "./CommandInterface";
 const logger = debug('gpc:install');
@@ -37,6 +39,7 @@ export default class Install implements CommandInterface {
         }
 
         await this.installCacheClean();
+        await this.generateDefaultConfig(project);
 
         return false;
     }
@@ -117,6 +120,39 @@ export default class Install implements CommandInterface {
             );
         } catch (err) {
             logger(`Problem writing project tsconfig file`);
+        }
+    }
+
+    private async generateDefaultConfig(project: Project) {
+        const configureThemeTemplate = `
+        project.configureTheme({
+            path: '{{themePath}}'
+        });
+`;
+        const configContent = `module.exports = project => {
+    project.hooks.configure.tap('Green Pistachio - Configure', project => {
+        ${
+            project
+                .getAllThemes()
+                .map(theme => configureThemeTemplate.replace('{{themePath}}', theme.getData().path)).join('')
+        }
+    });
+};`;
+        const configLoader = new ConfigLoader(project);
+        const exists = await configLoader.configExists();
+
+        if (!exists) {
+            try {
+                logger(`Writing project config file`);
+                await fs.writeFile(
+                    configLoader.filePath,
+                    configContent
+                );
+            } catch (err) {
+                logger(`Problem writing project config file: ${err}`);
+            }
+        } else {
+            logger(`Config file already exists: ${configLoader.filePath}`)
         }
     }
 }

@@ -1,11 +1,10 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import debug from 'debug';
 import CommandRunner from "./CommandRunner";
 import Module from "./Models/Module";
 import Project from "./Models/Project";
+import ConfigLoader from "./Models/Project/ConfigLoader";
 import Theme from "./Models/Theme";
-const logger = debug('gpc:configBuilder');
 
 type MagentoPaths = {
     modules: Record<string, string>;
@@ -17,7 +16,6 @@ type BuildOptions = {
 };
 
 export default class ProjectConfigBuilder {
-    public static CONFIG_FILE = 'green-pistachio.config.js';
     private rootDirectory: string;
 
     constructor(
@@ -49,27 +47,9 @@ export default class ProjectConfigBuilder {
             modules: moduleObjects,
             enabledThemes
         });
-
-        const projectConfigFile = join(
-            this.rootDirectory,
-            ProjectConfigBuilder.CONFIG_FILE
-        );
-
-        try {
-            const configExists = await fs.stat(projectConfigFile);
-
-            if (configExists) {
-                logger('loading project config file');
-                try {
-                    require(projectConfigFile)(project);
-                } catch (err) {
-                    logger(`Problem while running user provided configuration file: ${err}`);
-                    throw err;
-                }
-            }
-        } catch (err) {
-            logger(`No user provided config provided, this is optional, you can create one at: ${projectConfigFile}`);
-        }
+        
+        const configLoader = new ConfigLoader(project);
+        configLoader.loadConfig()
 
         project.configure();
 
