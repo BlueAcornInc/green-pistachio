@@ -1,4 +1,5 @@
 import { src, TaskFunction, watch, dest } from "gulp";
+import { join } from 'path';
 import Module from "../../Models/Module";
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
@@ -21,7 +22,10 @@ export default abstract class AbstractJsTask {
         const taskData = this.getTaskData(project);
 
         const task: TaskFunction = (done) => {
-            const gulpStream = src(taskData.sources, { allowEmpty: true });
+            const gulpStream = src(taskData.sources, {
+                allowEmpty: true,
+                cwdbase: true
+            });
             
             this.getTask(project, gulpStream)
                 .pipe(dest(taskData.outputDirectory))
@@ -52,7 +56,10 @@ export default abstract class AbstractJsTask {
             ...memo,
             sources: [
                 ...memo.sources,
-                compilableObject instanceof Theme ? this.THEME_GLOB : this.MODULE_GLOB
+                join(
+                    compilableObject.getSourceDirectory(),
+                    compilableObject instanceof Theme ? this.THEME_GLOB : this.MODULE_GLOB
+                )
             ]
         }), {
             sources: [],
