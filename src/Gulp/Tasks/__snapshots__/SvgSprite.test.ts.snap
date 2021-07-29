@@ -2,9 +2,11 @@
 
 exports[`Gulp: SVG Sprite should generate svg sprite 1`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 121 17\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg>"`;
 
-exports[`Gulp: SVG Sprite should generate svg sprite 2`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\"><view id=\\"icon-stars\\" viewBox=\\"0 0 121 17\\"/><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" id=\\"icon-stars-\\" xmlns=\\"http://www.w3.org/2000/svg\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg></svg>"`;
+exports[`Gulp: SVG Sprite should generate svg sprite 2`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 121 17\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg>"`;
 
-exports[`Gulp: SVG Sprite should generate svg sprite 3`] = `
+exports[`Gulp: SVG Sprite should generate svg sprite 3`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"34\\" viewBox=\\"0 0 121 34\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\"><view id=\\"icon-stars\\" viewBox=\\"0 0 121 17\\"/><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" id=\\"icon-stars-\\" xmlns=\\"http://www.w3.org/2000/svg\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg><view id=\\"icon-stars-2\\" viewBox=\\"0 17 121 17\\"/><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" id=\\"icon-stars-2-\\" y=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg></svg>"`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 4`] = `
 "//
 // @package     BlueAcorn/site
 // @author      Blue Acorn iCi <code@blueacorn.com>
@@ -13,12 +15,17 @@ exports[`Gulp: SVG Sprite should generate svg sprite 3`] = `
 
 @sprite-url: \\"../images/sprites.svg\\";
 @sprite-width: 121px;
-@sprite-height: 17px;
+@sprite-height: 34px;
 @svg-icon-stars-x: 0;
 @svg-icon-stars-y: 0;
 @svg-icon-stars-xy: 0 0;
 @svg-icon-stars-width: 121px;
 @svg-icon-stars-height: 17px;
+@svg-icon-stars-2-x: 0;
+@svg-icon-stars-2-y: -17;
+@svg-icon-stars-2-xy: 0 -17px;
+@svg-icon-stars-2-width: 121px;
+@svg-icon-stars-2-height: 17px;
 
 .svg() {
     background-image: url(\\"@{sprite-url}\\");
@@ -43,16 +50,33 @@ exports[`Gulp: SVG Sprite should generate svg sprite 3`] = `
     .svg-icon-stars();
     .svg-icon-stars-dims();
 }
+.svg-icon-stars-2() {
+    background-position: @svg-icon-stars-2-xy;
+}
+
+.svg-icon-stars-2-dims() {
+    width: @svg-icon-stars-2-width;
+    height: @svg-icon-stars-2-height;
+}
+
+.svgi-icon-stars-2() {
+    .svg();
+    .svg-icon-stars-2();
+    .svg-icon-stars-2-dims();
+}
 
 & when (@media-common = true) {
     .svg-icon-icon-stars {
         .svgi-icon-stars();
     }
+    .svg-icon-icon-stars-2 {
+        .svgi-icon-stars-2();
+    }
 }
 "
 `;
 
-exports[`Gulp: SVG Sprite should generate svg sprite 4`] = `
+exports[`Gulp: SVG Sprite should generate svg sprite 5`] = `
 "<?php
 /**
  * @package     BlueAcorn/CmsFramework
@@ -99,6 +123,185 @@ exports[`Gulp: SVG Sprite should generate svg sprite 4`] = `
     </div>
 
     <pre class=\\"item span-s-12 margin-bottom-20\\"><code>&lt;i class=\\"svg-icon-icon-stars\\"&gt;&lt;span class=\\"visually-hidden\\"&gt;icon-stars&lt;/span&gt;&lt;/i&gt;</code></pre>
+    <h4 class=\\"item span-12\\">icon-stars-2</h4>
+
+    <div class=\\"item span-s-12 d-flex flex-wrap margin-bottom-5\\">
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-white c-contrast-white\\">
+            <i class=\\"svg-icon-icon-stars-2\\"><span class=\\"visually-hidden\\">icon-stars-2</span></i>
+        </div>
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-black c-contrast-black\\">
+            <i class=\\"svg-icon-icon-stars-2\\"><span class=\\"visually-hidden\\">icon-stars-2</span></i>
+        </div>
+        <dl class=\\"padding-10 float-left bg-white c-contrast-white\\">
+            <dt>Width</dt>
+            <dd>121</dd>
+            <dt>Height</dt>
+            <dd>17</dd>
+            <dt>Background Position Mixin</dt>
+            <dd>.svg-icon-stars-2()</dd>
+            <dt>Dimensions Mixin</dt>
+            <dd>.svg-icon-stars-2-dims()</dd>
+            <dt>Full Mixin</dt>
+            <dd>.svgi-icon-stars-2()</dd>
+            <dt>Class</dt>
+            <dd>.svg-icon-icon-stars-2()</dd>
+        </dl>
+    </div>
+
+    <pre class=\\"item span-s-12 margin-bottom-20\\"><code>&lt;i class=\\"svg-icon-icon-stars-2\\"&gt;&lt;span class=\\"visually-hidden\\"&gt;icon-stars-2&lt;/span&gt;&lt;/i&gt;</code></pre>
+</div>
+"
+`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 6`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 121 17\\"><g fill=\\"#BADA55\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg>"`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 7`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 121 17\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg>"`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 8`] = `"<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?><svg width=\\"121\\" height=\\"34\\" viewBox=\\"0 0 121 34\\" xmlns=\\"http://www.w3.org/2000/svg\\" xmlns:xlink=\\"http://www.w3.org/1999/xlink\\"><view id=\\"icon-stars\\" viewBox=\\"0 0 121 17\\"/><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" id=\\"icon-stars-\\" xmlns=\\"http://www.w3.org/2000/svg\\"><g fill=\\"#BADA55\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg><view id=\\"icon-stars-2\\" viewBox=\\"0 17 121 17\\"/><svg width=\\"121\\" height=\\"17\\" viewBox=\\"0 0 121 17\\" id=\\"icon-stars-2-\\" y=\\"17\\" xmlns=\\"http://www.w3.org/2000/svg\\"><g fill=\\"#003087\\" fill-rule=\\"evenodd\\"><path d=\\"M9 13.5l-5.29 2.781 1.01-5.89L.44 6.219l5.915-.86L9 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM35 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L35 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM60 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L60 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM86 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L86 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89zM112 13.5l-5.29 2.781 1.01-5.89-4.28-4.172 5.915-.86L112 0l2.645 5.36 5.915.859-4.28 4.172 1.01 5.89z\\"/></g></svg></svg>"`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 9`] = `
+"//
+// @package     BlueAcorn/site
+// @author      Blue Acorn iCi <code@blueacorn.com>
+// @copyright   Copyright © Blue Acorn iCi. All rights reserved.
+//
+
+@sprite-url: \\"../images/sprites.svg\\";
+@sprite-width: 121px;
+@sprite-height: 34px;
+@svg-icon-stars-x: 0;
+@svg-icon-stars-y: 0;
+@svg-icon-stars-xy: 0 0;
+@svg-icon-stars-width: 121px;
+@svg-icon-stars-height: 17px;
+@svg-icon-stars-2-x: 0;
+@svg-icon-stars-2-y: -17;
+@svg-icon-stars-2-xy: 0 -17px;
+@svg-icon-stars-2-width: 121px;
+@svg-icon-stars-2-height: 17px;
+
+.svg() {
+    background-image: url(\\"@{sprite-url}\\");
+    background-repeat: no-repeat;
+}
+
+[class*=\\"svg-icon-\\"] {
+    display: inline-block;
+}
+
+.svg-icon-stars() {
+    background-position: @svg-icon-stars-xy;
+}
+
+.svg-icon-stars-dims() {
+    width: @svg-icon-stars-width;
+    height: @svg-icon-stars-height;
+}
+
+.svgi-icon-stars() {
+    .svg();
+    .svg-icon-stars();
+    .svg-icon-stars-dims();
+}
+.svg-icon-stars-2() {
+    background-position: @svg-icon-stars-2-xy;
+}
+
+.svg-icon-stars-2-dims() {
+    width: @svg-icon-stars-2-width;
+    height: @svg-icon-stars-2-height;
+}
+
+.svgi-icon-stars-2() {
+    .svg();
+    .svg-icon-stars-2();
+    .svg-icon-stars-2-dims();
+}
+
+& when (@media-common = true) {
+    .svg-icon-icon-stars {
+        .svgi-icon-stars();
+    }
+    .svg-icon-icon-stars-2 {
+        .svgi-icon-stars-2();
+    }
+}
+"
+`;
+
+exports[`Gulp: SVG Sprite should generate svg sprite 10`] = `
+"<?php
+/**
+ * @package     BlueAcorn/CmsFramework
+ * @author      Blue Acorn iCi <code@blueacorn.com>
+ * @copyright   Copyright © Blue Acorn iCi. All Rights Reserved.
+ */
+
+// @codingStandardsIgnoreFile
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/**
+ * CMS Framework Documentation Template
+ *
+ * @var $block \\\\BlueAcorn\\\\CmsFramework\\\\Block\\\\CmsFramework
+ */
+?>
+
+<div class=\\"ba-grid margin-bottom-40 padding-left-0 padding-right-0\\">
+    <h3 class=\\"item span-12\\">Sprites</h3>
+
+    <h4 class=\\"item span-12\\">icon-stars</h4>
+
+    <div class=\\"item span-s-12 d-flex flex-wrap margin-bottom-5\\">
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-white c-contrast-white\\">
+            <i class=\\"svg-icon-icon-stars\\"><span class=\\"visually-hidden\\">icon-stars</span></i>
+        </div>
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-black c-contrast-black\\">
+            <i class=\\"svg-icon-icon-stars\\"><span class=\\"visually-hidden\\">icon-stars</span></i>
+        </div>
+        <dl class=\\"padding-10 float-left bg-white c-contrast-white\\">
+            <dt>Width</dt>
+            <dd>121</dd>
+            <dt>Height</dt>
+            <dd>17</dd>
+            <dt>Background Position Mixin</dt>
+            <dd>.svg-icon-stars()</dd>
+            <dt>Dimensions Mixin</dt>
+            <dd>.svg-icon-stars-dims()</dd>
+            <dt>Full Mixin</dt>
+            <dd>.svgi-icon-stars()</dd>
+            <dt>Class</dt>
+            <dd>.svg-icon-icon-stars()</dd>
+        </dl>
+    </div>
+
+    <pre class=\\"item span-s-12 margin-bottom-20\\"><code>&lt;i class=\\"svg-icon-icon-stars\\"&gt;&lt;span class=\\"visually-hidden\\"&gt;icon-stars&lt;/span&gt;&lt;/i&gt;</code></pre>
+    <h4 class=\\"item span-12\\">icon-stars-2</h4>
+
+    <div class=\\"item span-s-12 d-flex flex-wrap margin-bottom-5\\">
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-white c-contrast-white\\">
+            <i class=\\"svg-icon-icon-stars-2\\"><span class=\\"visually-hidden\\">icon-stars-2</span></i>
+        </div>
+        <div class=\\"padding-10 float-left d-flex justify-content-center align-content-center bg-black c-contrast-black\\">
+            <i class=\\"svg-icon-icon-stars-2\\"><span class=\\"visually-hidden\\">icon-stars-2</span></i>
+        </div>
+        <dl class=\\"padding-10 float-left bg-white c-contrast-white\\">
+            <dt>Width</dt>
+            <dd>121</dd>
+            <dt>Height</dt>
+            <dd>17</dd>
+            <dt>Background Position Mixin</dt>
+            <dd>.svg-icon-stars-2()</dd>
+            <dt>Dimensions Mixin</dt>
+            <dd>.svg-icon-stars-2-dims()</dd>
+            <dt>Full Mixin</dt>
+            <dd>.svgi-icon-stars-2()</dd>
+            <dt>Class</dt>
+            <dd>.svg-icon-icon-stars-2()</dd>
+        </dl>
+    </div>
+
+    <pre class=\\"item span-s-12 margin-bottom-20\\"><code>&lt;i class=\\"svg-icon-icon-stars-2\\"&gt;&lt;span class=\\"visually-hidden\\"&gt;icon-stars-2&lt;/span&gt;&lt;/i&gt;</code></pre>
 </div>
 "
 `;

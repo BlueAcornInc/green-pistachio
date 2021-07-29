@@ -17,19 +17,36 @@ describe('Gulp: SVG Sprite', () => {
 
         const expectedOutputFiles = [
             `${root}/vendor/magento/theme-frontend-blank/web/src/intermediate-svg/icon-stars.svg`,
+            `${root}/vendor/magento/theme-frontend-blank/web/src/intermediate-svg/icon-stars-2.svg`,
             `${root}/vendor/magento/theme-frontend-blank/web/src/sprites.svg`,
             `${root}/vendor/magento/theme-frontend-blank/web/css/source/blueacorn/_sprites.less`,
             `${root}/vendor/magento/theme-frontend-blank/Magento_Theme/templates/framework/sprites.phtml`,
+            `${root}/vendor/magento/theme-frontend-luma/web/src/intermediate-svg/icon-stars.svg`,
+            `${root}/vendor/magento/theme-frontend-luma/web/src/intermediate-svg/icon-stars-2.svg`,
+            `${root}/vendor/magento/theme-frontend-luma/web/src/sprites.svg`,
+            `${root}/vendor/magento/theme-frontend-luma/web/css/source/blueacorn/_sprites.less`,
+            `${root}/vendor/magento/theme-frontend-luma/Magento_Theme/templates/framework/sprites.phtml`,
         ];
+
+        const blank = new Theme({
+            sourceDirectory: `${root}/vendor/magento/theme-frontend-blank`,
+            area: 'frontend',
+            path: 'Magento/blank',
+            enabled: true
+        });
+
+        const luma = new Theme({
+            sourceDirectory: `${root}/vendor/magento/theme-frontend-luma`,
+            area: 'frontend',
+            path: 'Magento/luma',
+            enabled: true,
+            parent: blank
+        });
 
         const project = new Project({
             themes: [
-                new Theme({
-                    sourceDirectory: `${root}/vendor/magento/theme-frontend-blank`,
-                    area: 'frontend',
-                    path: 'Magento/blank',
-                    enabled: true
-                })
+                blank,
+                luma
             ],
             modules: [],
             root,
