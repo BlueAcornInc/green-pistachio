@@ -1,9 +1,11 @@
 import { dest, parallel, src, TaskFunction, watch } from "gulp";
 import spriteSmith from 'gulp.spritesmith';
 import { join } from 'path';
+import debug from 'debug';
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
 import { TaskInterface } from "./TaskInterface";
+const logger = debug('gpc:gulp:pngSprite');
 
 export default class PngSprite implements TaskInterface {
     execute(project: Project) {
@@ -28,9 +30,14 @@ export default class PngSprite implements TaskInterface {
             return task;
         });
 
+        if (tasks.length === 0) {
+            logger(`No PngSprite tasks configured`);
+            tasks.push(done => done());
+        }
+
         return parallel(...tasks);
     }
-    
+
     watch(project: Project): TaskFunction {
         return (done) => {
             watch(

@@ -76,6 +76,11 @@ export default class SvgSprite implements TaskInterface {
             return task;
         });
 
+        if (tasks.length === 0) {
+            logger(`No SvgSprite tasks configured`);
+            tasks.push(done => done());
+        }
+
         return parallel(...tasks);
     }
 
