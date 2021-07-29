@@ -63,27 +63,30 @@ export default class Project {
         this.modules = modules;
         this.enabledThemes = enabledThemes
             ? themes.filter(theme => enabledThemes.includes(theme.getData().path))
-            : themes;
+            : [];
     }
 
     public configure() {
-        // Enable default themes
-        for (const theme of this.enabledThemes) {
-            theme.setEnabled(true);
-        }
-
-        for (const theme of this.themes) {
-            if (
-                !theme
-                    .getSourceDirectory()
-                    .includes(
-                        join(
-                            this.getRootDirectory(),
-                            'vendor'
-                        )
-                    )
-            ) {
+        if (this.enabledThemes.length > 0) {
+            // Enable default themes
+            for (const theme of this.enabledThemes) {
                 theme.setEnabled(true);
+            }
+        } else {
+            for (const theme of this.themes) {
+                if (
+                    !theme
+                        .getSourceDirectory()
+                        .includes(
+                            join(
+                                this.getRootDirectory(),
+                                'vendor'
+                            )
+                        )
+                ) {
+                    theme.setEnabled(true);
+                    this.enabledThemes.push(theme);
+                }
             }
         }
 
@@ -113,7 +116,7 @@ export default class Project {
         }
 
         const theme = this.themes.find(theme => theme.getData().path === themeData.path);
-        
+
         if (!theme) {
             logger(`can not find theme with path = '${themeData.path}'`);
             return;

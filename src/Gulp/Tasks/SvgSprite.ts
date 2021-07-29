@@ -1,8 +1,9 @@
 import { dest, parallel, src, TaskFunction, watch } from "gulp";
+import glob from 'fast-glob';
 import gulpPlumber from "gulp-plumber";
 import svgSprite from "gulp-svg-sprite";
 import debug from 'debug';
-import { join } from 'path';
+import { join, relative, dirname, basename } from 'path';
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
 import { TaskInterface } from "./TaskInterface";
@@ -52,21 +53,33 @@ export default class SvgSprite implements TaskInterface {
 
         const tasks: TaskFunction[] = project.getThemes().map(theme => {
             const task: TaskFunction = done => {
-                src('**/*.svg', {
-                    cwd: `${theme.getSourceDirectory()}/web/spritesrc/`
-                })
-                    .pipe(gulpPlumber())
-                    .pipe(svgSprite(config).on('error', (err) => {
-                        logger
-                    }))
-                    .pipe(dest(`${theme.getSourceDirectory()}/web/src/`))
-                    .on('end', done);
+                this.getSpriteFiles(theme).then(files => {
+                    src(files, {
+                        cwd: join(
+                            theme.getSourceDirectory(),
+                            'web',
+                            'spritesrc'
+                        ),
+                        allowEmpty: true
+                    })
+                        .pipe(gulpPlumber())
+                        .pipe(svgSprite(config).on('error', (err) => {
+                            logger
+                        }))
+                        .pipe(dest(`${theme.getSourceDirectory()}/web/src/`))
+                        .on('end', done);
+                });
             };
 
             task.displayName = `svgSprite<${theme.getData().path}>`;
 
             return task;
         });
+
+        if (tasks.length === 0) {
+            logger(`No SvgSprite tasks configured`);
+            tasks.push(done => done());
+        }
 
         return parallel(...tasks);
     }
@@ -82,5 +95,54 @@ export default class SvgSprite implements TaskInterface {
 
     private getSource(themes: Theme[]): string[] {
         return themes.map(theme => `${theme.getSourceDirectory()}/web/spritesrc/**/*.svg`);
+    }
+
+    private async getSpriteFiles(targetTheme: Theme): Promise<string[] | string> {
+        const svgMap: Map<string, string> = new Map();
+        const targetPath = join(
+            targetTheme.getSourceDirectory(),
+            'web',
+            'spritesrc'
+        );
+
+        let currentTheme: Theme | undefined = targetTheme;
+        while (currentTheme) {
+            const files = await glob(
+                join(
+                    currentTheme.getSourceDirectory(),
+                    '/web/spritesrc/**/*.svg',
+                )
+            );
+
+            for (const svgFile of files) {
+                const normalizedFile = svgFile.replace(
+                    join(
+                        currentTheme.getSourceDirectory(),
+                        'web',
+                        'spritesrc'
+                    ),
+                    ''
+                );
+                const svgFileDir = dirname(svgFile);
+                const svgFileName = basename(svgFile);
+                const relativePath = relative(targetPath, svgFileDir);
+
+                if (!svgMap.has(normalizedFile)) {
+                    svgMap.set(normalizedFile, join(
+                        relativePath,
+                        svgFileName
+                    ));
+                }
+            }
+
+            currentTheme = currentTheme.getParent();
+        }
+
+        if (svgMap.size === 0) {
+            logger(`No sprites found for: ${targetTheme.getData().path}`);
+            return '**/*.svg';
+        }
+
+        return Array.from(svgMap.values());
     }
 }

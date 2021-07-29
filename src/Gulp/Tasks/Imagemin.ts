@@ -43,6 +43,11 @@ export default class ImageMinGulpTask implements TaskInterface {
             return task;
         });
 
+        if (tasks.length === 0) {
+            logger(`No ImageMin tasks configured`);
+            tasks.push(done => done());
+        }
+
         return parallel(...tasks);
     }
 
