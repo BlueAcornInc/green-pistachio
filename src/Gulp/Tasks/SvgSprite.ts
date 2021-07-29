@@ -59,7 +59,8 @@ export default class SvgSprite implements TaskInterface {
                             theme.getSourceDirectory(),
                             'web',
                             'spritesrc'
-                        )
+                        ),
+                        allowEmpty: true
                     })
                         .pipe(gulpPlumber())
                         .pipe(svgSprite(config).on('error', (err) => {
@@ -91,7 +92,7 @@ export default class SvgSprite implements TaskInterface {
         return themes.map(theme => `${theme.getSourceDirectory()}/web/spritesrc/**/*.svg`);
     }
 
-    private async getSpriteFiles(targetTheme: Theme): Promise<string[]> {
+    private async getSpriteFiles(targetTheme: Theme): Promise<string[] | string> {
         const svgMap: Map<string, string> = new Map();
         const targetPath = join(
             targetTheme.getSourceDirectory(),
@@ -120,7 +121,7 @@ export default class SvgSprite implements TaskInterface {
                 const svgFileDir = dirname(svgFile);
                 const svgFileName = basename(svgFile);
                 const relativePath = relative(targetPath, svgFileDir);
-    
+
                 if (!svgMap.has(normalizedFile)) {
                     svgMap.set(normalizedFile, join(
                         relativePath,
@@ -130,6 +131,11 @@ export default class SvgSprite implements TaskInterface {
             }
 
             currentTheme = currentTheme.getParent();
+        }
+
+        if (svgMap.size === 0) {
+            logger(`No sprites found for: ${targetTheme.getData().path}`);
+            return '**/*.svg';
         }
 
         return Array.from(svgMap.values());
