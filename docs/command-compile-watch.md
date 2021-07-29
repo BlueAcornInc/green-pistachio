@@ -15,3 +15,21 @@ Runs the following commands:
 5. Executes Source Theme Deploy for active themes (based on your `gulp-config.js`)
 6. Less Compilation for active themes.
 7. Finally, it runs all the Watch Tasks listed out [here](command-watch.md)
+
+## Options
+
+Specific themes can be passed to the `--themes` argument to only run green pistachio on the themes listed. This setting will override any other enabled theme options configured in the `green-pistachio.config.js` file.
+
+e.g., `gpc default --themes BlueAcorn/site Magento/backend`
+e.g., `gpc default --themes BlueAcorn/site --themes Magento/backend`
+
+```shell
+gpc default
+
+Default Command
+
+Options:
+  --help     Show help                                                 [boolean]
+  --version  Show version number                                       [boolean]
+  --themes   list of themes to execute against                           [array]
+```

@@ -15,6 +15,7 @@ type CriticalCssInput = {
 export type ThemeData = {
     area: "frontend" | "adminhtml";
     path: string;
+    enabled?: boolean;
     locales?: string[];
     stylesheets?: string[];
     criticalCss?: CriticalCssInput[];
@@ -23,7 +24,7 @@ export type ThemeData = {
 export default class Theme {
     private sourceDirectory: string;
     private parent?: Theme;
-    
+    private enabled: boolean;    
     private data: ThemeData;
 
     constructor(config: ThemeConstructorArgs) {
@@ -34,11 +35,13 @@ export default class Theme {
             parent,
             locales,
             stylesheets,
-            criticalCss
+            criticalCss,
+            enabled
         } = config;
 
         this.sourceDirectory = sourceDirectory;
         this.parent = parent;
+        this.enabled = enabled || false;
         this.data = {
             area,
             path,
@@ -119,5 +122,13 @@ export default class Theme {
         logger(`No critical path data available for: ${this.data.path}`);
 
         return [];
+    }
+
+    public getEnabled() {
+        return this.enabled;
+    }
+
+    public setEnabled(enabled: boolean) {
+        this.enabled = enabled;
     }
 }

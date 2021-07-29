@@ -3,27 +3,18 @@
 exports[`TS Config Builder should generate ts config from project 1`] = `
 "{
     \\"include\\": [
-        \\"./app/code/BlueAcorn/Core/view/frontend/web/ts/**/*\\",
-        \\"./app/code/BlueAcorn/Core/view/base/web/ts/**/*\\",
-        \\"./app/code/BlueAcorn/Core/view/adminhtml/web/ts/**/*\\",
-        \\"./vendor/magento/theme-frontend-blank/**/*\\",
-        \\"./vendor/magento/theme-frontend-luma/**/*\\",
-        \\"./app/design/frontend/BlueAcorn/site/**/*\\",
-        \\"./vendor/magento/theme-adminhtml-backend/**/*\\"
+        \\".vendor/magento/theme-frontend-blank/**/*.ts\\",
+        \\".vendor/magento/theme-frontend-blank/**/*.tsx\\",
+        \\".vendor/magento/theme-frontend-luma/**/*.ts\\",
+        \\".vendor/magento/theme-frontend-luma/**/*.tsx\\",
+        \\".app/design/frontend/BlueAcorn/site/**/*.ts\\",
+        \\".app/design/frontend/BlueAcorn/site/**/*.tsx\\",
+        \\".vendor/magento/theme-adminhtml-backend/**/*.ts\\",
+        \\".vendor/magento/theme-adminhtml-backend/**/*.tsx\\"
     ],
     \\"compilerOptions\\": {
-        \\"baseUrl\\": \\".\\",
-        \\"paths\\": {
-            \\"BlueAcorn_Core/*\\": [
-                \\"vendor/magento/theme-adminhtml-backend/BlueAcorn_Core/web/ts/*\\",
-                \\"app/design/frontend/BlueAcorn/site/BlueAcorn_Core/web/ts/*\\",
-                \\"vendor/magento/theme-frontend-luma/BlueAcorn_Core/web/ts/*\\",
-                \\"vendor/magento/theme-frontend-blank/BlueAcorn_Core/web/ts/*\\",
-                \\"app/code/BlueAcorn/Core/view/frontend/web/ts/*\\",
-                \\"app/code/BlueAcorn/Core/view/base/web/ts/*\\",
-                \\"app/code/BlueAcorn/Core/view/adminhtml/web/ts/*\\"
-            ]
-        },
+        \\"baseUrl\\": \\"\\",
+        \\"paths\\": {},
         \\"strict\\": true,
         \\"esModuleInterop\\": true,
         \\"lib\\": [

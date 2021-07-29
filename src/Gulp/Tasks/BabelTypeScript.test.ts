@@ -46,27 +46,30 @@ describe('Gulp: Babel', () => {
                 new Theme({
                     sourceDirectory: `${process.cwd()}/vendor/magento/theme-frontend-blank`,
                     area: 'frontend',
-                    path: 'Magento/blank'
+                    path: 'Magento/blank',
+                    enabled: true
                 })
             ],
             modules: [
                 new Module({
                     sourceDirectory: `${process.cwd()}/vendor/blueacorn/module`,
-                    name: 'BlueAcorn_Module'
+                    name: 'BlueAcorn_Module',
+                    enabled: true
                 }),
                 new Module({
                     sourceDirectory: `${process.cwd()}/vendor/magento/module-page-builder`,
-                    name: 'Magento_PageBuilder'
+                    name: 'Magento_PageBuilder',
+                    enabled: true
                 }),
             ],
             root: process.cwd(),
-            includePath: 'vendor'
         });
 
         const filePaths = [
             'vendor/magento/theme-frontend-blank/web/js/test.js',
             'vendor/blueacorn/module/view/base/web/js/test.js',
             'vendor/blueacorn/module/view/base/web/js/value.js',
+            'vendor/magento/module-page-builder/view/adminhtml/web/js/config.js'
         ];
 
         const babel = new BabelTypeScript();

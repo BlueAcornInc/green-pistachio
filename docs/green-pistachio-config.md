@@ -29,6 +29,10 @@ module.exports = project => {
                 ]
             }]
         });
+
+        // By default Green Pistachio will compile all modules, except for those in the vendor directory.
+        // If you need to compile code in vendor (not recommended), you can enable the module like so:
+        project.enableModule("BlueAcorn_CmsFramework");
     });
 
     project.hooks.gulp.criticalCssConfig.tap('Green Pistachio - Critical CSS', config => {

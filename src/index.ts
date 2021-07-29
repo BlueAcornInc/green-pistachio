@@ -27,11 +27,8 @@ const gulpCommands = [{
 for (const gulpCommand of gulpCommands) {
     require('yargs')
         .command(gulpCommand.name, gulpCommand.label, (yargs: GulpCommandOptions & Argv) => {
-            yargs.describe('includePath', 'include vendor modules and themes');
-            yargs.default('includePath', 'app');
             yargs.describe('themes', 'list of themes to execute against')
             yargs.array('themes');
-            yargs.string('includePath');
         }, async (yargs: GulpCommandOptions) => {
             const app = new Application();
             const gulpRunner = new GulpRunner();
@@ -44,7 +41,7 @@ for (const gulpCommand of gulpCommands) {
 
 require('yargs')
     .command('install', 'Install Command', (yargs: InstallCommandOptions & Argv) => {
-        yargs.default('installBaseTheme', true);
+        yargs.default('installBaseTheme', false);
         yargs.default('baseThemeUrl', 'git@github.com:BlueAcornInc/ba-green-pistachio-theme-m2.git')
         yargs.string('baseThemeUrl');
         yargs.boolean('installBaseTheme');

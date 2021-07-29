@@ -32,3 +32,9 @@ exports[`Gulp: Babel should compile babel 3`] = `
 
 console.log(\\"module\\");"
 `;
+
+exports[`Gulp: Babel should compile babel 4`] = `
+"\\"use strict\\";
+
+console.log(\\"some test file\\");"
+`;

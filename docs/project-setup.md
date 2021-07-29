@@ -4,41 +4,32 @@ Once Green Pistachio is [installed](installation.md), we need to initialize a pr
 
 1. Navigate to the root directory of a magento instance
 2. Run `gpc` for a list of commands (Or `npm run gpc` if you're working off scripts declared in your `package.json` instead).
-
-If there is no `green-pistachio.config.js` file present, Green Pistachio will provide an `install` command
-which will initialize the `green-pistachio.config.js` file for you.
+3. Run `gpc install` to install all dependencies required. See the available options below.
 
 ```shell
-Usage: gpc [options] [command]
+gpc install
+
+Install Command
 
 Options:
-  -V, --version   output the version number
-  -h, --help      display help for command
-
-Commands:
-  install         installs green-pistachio build tools
-  help [command]  display help for command
+  --help              Show help                                        [boolean]
+  --version           Show version number                              [boolean]
+  --installBaseTheme                                  [boolean] [default: false]
+  --baseThemeUrl                                              [string] [default:
+                  "git@github.com:BlueAcornInc/ba-green-pistachio-theme-m2.git"]
 ```
 
-3. Run `gpc install` (or `npm run gpc install`)to initialize the project.
+## What's going on?
 
-```shell
-collecting installed themes
-? Which themes should we generate configurations for? (Press <space> to select, <a> to toggle all, <i> to invert selection)
-❯◯ frontend/BlueAcorn/site
- ◯ adminhtml/Magento/backend
- ◯ frontend/Magento/blank
- ◯ frontend/Magento/luma
-```
+The `gpc install` command creates the necessary configuration files within your project and installs some mandatory dependencies.
 
-Here we can select which themes we want to compile using Green Pistachio, follow the toggles to make a selection.
+1. installation command will generate a default `tsconfig.json` file to compile typescript into javascript with babel and webpack.
 
-> Note: If the BlueAcorn/site theme is not available, a prompt will display asking if you wish to install the
-BlueAcorn base theme. This is not currently open source and will likely be adjusted in the future. For now,
-you would say no, or the command will end up failing.
+2. If you provide a theme URL and toggle the `--installBaseTheme` command, the installation command will attempt to clone the theme repository into your project.
 
-Next, Green Pistachio will detect whether the current project has the [mage2tv/magento-cache-clean](https://github.com/mage2tv/magento-cache-clean)
-installed. If it does not, it will attempt to install it for you.
+3. Green Pistachio will install the [mage2tv/magento-cache-clean](https://github.com/mage2tv/magento-cache-clean) composer module to handle cache cleaning tasks.
 
-4. The project is ready, you should now have a `green-pistachio.config.js` file which will tell Green Pistachio how to work
+4. Green Pistachio will generate a default `green-pistachio.config.js` file for you in your project root, where you can fine-tune different configuration settings.
+
+5. The project is ready, you should now have a `green-pistachio.config.js` file which will tell Green Pistachio how to work
 with your themes. Next, [read about how to adjust the config file](green-pistachio-config.md).

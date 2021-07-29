@@ -1,41 +1,21 @@
-import debug from 'debug';
-import { dest, src, TaskFunction } from 'gulp';
 import babel from 'gulp-babel';
 import rename from 'gulp-rename';
 import Project from "../../Models/Project";
-import Theme from "../../Models/Theme";
-import Module from "../../Models/Module";
 import { TaskInterface } from "./TaskInterface";
-import { TaskData } from '../JsFileGlobs';
 import AbstractJsTask from './AbstractJsTask';
-const logger = debug('gpc:gulp:babel');
 
 export default class Babel extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/source/**/*.js';
     protected MODULE_GLOB = '**/web/**/source/**/*.js';
+    protected TASK_NAME = 'Babel';
 
-    getName(source: Theme | Module): string {
-        if (source instanceof Theme) {
-            return `Babel<Theme<${source.getData().path}>>`;
-        }
-
-        return `Babel<Module<${source.getName()}>>`;
-    }
-
-    getTask(taskData: TaskData): TaskFunction {
-        const task: TaskFunction = (done) => {
-            src(taskData.sources, { allowEmpty: true })
-                // @ts-ignore
-                .pipe(babel(this.getBabelConfig(taskData.project)))
-                .pipe(rename((path) => {
-                    path.dirname = path.dirname.replace('/source', '');
-                }))
-                .pipe(dest(taskData.outputDirectory))
-                .on('finish', done);
-        };
-        task.displayName = taskData.displayName;
-
-        return task;
+    getTask(project: Project, gulpStream: NodeJS.ReadWriteStream): NodeJS.ReadWriteStream {
+        return gulpStream
+            // @ts-ignore
+            .pipe(babel(this.getBabelConfig(project)))
+            .pipe(rename((path) => {
+                path.dirname = path.dirname.replace('/source', '');
+            }));
     }
 
     protected getBabelConfig(project: Project) {

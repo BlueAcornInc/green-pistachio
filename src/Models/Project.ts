@@ -4,13 +4,13 @@ import debug from 'debug';
 import Module from "./Module";
 import Theme, { ThemeData } from "./Theme";
 import ProjectConfigBuilder from '../ProjectConfigBuilder';
+import ConfigLoader from './Project/ConfigLoader';
 const logger = debug('gpc:project');
 
 type ProjectConstructorArgs = {
     root: string;
     themes: Theme[];
     modules: Module[];
-    includePath: string;
     enabledThemes?: string[];
 };
 
@@ -25,7 +25,6 @@ export default class Project {
     private themes: Theme[];
     private enabledThemes: Theme[];
     private modules: Module[];
-    private includePath: string;
     private webpackDevelopmentMode: boolean = false;
     private proxyUrl: string = '';
     private devServerConfig: Partial<WebpackDevServerConfig> = {};
@@ -57,18 +56,53 @@ export default class Project {
     };
 
     constructor(config: ProjectConstructorArgs) {
-        const { root, themes, modules, includePath, enabledThemes } = config;
+        const { root, themes, modules, enabledThemes } = config;
 
         this.root = root;
         this.themes = themes;
         this.modules = modules;
-        this.includePath = includePath;
         this.enabledThemes = enabledThemes
             ? themes.filter(theme => enabledThemes.includes(theme.getData().path))
             : themes;
     }
 
     public configure() {
+        // Enable default themes
+        for (const theme of this.enabledThemes) {
+            theme.setEnabled(true);
+        }
+
+        for (const theme of this.themes) {
+            if (
+                !theme
+                    .getSourceDirectory()
+                    .includes(
+                        join(
+                            this.getRootDirectory(),
+                            'vendor'
+                        )
+                    )
+            ) {
+                theme.setEnabled(true);
+            }
+        }
+
+        // Enable default modules
+        for (const magentoModule of this.modules) {
+            if (
+                !magentoModule
+                    .getSourceDirectory()
+                    .includes(
+                        join(
+                            this.getRootDirectory(),
+                            'vendor'
+                        )
+                    )
+            ) {
+                magentoModule.setEnabled(true);
+            }
+        }
+
         this.hooks.configure.call(this);
     }
 
@@ -88,15 +122,19 @@ export default class Project {
         theme.configure(themeData);
     }
 
-    public setIncludePath(includePath: string) {
-        this.includePath = includePath;
+    public enableModule(moduleName: string) {
+        const magentoModule = this.modules.find(magentoModule => magentoModule.getName() === moduleName);
+
+        if (!magentoModule) {
+            logger(`could not find module by name: ${moduleName}`);
+            return;
+        }
+
+        magentoModule.setEnabled(true);
     }
 
     public getThemes() {
-        return this.enabledThemes.filter(theme => 
-            theme.getSourceDirectory()
-                .includes(join(this.getRootDirectory(), this.includePath))
-        );
+        return this.enabledThemes.filter(magentoTheme => magentoTheme.getEnabled());
     }
 
     public getAllThemes() {
@@ -104,10 +142,7 @@ export default class Project {
     }
 
     public getModules() {
-        return this.modules.filter(module =>
-            module.getSourceDirectory()
-                .includes(join(this.getRootDirectory(), this.includePath))
-        );
+        return this.modules.filter(magentoModule => magentoModule.getEnabled());
     }
 
     public getAllModules() {
@@ -166,7 +201,7 @@ export default class Project {
             if (!debug.enabled('gpc:logger')) {
                 debug.enable('gpc:logger');
             }
-            logger(`A project URL must be provided in your projects ${ProjectConfigBuilder.CONFIG_FILE}`);
+            logger(`A project URL must be provided in your projects ${ConfigLoader.CONFIG_FILE}`);
             logger(`\n\nExample:
 module.exports = project => {
 project.hooks.configure.tap("Set Product Url", () => {
@@ -175,7 +210,7 @@ project.hooks.configure.tap("Set Product Url", () => {
 }
             `);
 
-            throw new Error(`A project URL must be provided in your projects ${ProjectConfigBuilder.CONFIG_FILE}`);
+            throw new Error(`A project URL must be provided in your projects ${ConfigLoader.CONFIG_FILE}`);
         }
 
         return this.proxyUrl;
