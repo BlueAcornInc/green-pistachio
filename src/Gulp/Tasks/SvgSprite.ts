@@ -99,36 +99,19 @@ export default class SvgSprite implements TaskInterface {
             'spritesrc'
         );
 
-        // Invert themes, further in the array, the higher priority
-        const themes: Theme[] = [targetTheme];
-        let parentTheme = targetTheme.getParent();
-        while (parentTheme) {
-            themes.unshift(parentTheme);
-            parentTheme = parentTheme.getParent();
-        }
+        let currentTheme: Theme | undefined = targetTheme;
+        while (currentTheme) {
+            const files = await glob(
+                join(
+                    currentTheme.getSourceDirectory(),
+                    '/web/spritesrc/**/*.svg',
+                )
+            );
 
-        // Find all svgs
-        const allSvgFiles = await Promise.all(
-            themes.map(async theme => {
-                const files = await glob(
-                    join(
-                        theme.getSourceDirectory(),
-                        '/web/spritesrc/**/*.svg',
-                    )
-                );
-
-                return {
-                    theme,
-                    files
-                };
-            })
-        );
-
-        for (const { theme, files } of allSvgFiles) {
             for (const svgFile of files) {
                 const normalizedFile = svgFile.replace(
                     join(
-                        theme.getSourceDirectory(),
+                        currentTheme.getSourceDirectory(),
                         'web',
                         'spritesrc'
                     ),
@@ -137,12 +120,16 @@ export default class SvgSprite implements TaskInterface {
                 const svgFileDir = dirname(svgFile);
                 const svgFileName = basename(svgFile);
                 const relativePath = relative(targetPath, svgFileDir);
-
-                svgMap.set(normalizedFile, join(
-                    relativePath,
-                    svgFileName
-                ));
+    
+                if (!svgMap.has(normalizedFile)) {
+                    svgMap.set(normalizedFile, join(
+                        relativePath,
+                        svgFileName
+                    ));
+                }
             }
+
+            currentTheme = currentTheme.getParent();
         }
 
         return Array.from(svgMap.values());
