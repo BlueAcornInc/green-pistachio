@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gulp: Critical CSS should include only critical styles 1`] = `"h1{color:red}"`;

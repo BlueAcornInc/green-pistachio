@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gulp: Babel should compile babel 1`] = `
+"\\"use strict\\";
+
+console.log(\\"hello world\\");"
+`;
+
+exports[`Gulp: Babel should compile babel 2`] = `
+"\\"use strict\\";
+
+Object.defineProperty(exports, \\"__esModule\\", {
+  value: true
+});
+exports[\\"default\\"] = void 0;
+
+var _testTsDep = _interopRequireDefault(require(\\"./test-ts-dep\\"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { \\"default\\": obj }; }
+
+console.log(_testTsDep[\\"default\\"]);
+
+var _default = function _default(msg) {
+  console.log(msg);
+};
+
+exports[\\"default\\"] = _default;"
+`;
+
+exports[`Gulp: Babel should compile babel 3`] = `
+"\\"use strict\\";
+
+console.log(\\"module\\");"
+`;
+
+exports[`Gulp: Babel should compile babel 4`] = `
+"\\"use strict\\";
+
+console.log(\\"some test file\\");"
+`;
