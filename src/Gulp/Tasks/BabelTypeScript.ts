@@ -7,7 +7,9 @@ import babelResolveImports from "../../babel/plugin-resolve-imports";
 import debug from 'debug';
 import { join } from 'path';
 const logger = debug('gpc:gulp:babelTypescript');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("babelTypescript")
 export default class BabelTypeScript extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/web/ts/**/*.ts';
     protected MODULE_GLOB = '**/web/ts/**/*.ts';

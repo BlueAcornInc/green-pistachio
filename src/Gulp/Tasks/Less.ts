@@ -14,7 +14,9 @@ import Project from '../../Models/Project';
 import Theme from '../../Models/Theme';
 import { TaskInterface } from './TaskInterface';
 const logger = debug('gpc:gulp:less');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("less")
 export default class Less implements TaskInterface {
     execute(project: Project, theme?: Theme) {
         const themes = theme ? [theme] : project.getThemes();

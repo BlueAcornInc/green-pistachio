@@ -7,7 +7,9 @@ import Project from "../../Models/Project";
 import AbstractJsTask from "./AbstractJsTask";
 import { TaskInterface } from "./TaskInterface";
 const logger = debug('gpc:gulp:eslint');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("eslint")
 export default class Eslint extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/source/**/*.js';
     protected MODULE_GLOB = '**/web/**/source/**/*.js';
@@ -20,7 +22,7 @@ export default class Eslint extends AbstractJsTask implements TaskInterface {
 
         const taskData = this.getTaskData(project);
 
-        const task: TaskFunction = async (done) => {
+        return async (done) => {
             const eslintConfig = await this.getLintConfig(project);
             src(taskData.sources, {
                 allowEmpty: true
@@ -33,10 +35,6 @@ export default class Eslint extends AbstractJsTask implements TaskInterface {
                 .on('done', done);
             done();
         };
-
-        task.displayName = this.TASK_NAME;
-
-        return task;
     }
 
     getTask(project: Project, gulpStream: NodeJS.ReadWriteStream): NodeJS.ReadWriteStream {
@@ -85,7 +83,7 @@ export default class Eslint extends AbstractJsTask implements TaskInterface {
         } catch (err) {
             logger(`Can't find magento eslintrc file.`)
         }
-        
+
         config.resolvePluginsRelativeTo = basePath;
 
         project.hooks.gulp.eslintConfig.call(config);

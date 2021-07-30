@@ -21,19 +21,16 @@ export default abstract class AbstractJsTask {
 
         const taskData = this.getTaskData(project);
 
-        const task: TaskFunction = (done) => {
+        return (done) => {
             const gulpStream = src(taskData.sources, {
                 allowEmpty: true,
                 cwdbase: true
             });
-            
+
             this.getTask(project, gulpStream)
                 .pipe(dest(taskData.outputDirectory))
                 .on('finish', done);
         };
-        task.displayName = this.TASK_NAME;
-
-        return task;
     }
 
     watch(project: Project): TaskFunction {
@@ -65,7 +62,7 @@ export default abstract class AbstractJsTask {
             sources: [],
             outputDirectory: project.getRootDirectory()
         });
-    } 
+    }
 
     abstract getTask(
         project: Project,

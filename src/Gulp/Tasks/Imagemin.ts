@@ -12,7 +12,9 @@ import Project from '../../Models/Project';
 import Theme from '../../Models/Theme';
 import { TaskInterface } from './TaskInterface';
 const logger = debug('gpc:gulp:imageMin');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("imageMin")
 export default class ImageMinGulpTask implements TaskInterface {
     execute(project: Project) {
         const tasks: TaskFunction[] = project.getThemes().map(theme => {

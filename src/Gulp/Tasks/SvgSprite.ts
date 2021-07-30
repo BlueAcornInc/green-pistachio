@@ -8,7 +8,9 @@ import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
 import { TaskInterface } from "./TaskInterface";
 const logger = debug('gpc:gulp:svgSprite');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("svgSprite")
 export default class SvgSprite implements TaskInterface {
     execute(project: Project): TaskFunction {
         const config = {

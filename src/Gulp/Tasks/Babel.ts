@@ -3,7 +3,9 @@ import rename from 'gulp-rename';
 import Project from "../../Models/Project";
 import { TaskInterface } from "./TaskInterface";
 import AbstractJsTask from './AbstractJsTask';
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("babel")
 export default class Babel extends AbstractJsTask implements TaskInterface {
     protected THEME_GLOB = '**/source/**/*.js';
     protected MODULE_GLOB = '**/web/**/source/**/*.js';
