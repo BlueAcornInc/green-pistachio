@@ -3,7 +3,9 @@ import { spawn } from 'child_process';
 import { TaskInterface } from "./TaskInterface";
 import { series, TaskFunction } from 'gulp';
 const logger = debug('gpc:gulp:cache');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("cache")
 export class Cache implements TaskInterface {
     execute() {
         logger(`

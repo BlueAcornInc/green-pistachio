@@ -6,7 +6,9 @@ import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
 import { TaskInterface } from "./TaskInterface";
 const logger = debug('gpc:gulp:pngSprite');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("pngSprite")
 export default class PngSprite implements TaskInterface {
     execute(project: Project) {
         const config = {

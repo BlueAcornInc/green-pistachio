@@ -9,7 +9,9 @@ import { TaskInterface } from "./TaskInterface";
 import TsConfigBuilder from "../../Models/Project/TsConfigBuilder";
 import { responseInterceptor } from "../../Webpack/DevServerResponseInterceptor";
 const logger = debug('gpc:gulp:webpack');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("webpack")
 export default class Webpack implements TaskInterface {
     private webpackConfigFactory: WebpackConfigFactory;
     private getCompiler: GetCompiler;
@@ -23,10 +25,10 @@ export default class Webpack implements TaskInterface {
     }
 
     execute(project: Project): TaskFunction {
-        const webpackTask: TaskFunction = async (done) => {
+        return async (done) => {
             if (!this.configFileExists) {
                 const exists = await this.tsConfigBuilder.configFileExists();
-                
+
                 if (!exists) {
                     await this.tsConfigBuilder.emitConfigFile(project);
                 }
@@ -51,10 +53,6 @@ export default class Webpack implements TaskInterface {
                 done();
             });
         };
-
-        webpackTask.displayName = 'webpack';
-
-        return webpackTask;
     }
 
     watch(project: Project): TaskFunction {
@@ -119,7 +117,7 @@ export default class Webpack implements TaskInterface {
                                     .replace(new RegExp(proxyUrl, 'g'), frontendDevServerUrl)
                                     .replace(
                                         new RegExp(
-                                            proxyUrl.replace(/[^a-z0-9,\._]/iug, (a) => 
+                                            proxyUrl.replace(/[^a-z0-9,\._]/iug, (a) =>
                                                 `\\\\u00${a.charCodeAt(0).toString(16).toUpperCase()}`
                                             ),
                                             'g'

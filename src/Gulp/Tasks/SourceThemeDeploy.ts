@@ -4,7 +4,9 @@ import { series, TaskFunction } from 'gulp';
 import Project from '../../Models/Project';
 import CommandRunner from '../../CommandRunner';
 const logger = debug('gpc:gulp:sourceThemeDeploy');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("sourceThemeDeploy")
 export default class SourceThemeDeploy implements TaskInterface {
     execute(project: Project): TaskFunction {
         const cmdPlus = /^win/.test(process.platform) ? ' & ' : ' && ';

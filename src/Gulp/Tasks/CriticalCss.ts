@@ -9,7 +9,9 @@ import Project from "../../Models/Project";
 import { TaskInterface } from "./TaskInterface";
 import glob from "fast-glob";
 const logger = debug('gpc:gulp:criticalCss');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("criticalCss")
 export default class CriticalCss implements TaskInterface {
     private firstRun: boolean = true;
     private cacheMap: Map<string, boolean> = new Map();
@@ -33,7 +35,7 @@ export default class CriticalCss implements TaskInterface {
 
     /**
      * Creates a critical.css file by project configuration
-     * 
+     *
      * @param project | Project
      * @param theme | Theme
      * @returns TaskFunction
@@ -49,18 +51,18 @@ export default class CriticalCss implements TaskInterface {
                             criticalPath.urls.map(async url => {
                                 try {
                                     const css = await this.getCriticalCssByUrl(project, url);
-    
+
                                     return css;
                                 } catch (err) {
                                     logger(`Error getting CSS from ${url} for ${theme.getData().path}: ${err}`);
-    
+
                                     return '';
                                 }
                             })
                         );
-    
+
                         const css = cssFromUrls.reduce((allCss: string, cssForUrl) => allCss + cssForUrl, '');
-    
+
                         const purgedCss = await new Promise<string>(resolve => {
                             purge.purgeCSS(css, {
                                 trim: true,
@@ -76,12 +78,12 @@ export default class CriticalCss implements TaskInterface {
                                 }
                             });
                         });
-    
+
                         try {
                             // Delete old file if it exists
                             await fs.unlink(criticalPath.filepath);
                         } catch (err) {}
-    
+
                         await fs.mkdir(dirname(criticalPath.filepath), { recursive: true });
                         await fs.writeFile(criticalPath.filepath, purgedCss);
                     })
@@ -104,7 +106,7 @@ export default class CriticalCss implements TaskInterface {
 
     /**
      * Watch task
-     * 
+     *
      * @param project | Project
      * @param theme | Theme[]
      * @returns TaskFunction
@@ -120,7 +122,7 @@ export default class CriticalCss implements TaskInterface {
 
     /**
      * Get watch files that retrigger critical css compilation
-     * 
+     *
      * @param project | Project
      * @param themes | Themes[]
      * @returns string[]
@@ -147,7 +149,7 @@ export default class CriticalCss implements TaskInterface {
 
     /**
      * Get critical css string from the given URL
-     * 
+     *
      * @param project | Project
      * @param url | string
      * @returns string
@@ -176,7 +178,7 @@ export default class CriticalCss implements TaskInterface {
 
     /**
      * Get page content by url, cache using filesystem as puppeteer process is quite slow
-     * 
+     *
      * @param url | string
      * @returns string
      */

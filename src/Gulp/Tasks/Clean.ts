@@ -5,7 +5,9 @@ import { TaskInterface } from "./TaskInterface";
 import { parallel, src, TaskFunction } from 'gulp';
 import plumber from 'gulp-plumber';
 const logger = debug('gpc:gulp:clean');
+import taskName from "./Decorators/TaskNameDecorator";
 
+@taskName("cleanProject")
 export default class Clean implements TaskInterface {
     execute(project: Project) {
         const tasks: TaskFunction[] = project.getThemes().map(theme => {
