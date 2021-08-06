@@ -1,5 +1,4 @@
-import { Chunk, Compiler, ExternalModule, JavascriptModulesPlugin, NormalModule, RuntimeGlobals, Template, WebpackPluginInstance } from "webpack";
-import { ConcatSource, Source } from "webpack-sources";
+import { Chunk, Compiler, ExternalModule, RuntimeGlobals, Template, WebpackPluginInstance } from "webpack";
 import { basename, dirname, join, relative } from 'path';
 
 export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
@@ -8,7 +7,7 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
     apply(compiler: Compiler) {
         // Tap into the compilation
         compiler.hooks.thisCompilation.tap(
-            MagentoAmdLibraryPlugin.PluginName, 
+            MagentoAmdLibraryPlugin.PluginName,
             compilation => {
                 const asyncChunks = new Set();
 
@@ -25,7 +24,7 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
                     }
                 );
 
-                const hooks = JavascriptModulesPlugin.getCompilationHooks(compilation);
+                const hooks = compiler.webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(compilation);
 
                 // Determine which chunks are async
                 compilation.hooks.renderManifest.tap(
@@ -36,7 +35,7 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
                         for (const asyncChunk of chunk.getAllAsyncChunks()) {
                             asyncChunks.add(asyncChunk);
                         }
-                        
+
                         return result;
                     }
                 );
@@ -44,7 +43,7 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
                 hooks.render.tap(
                     MagentoAmdLibraryPlugin.PluginName,
                     // @ts-ignore
-                    (source, renderContext) => {
+                    (source: compiler.webpack.sources.Source, renderContext) => {
                         const { runtimeTemplate, chunkGraph, chunk, moduleGraph } = renderContext;
 
                         // Bail here for async chunks / lazy imports, webpack handles loading for these
@@ -62,16 +61,16 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
                         const fnEnd = iife ? ";\n}" : "\n}";
 
                         if (isEntryChunk(chunk)) {
-                            // Render AMD Entry                            
+                            // Render AMD Entry
                             const modules = chunkGraph.getChunkModules(chunk).filter(m => m instanceof ExternalModule) as ExternalModule[];
                             const externals = modules;
-                            const deps = externals.map(m => 
+                            const deps = externals.map(m =>
                                 typeof m.request === 'object' && !Array.isArray(m.request)
                                     ? m.request.amd
                                     : m.request
                             );
                             const currentChunkPathInfo = compilation.getPathWithInfo(
-                                JavascriptModulesPlugin.getChunkFilenameTemplate(chunk, compilation.outputOptions),
+                                compiler.webpack.javascript.JavascriptModulesPlugin.getChunkFilenameTemplate(chunk, compilation.outputOptions),
                                 {
                                     chunk,
                                     contentHashType: 'javascript',
@@ -81,7 +80,7 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
 
                             for (const dependency of chunkGraph.getChunkEntryDependentChunksIterable(chunk)) {
                                 const dependencyPath = compilation.getPathWithInfo(
-                                    JavascriptModulesPlugin.getChunkFilenameTemplate(dependency, compilation.outputOptions),
+                                    compiler.webpack.javascript.JavascriptModulesPlugin.getChunkFilenameTemplate(dependency, compilation.outputOptions),
                                     {
                                         chunk: dependency,
                                         contentHashType: 'javascript',
@@ -103,7 +102,7 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
                             }
 
                             const externalsDepsArray = JSON.stringify(deps);
-                            const externalsArguments = externals.map(m => 
+                            const externalsArguments = externals.map(m =>
                                 `__WEBPACK_EXTERNAL_MODULE_${Template.toIdentifier(
                                     `${chunkGraph.getModuleId(m)}`
                                 )}__`
@@ -116,17 +115,17 @@ export default class MagentoAmdLibraryPlugin implements WebpackPluginInstance {
                                         : `function(${externalsArguments}) {`) +
                                     (iife || !chunk.hasRuntime() ? " return " : "\n");
 
-                                return new ConcatSource(
+                                return new compiler.webpack.sources.ConcatSource(
                                     `define(${externalsDepsArray}, ${fnStart}`,
-                                    source as Source,
+                                    source,
                                     `${fnEnd});`
                                 );
                             } else {
-                                return new ConcatSource(`define(${fnStart}`, (source as Source) ,`${fnEnd});`);
+                                return new compiler.webpack.sources.ConcatSource(`define(${fnStart}`, (source) ,`${fnEnd});`);
                             }
                         } else {
                             // Render chunk
-                            return new ConcatSource(`define(${fnStart}`, (source as Source) ,`${fnEnd});`);
+                            return new compiler.webpack.sources.ConcatSource(`define(${fnStart}`, (source) ,`${fnEnd});`);
                         }
                     }
                 );

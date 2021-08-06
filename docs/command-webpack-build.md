@@ -1,12 +1,14 @@
 # Webpack Build Command
 
-This command will run webpack in production mode, and emit compiled assets into the pub/static directory for all themes and locales.
+This command will run webpack in production mode, and emit compiled assets into the theme in the web/bundle directory.
 
 ```
 gpc webpack:build
 ```
 
-## How to configure on Magento Cloud
+## How to configure on Magento Cloud (unstable)
+
+> In order to make this work, you must configure green-pistachio with this feature flag: `project.experiments.webpack.emitFilesToPub = true`.
 
 To have this command run automatically on Magento Cloud, you'll need to modify the default build hook in the `.magento.app.yaml` file. The general goal is to install a modern version of node, install dependencies, and execute the webpack build command.
 

@@ -37,7 +37,7 @@ export default class WebpackConfigFactory {
     constructor() {
         this.entryResolver = new EntryResolver();
     }
-    
+
     public async getConfig(project: Project): Promise<Configuration[]> {
         let configs: Configuration[] = [];
 
@@ -49,13 +49,14 @@ export default class WebpackConfigFactory {
         const moduleConfig = await this.getConfigForModules(project);
         configs.push(moduleConfig);
 
-        // @ts-ignore
+        project.hooks.webpack.appendConfig.call(configs, this);
+
         return configs;
     }
 
     /**
      * There can be only one
-     * 
+     *
      * @returns MiniCssExtractPlugin
      */
     private getMiniExtractTextPlugin(): MiniCssExtractPlugin {
@@ -163,7 +164,7 @@ export default class WebpackConfigFactory {
                     ] : []),
                 ]
             },
-            ...((mode === 'development') ? 
+            ...((mode === 'development') ?
                 {
                     target: 'web'
                 } : {}),
@@ -265,7 +266,7 @@ export default class WebpackConfigFactory {
 
         const config: Configuration[] = [];
 
-        for (const pubDirectory of project.getWebpackPubDirectories(theme)) {
+        for (const pubDirectory of project.getWebpackOutputDirectories(theme)) {
             const localeConfig: Configuration = {
                 ...commonConfig,
                 entry: allEntries,
@@ -325,9 +326,9 @@ export default class WebpackConfigFactory {
                     }
                 },
             };
-    
+
             project.hooks.webpack.config.call(localeConfig);
-    
+
             logger(`Built Config: ${JSON.stringify(localeConfig)}`);
 
             config.push(localeConfig);
