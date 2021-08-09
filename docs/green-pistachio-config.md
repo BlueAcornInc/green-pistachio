@@ -62,3 +62,27 @@ module.exports = project => {
     });
 };
 ```
+
+## Module based config files
+
+In addition to the project level `green-pistachio.config.js` file, you can add a `green-pistachio.config.js` file to the root of any Module or Theme.
+
+e.g.,
+* app/code/Vendor/Module/green-pistachio.config.js
+* app/design/frontend/BlueAcorn/site/green-pistachio.config.js
+
+This can allow an extension point for composer based packages to self initialize, or add additional
+webpack plugins required to make your module code work properly.
+
+### How to enable a vendor module using a green-pistachio configuration file
+
+By default Green Pistachio will not handle vendor modules, and they need to be enabled explicitly 
+within a green-pistachio.config.js file. By using a module based config file, you can 
+automatically enable the module:
+
+`vendor/blueacorn/module-store-locator/green-pistachio.config.js`
+```javascript
+module.exports = project => {
+    project.enableModule('BlueAcorn_StoreLocator');
+};
+```

@@ -3,8 +3,9 @@ import { SyncHook } from 'tapable';
 import debug from 'debug';
 import Module from "./Module";
 import Theme, { ThemeData } from "./Theme";
-import ProjectConfigBuilder from '../ProjectConfigBuilder';
 import ConfigLoader from './Project/ConfigLoader';
+import { Configuration } from 'webpack';
+import WebpackConfigFactory from '../Webpack/ConfigFactory';
 const logger = debug('gpc:project');
 
 type ProjectConstructorArgs = {
@@ -41,7 +42,8 @@ export default class Project {
         },
         webpack: {
             config: new SyncHook(["config"]),
-            entryGlobs: new SyncHook(["globs"])
+            entryGlobs: new SyncHook(["globs"]),
+            appendConfig: new SyncHook<[Configuration[], WebpackConfigFactory]>(["webpackConfigs", "configFactory"])
         },
         configure: new SyncHook(["project"])
     };
@@ -52,6 +54,8 @@ export default class Project {
             hmr: false,
             // Set to true to enable css modules
             cssModules: false,
+            // Set to true to emit files to the pub directory instead of the individual theme directories
+            emitFilesToPub: false,
         }
     };
 
@@ -165,18 +169,22 @@ export default class Project {
         ));
     }
 
-    public getWebpackPubDirectories(theme: Theme) {
-        return theme.getLocales().map(locale => join(
-            this.getRootDirectory(),
-            ...(
-                this.isWebpackDevelopmentMode()
-                ? ['static']
-                : ['pub', 'static']
-            ),
-            theme.getData().area,
-            theme.getData().path,
-            locale
-        ));
+    public getWebpackOutputDirectories(theme: Theme) {
+        if (this.isWebpackDevelopmentMode() || this.experiments.webpack.emitFilesToPub) {
+            return theme.getLocales().map(locale => join(
+                this.getRootDirectory(),
+                ...(
+                    this.isWebpackDevelopmentMode()
+                    ? ['static']
+                    : ['pub', 'static']
+                ),
+                theme.getData().area,
+                theme.getData().path,
+                locale
+            ));
+        }
+
+        return [join(theme.getSourceDirectory(), 'web')];
     }
 
     public getStaticDirectory() {

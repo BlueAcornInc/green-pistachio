@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import debug from 'debug';
+import glob from 'fast-glob';
 import Project from "../Project";
 const logger = debug('gpc:configLoader');
 
@@ -30,23 +31,45 @@ export default class ConfigLoader {
         return false;
     }
 
-    public async loadConfig(): Promise<boolean> {
+    public async loadConfig() {
         const configExists = await this.configExists();
 
         if (configExists) {
             try {
                 this.interopRequire()(this.project);
-                return true;
             } catch (err) {
                 logger(`Problem occurred while running user provided configuration file: ${err}`);
             }
         }
 
-        return false;
+        await this.loadModularConfigFiles();
     }
 
-    private interopRequire() {
-        const configModule = require(this.filePath);
+    private async loadModularConfigFiles() {
+        const filePaths = [
+            ...this.project.getAllModules(),
+            ...this.project.getAllThemes()
+        ].map(compilableObject => 
+            join(
+                compilableObject.getSourceDirectory(),
+                ConfigLoader.CONFIG_FILE
+            )
+        );
+        
+        const configFiles = await glob(filePaths);
+        
+        for (const configFile of configFiles) {
+            try {
+                this.interopRequire(configFile)(this.project);
+            } catch (err) {
+                logger(`Problem occurred while running user provided configuration file: ${err}`);
+            }
+        }
+    }
+
+    private interopRequire(filePath = '') {
+        const configFile = filePath || this.filePath;
+        const configModule = require(configFile);
         return configModule && configModule.__esModule ? configModule.default : configModule;
     }
 }

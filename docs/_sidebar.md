@@ -20,6 +20,9 @@
   * [Watch Only](command-watch.md)
   * [Webpack Build](command-webpack-build.md)
   * [Webpack](command-webpack.md)
+* Examples
+  * [React](examples/react.md)
+  * [Preact](examples/preact.md)
 * [Contributing](contributing.md)
 <!--
 TODO Add Additional Features Pages
