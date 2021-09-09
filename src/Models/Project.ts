@@ -127,6 +127,10 @@ export default class Project {
         }
 
         theme.configure(themeData);
+
+        if (themeData.hasOwnProperty('enabled')) {
+            theme.setEnabled(themeData.enabled);
+        }
     }
 
     public enableModule(moduleName: string) {

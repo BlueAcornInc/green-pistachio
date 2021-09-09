@@ -24,7 +24,7 @@ export type ThemeData = {
 export default class Theme {
     private sourceDirectory: string;
     private parent?: Theme;
-    private enabled: boolean;    
+    private enabled: boolean | undefined;
     private data: ThemeData;
 
     constructor(config: ThemeConstructorArgs) {
@@ -98,12 +98,11 @@ export default class Theme {
         }
 
         let childTheme = this.getParent();
-        
+
         while (childTheme) {
             for (const file of childTheme.getStyleSheets()) {
                 files.add(file);
             }
-
             childTheme = childTheme.getParent();
         }
 
@@ -128,7 +127,7 @@ export default class Theme {
         return this.enabled;
     }
 
-    public setEnabled(enabled: boolean) {
+    public setEnabled(enabled: undefined | boolean) {
         this.enabled = enabled;
     }
 }
