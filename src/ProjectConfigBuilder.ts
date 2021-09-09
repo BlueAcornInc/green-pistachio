@@ -47,9 +47,9 @@ export default class ProjectConfigBuilder {
             modules: moduleObjects,
             enabledThemes
         });
-        
+
         const configLoader = new ConfigLoader(project);
-        configLoader.loadConfig()
+        await configLoader.loadConfig();
 
         project.configure();
 
@@ -58,7 +58,7 @@ export default class ProjectConfigBuilder {
 
     private async getPaths() {
         const commandRunner = new CommandRunner();
-        
+
         const command = `
 require 'vendor/autoload.php';
 echo json_encode([
@@ -100,7 +100,7 @@ echo json_encode([
 
         while (allThemes.length) {
             const themeName = allThemes.shift();
-            
+
             if (themeName) {
                 const [ area, ...restParts ] = themeName.split('/')
                 const themePath = restParts.join('/');
@@ -110,7 +110,7 @@ echo json_encode([
 
                 if (parentTheme || !parentThemeName) {
                     processedThemes.set(
-                        themeName, 
+                        themeName,
                         new Theme({
                             sourceDirectory: themePaths[themeName],
                             parent: parentTheme,

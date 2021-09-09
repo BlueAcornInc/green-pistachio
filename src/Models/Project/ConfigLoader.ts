@@ -49,15 +49,15 @@ export default class ConfigLoader {
         const filePaths = [
             ...this.project.getAllModules(),
             ...this.project.getAllThemes()
-        ].map(compilableObject => 
+        ].map(compilableObject =>
             join(
                 compilableObject.getSourceDirectory(),
                 ConfigLoader.CONFIG_FILE
             )
         );
-        
+
         const configFiles = await glob(filePaths);
-        
+
         for (const configFile of configFiles) {
             try {
                 this.interopRequire(configFile)(this.project);
