@@ -152,8 +152,8 @@ export default class WebpackConfigFactory {
             context: project.getRootDirectory(),
             output: {
                 path: project.getRootDirectory(),
-                publicPath: '',
-                filename: '[name].js',
+                publicPath: project.getRootDirectory(),
+                filename: '[name].js'
             },
             module: {
                 rules: [
