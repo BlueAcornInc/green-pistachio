@@ -72,26 +72,6 @@ Object {
         "tapPromise": [Function],
         "taps": Array [],
       },
-      "criticalCssConfig": SyncHook {
-        "_args": Array [
-          "config",
-        ],
-        "_call": [Function],
-        "_callAsync": [Function],
-        "_promise": [Function],
-        "_x": undefined,
-        "call": [Function],
-        "callAsync": [Function],
-        "compile": [Function],
-        "constructor": [Function],
-        "interceptors": Array [],
-        "name": undefined,
-        "promise": [Function],
-        "tap": [Function],
-        "tapAsync": [Function],
-        "tapPromise": [Function],
-        "taps": Array [],
-      },
       "eslintConfig": SyncHook {
         "_args": Array [
           "config",
@@ -211,7 +191,6 @@ Object {
     Theme {
       "data": Object {
         "area": "frontend",
-        "criticalCss": undefined,
         "locales": undefined,
         "path": "Magento/blank",
         "stylesheets": undefined,
@@ -223,7 +202,6 @@ Object {
     Theme {
       "data": Object {
         "area": "frontend",
-        "criticalCss": undefined,
         "locales": undefined,
         "path": "Magento/luma",
         "stylesheets": undefined,
@@ -232,7 +210,6 @@ Object {
       "parent": Theme {
         "data": Object {
           "area": "frontend",
-          "criticalCss": undefined,
           "locales": undefined,
           "path": "Magento/blank",
           "stylesheets": undefined,
@@ -293,26 +270,6 @@ Object {
         "taps": Array [],
       },
       "babelTypeScriptConfig": SyncHook {
-        "_args": Array [
-          "config",
-        ],
-        "_call": [Function],
-        "_callAsync": [Function],
-        "_promise": [Function],
-        "_x": undefined,
-        "call": [Function],
-        "callAsync": [Function],
-        "compile": [Function],
-        "constructor": [Function],
-        "interceptors": Array [],
-        "name": undefined,
-        "promise": [Function],
-        "tap": [Function],
-        "tapAsync": [Function],
-        "tapPromise": [Function],
-        "taps": Array [],
-      },
-      "criticalCssConfig": SyncHook {
         "_args": Array [
           "config",
         ],
@@ -443,7 +400,6 @@ Object {
     Theme {
       "data": Object {
         "area": "frontend",
-        "criticalCss": undefined,
         "locales": undefined,
         "path": "Magento/blank",
         "stylesheets": undefined,
@@ -455,7 +411,6 @@ Object {
     Theme {
       "data": Object {
         "area": "frontend",
-        "criticalCss": undefined,
         "locales": undefined,
         "path": "Magento/luma",
         "stylesheets": undefined,
@@ -464,7 +419,6 @@ Object {
       "parent": Theme {
         "data": Object {
           "area": "frontend",
-          "criticalCss": undefined,
           "locales": undefined,
           "path": "Magento/blank",
           "stylesheets": undefined,
@@ -533,26 +487,6 @@ Object {
         "taps": Array [],
       },
       "babelTypeScriptConfig": SyncHook {
-        "_args": Array [
-          "config",
-        ],
-        "_call": [Function],
-        "_callAsync": [Function],
-        "_promise": [Function],
-        "_x": undefined,
-        "call": [Function],
-        "callAsync": [Function],
-        "compile": [Function],
-        "constructor": [Function],
-        "interceptors": Array [],
-        "name": undefined,
-        "promise": [Function],
-        "tap": [Function],
-        "tapAsync": [Function],
-        "tapPromise": [Function],
-        "taps": Array [],
-      },
-      "criticalCssConfig": SyncHook {
         "_args": Array [
           "config",
         ],

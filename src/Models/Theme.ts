@@ -7,10 +7,10 @@ type ThemeConstructorArgs = ThemeData & {
     parent?: Theme;
 };
 
-type CriticalCssInput = {
-    filepath: string;
-    urls: string[];
-};
+// type CriticalCssInput = {
+//     filepath: string;
+//     urls: string[];
+// };
 
 export type ThemeData = {
     area: "frontend" | "adminhtml";
@@ -18,7 +18,7 @@ export type ThemeData = {
     enabled?: boolean;
     locales?: string[];
     stylesheets?: string[];
-    criticalCss?: CriticalCssInput[];
+    // criticalCss?: CriticalCssInput[];
 };
 
 export default class Theme {
@@ -35,7 +35,7 @@ export default class Theme {
             parent,
             locales,
             stylesheets,
-            criticalCss,
+            // criticalCss,
             enabled
         } = config;
 
@@ -47,7 +47,7 @@ export default class Theme {
             path,
             locales,
             stylesheets,
-            criticalCss
+            // criticalCss
         };
     }
 
@@ -113,15 +113,15 @@ export default class Theme {
         return stylesheets;
     }
 
-    public getCriticalPaths(): CriticalCssInput[] {
-        if (this.data.criticalCss) {
-            return this.data.criticalCss;
-        }
+    // public getCriticalPaths(): CriticalCssInput[] {
+    //     if (this.data.criticalCss) {
+    //         return this.data.criticalCss;
+    //     }
 
-        logger(`No critical path data available for: ${this.data.path}`);
+    //     logger(`No critical path data available for: ${this.data.path}`);
 
-        return [];
-    }
+    //     return [];
+    // }
 
     public getEnabled() {
         return this.enabled;

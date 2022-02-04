@@ -3,9 +3,9 @@ import debug from 'debug';
 import Project from "../Models/Project";
 import Clean from '../Gulp/Tasks/Clean';
 import Less from "../Gulp/Tasks/Less";
-import ImageMinGulpTask from "../Gulp/Tasks/Imagemin";
-import SvgSprite from "../Gulp/Tasks/SvgSprite";
-import PngSprite from "../Gulp/Tasks/PngSprite";
+// import ImageMinGulpTask from "../Gulp/Tasks/Imagemin";
+// import SvgSprite from "../Gulp/Tasks/SvgSprite";
+// import PngSprite from "../Gulp/Tasks/PngSprite";
 import LiveReload from "../Gulp/Tasks/LiveReload";
 import { Cache } from "../Gulp/Tasks/Cache";
 import Webpack from "../Gulp/Tasks/Webpack";
@@ -32,9 +32,9 @@ export interface GulpCommandOptions extends CommandOptionsInterface {
 export default class GulpRunner implements CommandInterface {
     private clean: Clean;
     private less: Less;
-    private imageMin: ImageMinGulpTask;
-    private svgSprite: SvgSprite;
-    private pngSprite: PngSprite;
+    // private imageMin: ImageMinGulpTask;
+    // private svgSprite: SvgSprite;
+    // private pngSprite: PngSprite;
     private liveReload: LiveReload;
     private cache: Cache;
     private webpack: Webpack;
@@ -46,9 +46,9 @@ export default class GulpRunner implements CommandInterface {
     constructor() {
         this.clean = new Clean();
         this.less = new Less();
-        this.imageMin = new ImageMinGulpTask();
-        this.svgSprite = new SvgSprite();
-        this.pngSprite = new PngSprite();
+        // this.imageMin = new ImageMinGulpTask();
+        // this.svgSprite = new SvgSprite();
+        // this.pngSprite = new PngSprite();
         this.liveReload = new LiveReload();
         this.cache = new Cache();
         this.webpack = new Webpack();
@@ -96,12 +96,12 @@ export default class GulpRunner implements CommandInterface {
     private prepareTasks(project: Project) {
         const task = series(
             this.clean.execute(project),
+            // parallel(
+            //     this.svgSprite.execute(project),
+            //     this.pngSprite.execute(project)
+            // ),
             parallel(
-                this.svgSprite.execute(project),
-                this.pngSprite.execute(project)
-            ),
-            parallel(
-                this.imageMin.execute(project),
+                // this.imageMin.execute(project),
                 this.eslint.execute(project)
             ),
             parallel(
@@ -126,9 +126,9 @@ export default class GulpRunner implements CommandInterface {
     private watchTasks(project: Project) {
         return parallel(
             this.less.watch(project),
-            this.imageMin.watch(project),
-            this.svgSprite.watch(project),
-            this.pngSprite.watch(project),
+            // this.imageMin.watch(project),
+            // this.svgSprite.watch(project),
+            // this.pngSprite.watch(project),
             this.liveReload.watch(),
             this.cache.watch(),
             this.babel.watch(project),
@@ -136,7 +136,7 @@ export default class GulpRunner implements CommandInterface {
             this.eslint.watch(project)
         );
     }
-    
+
     private defaultTasks(project: Project) {
         const task = series(
             this.prepareTasks(project),
@@ -150,12 +150,12 @@ export default class GulpRunner implements CommandInterface {
 
     private compile(project: Project) {
         return series(
+            // parallel(
+            //     this.svgSprite.execute(project),
+            //     this.pngSprite.execute(project)
+            // ),
             parallel(
-                this.svgSprite.execute(project),
-                this.pngSprite.execute(project)
-            ),
-            parallel(
-                this.imageMin.execute(project),
+                // this.imageMin.execute(project),
                 this.less.execute(project),
                 this.babel.execute(project),
                 this.tsBabel.execute(project),

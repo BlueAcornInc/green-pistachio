@@ -1,6 +1,5 @@
 import yargs, { Argv } from "yargs";
 import { Application } from "./Application";
-import CriticalCss, { CriticalCssCommandOptions } from "./Commands/CriticalCss";
 import Install, { InstallCommandOptions } from "./Commands/Install";
 import GulpRunner, { GulpCommands, GulpCommandOptions } from "./Commands/GulpRunner";
 
@@ -49,18 +48,6 @@ require('yargs')
         const app = new Application();
         const installCommand = new Install();
         await app.run(installCommand, yargs);
-    })
-    .command('criticalPath [theme]', 'Generate Critical CSS Files', (yargs: CriticalCssCommandOptions & Argv) => {
-        yargs.positional('theme', {
-            describe: 'single theme to compile',
-            type: 'string'
-        });
-        yargs.default('watch', false);
-        yargs.boolean('watch');
-    }, async (yargs: CriticalCssCommandOptions) => {
-        const app = new Application();
-        const criticalCssCommand = new CriticalCss();
-        await app.run(criticalCssCommand, yargs);
     });
 
 yargs.demandCommand(1, '').argv;

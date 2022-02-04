@@ -11,18 +11,14 @@ import { parallel, series } from 'gulp';
 import { cleanJs, cleanAll } from "./blueacornui/tasks/clean";
 import sourceThemeDeploy from "./blueacornui/tasks/sourceThemeDeploy";
 import { lessAll, watchLess } from './blueacornui/tasks/less';
-import { imageminAll, watchImages } from "./blueacornui/tasks/imagemin";
 import { eslintAll, eslintApp } from "./blueacornui/tasks/eslint";
 import { babelAll, babelApp, watchAppJs, watchJs } from "./blueacornui/tasks/babel";
 import { watchLivereload } from "./blueacornui/tasks/watch";
-import { svgSpriteAll, watchSvgSprites } from "./blueacornui/tasks/svgSprite";
-import { pngSpriteAll, watchPngSprites } from "./blueacornui/tasks/pngSprite";
 import watchCache from "./blueacornui/tasks/cache";
 
 const prepareTasks = series(
     parallel(cleanJs, cleanAll),
-    parallel(svgSpriteAll, pngSpriteAll),
-    parallel(imageminAll, eslintAll, eslintApp),
+    parallel(eslintAll, eslintApp),
     parallel(babelAll, babelApp),
     sourceThemeDeploy
 );
@@ -36,11 +32,8 @@ const compileTasks = series(
 
 const watchTasks = parallel(
     watchLess,
-    watchImages,
     watchJs,
     watchAppJs,
-    watchSvgSprites,
-    watchPngSprites,
     watchLivereload,
     watchCache
 );
@@ -55,8 +48,7 @@ export const defaultTasks = series(
 );
 
 export const compile = series(
-    parallel(svgSpriteAll, pngSpriteAll),
-    parallel(imageminAll, eslintAll, eslintApp),
+    parallel(eslintAll, eslintApp),
     parallel(babelAll, babelApp),
     lessAll,
     (seriesDone) => {
