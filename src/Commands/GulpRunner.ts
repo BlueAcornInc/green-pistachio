@@ -4,6 +4,7 @@ import Project from "../Models/Project";
 import Clean from '../Gulp/Tasks/Clean';
 import Less from "../Gulp/Tasks/Less";
 import ImageMinGulpTask from "../Gulp/Tasks/Imagemin";
+import SvgMinGulpTask from "../Gulp/Tasks/Svgmin";
 import SvgSprite from "../Gulp/Tasks/SvgSprite";
 import PngSprite from "../Gulp/Tasks/PngSprite";
 import LiveReload from "../Gulp/Tasks/LiveReload";
@@ -33,6 +34,7 @@ export default class GulpRunner implements CommandInterface {
     private clean: Clean;
     private less: Less;
     private imageMin: ImageMinGulpTask;
+    private svgMin: SvgMinGulpTask;
     private svgSprite: SvgSprite;
     private pngSprite: PngSprite;
     private liveReload: LiveReload;
@@ -47,6 +49,7 @@ export default class GulpRunner implements CommandInterface {
         this.clean = new Clean();
         this.less = new Less();
         this.imageMin = new ImageMinGulpTask();
+        this.svgMin = new SvgMinGulpTask();
         this.svgSprite = new SvgSprite();
         this.pngSprite = new PngSprite();
         this.liveReload = new LiveReload();
@@ -102,6 +105,7 @@ export default class GulpRunner implements CommandInterface {
             ),
             parallel(
                 this.imageMin.execute(project),
+                this.svgMin.execute(project),
                 this.eslint.execute(project)
             ),
             parallel(
@@ -127,6 +131,7 @@ export default class GulpRunner implements CommandInterface {
         return parallel(
             this.less.watch(project),
             this.imageMin.watch(project),
+            this.svgMin.watch(project),
             this.svgSprite.watch(project),
             this.pngSprite.watch(project),
             this.liveReload.watch(),
@@ -136,7 +141,7 @@ export default class GulpRunner implements CommandInterface {
             this.eslint.watch(project)
         );
     }
-    
+
     private defaultTasks(project: Project) {
         const task = series(
             this.prepareTasks(project),
@@ -156,6 +161,7 @@ export default class GulpRunner implements CommandInterface {
             ),
             parallel(
                 this.imageMin.execute(project),
+                this.svgMin.execute(project),
                 this.less.execute(project),
                 this.babel.execute(project),
                 this.tsBabel.execute(project),

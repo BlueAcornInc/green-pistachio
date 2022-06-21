@@ -1,39 +1,39 @@
 import { src, dest, parallel, watch, TaskFunction } from "gulp";
 import debug from "debug";
-import squoosh from "gulp-squoosh";
+import svgmin from "gulp-svgmin";
 import { join } from "path";
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
 import { TaskInterface } from "./TaskInterface";
-const logger = debug("gpc:gulp:imageMin");
+const logger = debug("gpc:gulp:svgmin");
 import taskName from "./Decorators/TaskNameDecorator";
 
-@taskName("imageMin")
-export default class ImageMinGulpTask implements TaskInterface {
+@taskName("svgmin")
+export default class SvgMinGulpTask implements TaskInterface {
     execute(project: Project) {
         const tasks: TaskFunction[] = project.getThemes().map((theme) => {
             const task: TaskFunction = (done) => {
-                const imageMinPaths = `${this.getImageMinSourceDirectory(
+                const svgMinPaths = `${this.getImageMinSourceDirectory(
                     theme
-                )}/**/*.{png,jpg,gif,jpeg,svg,jpeg}`;
+                )}/**/*.svg`;
 
-                logger(`Paths: ${imageMinPaths}`);
+                logger(`Paths: ${svgMinPaths}`);
 
-                src(imageMinPaths)
-                    .pipe(squoosh())
+                src(svgMinPaths)
+                    .pipe(svgmin())
                     .pipe(
                         dest(join(theme.getSourceDirectory(), "web", "images"))
                     )
                     .on("end", () => done());
             };
 
-            task.displayName = `squoosh<${theme.getData().path}>`;
+            task.displayName = `svgmin<${theme.getData().path}>`;
 
             return task;
         });
 
         if (tasks.length === 0) {
-            logger(`No Squoosh tasks configured`);
+            logger(`No Svgmin tasks configured`);
             tasks.push((done) => done());
         }
 

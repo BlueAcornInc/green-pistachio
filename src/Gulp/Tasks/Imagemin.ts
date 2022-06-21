@@ -1,6 +1,6 @@
 import { src, dest, parallel, watch, TaskFunction } from "gulp";
 import debug from "debug";
-import squoosh from "gulp-squoosh";
+import squoosh from "gulp-libsquoosh";
 import { join } from "path";
 import Project from "../../Models/Project";
 import Theme from "../../Models/Theme";
@@ -8,19 +8,19 @@ import { TaskInterface } from "./TaskInterface";
 const logger = debug("gpc:gulp:imageMin");
 import taskName from "./Decorators/TaskNameDecorator";
 
-@taskName("imageMin")
+@taskName("squoosh")
 export default class ImageMinGulpTask implements TaskInterface {
     execute(project: Project) {
         const tasks: TaskFunction[] = project.getThemes().map((theme) => {
             const task: TaskFunction = (done) => {
                 const imageMinPaths = `${this.getImageMinSourceDirectory(
                     theme
-                )}/**/*.{png,jpg,gif,jpeg,svg,jpeg}`;
+                )}/**/*.{png,jpg,jpeg}`; // Gifs & SVGs are not supported
 
                 logger(`Paths: ${imageMinPaths}`);
 
                 src(imageMinPaths)
-                    .pipe(squoosh())
+                    .pipe(squoosh({}, {}))
                     .pipe(
                         dest(join(theme.getSourceDirectory(), "web", "images"))
                     )
