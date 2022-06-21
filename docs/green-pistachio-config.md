@@ -20,26 +20,12 @@ module.exports = project => {
                 'css/styles-m',
                 'css/styles-l',
                 'BlueAcorn_CmsFramework::css/grid'
-            ],
-
-            criticalCss: [{
-                filepath: join(__dirname, 'app', 'design', 'frontend', 'BlueAcorn', 'site', 'web', 'css', 'critical.css'),
-                urls: [
-                    'https://app.magento.test',
-                ]
-            }]
+            ]
         });
 
         // By default Green Pistachio will compile all modules, except for those in the vendor directory.
         // If you need to compile code in vendor (not recommended), you can enable the module like so:
         project.enableModule("BlueAcorn_CmsFramework");
-    });
-
-    project.hooks.gulp.criticalCssConfig.tap('Green Pistachio - Critical CSS', config => {
-        config.ignore = {
-            atrule: ['@font-face'],
-            decl: (node, value) => value.includes('https://app.magento.test')
-        }
     });
 
     project.hooks.gulp.svgSpriteConfig.tap('Green Pistachio  - Svg Sprite', config => {
@@ -76,8 +62,8 @@ webpack plugins required to make your module code work properly.
 
 ### How to enable a vendor module using a green-pistachio configuration file
 
-By default Green Pistachio will not handle vendor modules, and they need to be enabled explicitly 
-within a green-pistachio.config.js file. By using a module based config file, you can 
+By default Green Pistachio will not handle vendor modules, and they need to be enabled explicitly
+within a green-pistachio.config.js file. By using a module based config file, you can
 automatically enable the module:
 
 `vendor/blueacorn/module-store-locator/green-pistachio.config.js`

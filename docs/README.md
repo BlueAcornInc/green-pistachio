@@ -15,4 +15,3 @@ that can be run independently of a specific Magento 2 implementation.
 * Linting for ES6
 * Image minification
 * Less Compilation
-* Critical CSS Compilation

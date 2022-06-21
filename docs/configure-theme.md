@@ -25,6 +25,5 @@ Add any of the options below to configure:
 | `path`        | String   | Path within app/design/{appPath}/ where you wish the workflow to process                                                                                                                      |   |
 | `locales`     | String[] | The locales array is a list of locales you wish to compile your theme for, by default you should have at least one, in the example above we have en_US which is the Blue Acorn iCi default.   |   |
 | `stylesheets` | String[] | Array of parent stylesheets that you wish to compile from less to css. Examples: css/styles-m css/styles-l Vendor_Module::css/styles                                                          |   |
-| `criticalCss` | Object[] | Array of Objects containing information to compile CriticalCSS, covered in the [CriticalCSS Documentation](critical-css.md)                                                                   |   |
 
 [comment]: # (End Table Generator Comment)

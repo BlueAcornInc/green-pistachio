@@ -4,7 +4,6 @@
   * [Project Setup](project-setup.md)
   * [Green Pistachio Config](green-pistachio-config.md)
     * [configureTheme](configure-theme.md)
-    * [CriticalCSS](critical-css.md)
     * [ESLint](eslint-config.md)
     * [Babel](babel-config.md)
     * [TypeScript](typescript-config.md)
