@@ -79,7 +79,7 @@ export default class Webpack implements TaskInterface {
             let cookieData: string[] | null;
 
             // @ts-ignore
-            const server = new WebpackDevServer(compiler, {
+            const server = new WebpackDevServer({
                 https: {
                     key: ssl.key,
                     cert: ssl.cert
@@ -139,7 +139,7 @@ export default class Webpack implements TaskInterface {
                         })
                     }
                 }
-            });
+            }, compiler);
 
             server.listen(devServerPort, devServerUrl, () => {
                 logger('dev server started');
