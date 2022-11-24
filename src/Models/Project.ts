@@ -118,7 +118,7 @@ export default class Project {
             return;
         }
 
-        const theme = this.themes.find(theme => theme.getData().path === themeData.path);
+        const theme = this.themes.find(theme => theme.getData().path === themeData.path && theme.getData().area === themeData.area);
 
         if (!theme) {
             logger(`can not find theme with path = '${themeData.path}'`);

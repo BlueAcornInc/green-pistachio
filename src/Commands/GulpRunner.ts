@@ -9,26 +9,12 @@ import SvgSprite from "../Gulp/Tasks/SvgSprite";
 import PngSprite from "../Gulp/Tasks/PngSprite";
 import LiveReload from "../Gulp/Tasks/LiveReload";
 import { Cache } from "../Gulp/Tasks/Cache";
-import Webpack from "../Gulp/Tasks/Webpack";
 import SourceThemeDeploy from "../Gulp/Tasks/SourceThemeDeploy";
 import Babel from "../Gulp/Tasks/Babel";
 import BabelTypeScript from "../Gulp/Tasks/BabelTypeScript";
 import Eslint from "../Gulp/Tasks/Eslint";
-import { CommandInterface, CommandOptionsInterface } from "./CommandInterface";
+import { CommandInterface, GulpCommandOptions, GulpCommands } from "./CommandInterface";
 const logger = debug('gpc:gulp:runner');
-
-export enum GulpCommands {
-    DEFAULT = 'default',
-    LINT = 'lint',
-    WATCH = 'watch',
-    COMPILE = 'compile',
-    WEBPACK = 'webpack',
-    WEBPACK_BUILD = 'webpack:build',
-};
-
-export interface GulpCommandOptions extends CommandOptionsInterface {
-    command: GulpCommands;
-};
 
 export default class GulpRunner implements CommandInterface {
     private clean: Clean;
@@ -39,7 +25,6 @@ export default class GulpRunner implements CommandInterface {
     private pngSprite: PngSprite;
     private liveReload: LiveReload;
     private cache: Cache;
-    private webpack: Webpack;
     private sourceThemeDeploy: SourceThemeDeploy;
     private babel: Babel;
     private tsBabel: BabelTypeScript;
@@ -54,7 +39,6 @@ export default class GulpRunner implements CommandInterface {
         this.pngSprite = new PngSprite();
         this.liveReload = new LiveReload();
         this.cache = new Cache();
-        this.webpack = new Webpack();
         this.sourceThemeDeploy = new SourceThemeDeploy();
         this.babel = new Babel();
         this.tsBabel = new BabelTypeScript();
@@ -68,14 +52,12 @@ export default class GulpRunner implements CommandInterface {
     }
 
     public async run(options: GulpCommandOptions) {
-        const { project, command } = options;
+        const { project, _: command } = options;
         const taskMap = {
             [GulpCommands.DEFAULT]: this.default,
             [GulpCommands.COMPILE]: this.compile,
             [GulpCommands.LINT]: this.lint,
             [GulpCommands.WATCH]: this.watch,
-            [GulpCommands.WEBPACK]: this.webpackTask,
-            [GulpCommands.WEBPACK_BUILD]: this.webpackBuildTask,
         };
         const gulpTask = taskMap[command] || this.default;
 
@@ -86,14 +68,6 @@ export default class GulpRunner implements CommandInterface {
 
     private lint(project: Project) {
         return this.eslint.execute(project);
-    }
-
-    private webpackTask(project: Project) {
-        return this.webpack.watch(project);
-    }
-
-    private webpackBuildTask(project: Project) {
-        return this.webpack.execute(project);
     }
 
     private prepareTasks(project: Project) {

@@ -291,7 +291,11 @@ export default class WebpackConfigFactory {
                     // new VirtualModulesPlugin(virtualModules)
                 ],
                 resolve: {
-                    ...(commonConfig.resolve || {})
+                    ...(commonConfig.resolve || {}),
+                    plugins: [
+                        ...(commonConfig.resolve && commonConfig.resolve.plugins || []),
+                        new MagentoThemeFallbackResolverPlugin(project, theme)
+                    ]
                 },
                 optimization: {
                     splitChunks: {
@@ -315,7 +319,8 @@ export default class WebpackConfigFactory {
                                 enforce: true
                             }
                         }
-                    }
+                    },
+                    emitOnErrors: true
                 },
             };
 

@@ -7,15 +7,10 @@ import debug from 'debug';
 import Project from '../Models/Project';
 import ConfigLoader from '../Models/Project/ConfigLoader';
 import CommandRunner from "../CommandRunner";
-import { CommandInterface, CommandOptionsInterface } from "./CommandInterface";
+import { CommandInterface, InstallCommandOptions } from "./CommandInterface";
 const logger = debug('gpc:install');
 
 const rimrafP = async (dir: string) => new Promise(resolve => rimraf(dir, resolve));
-
-export interface InstallCommandOptions extends CommandOptionsInterface {
-    installBaseTheme: boolean;
-    baseThemeUrl: string;
-}
 
 export default class Install implements CommandInterface {
     private commandRunner: CommandRunner;
