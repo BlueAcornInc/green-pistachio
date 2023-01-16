@@ -1,5 +1,5 @@
 import { src, TaskFunction } from "gulp";
-import eslint from 'gulp-eslint';
+import eslint from 'gulp-eslint-new';
 import { promises as fs } from 'fs';
 import { join } from 'path';
 import debug from 'debug';
@@ -8,6 +8,8 @@ import AbstractJsTask from "./AbstractJsTask";
 import { TaskInterface } from "./TaskInterface";
 const logger = debug('gpc:gulp:eslint');
 import taskName from "./Decorators/TaskNameDecorator";
+
+const fileExists = async (path: string) => !!(await fs.stat(path).catch(e => false));
 
 @taskName("eslint")
 export default class Eslint extends AbstractJsTask implements TaskInterface {
@@ -46,23 +48,46 @@ export default class Eslint extends AbstractJsTask implements TaskInterface {
             configFile?: string;
             extends?: string[];
             resolvePluginsRelativeTo?: string;
+            rulePaths?: string[];
         } = {};
         const basePath = join(__dirname, '..', '..', '..');
 
         logger(`Loading project .eslintrc`);
-        try {
-            const eslintrcPath = join(project.getRootDirectory(), '.eslintrc');
-            await fs.stat(eslintrcPath);
-
+        const eslintrcPath = join(project.getRootDirectory(), '.eslintrc');
+        if (await fileExists(eslintrcPath)) {
             config.configFile = eslintrcPath;
-        } catch (err) {
+        } else {
             logger(`No project .eslintrc file found, using default`);
             config.configFile = join(basePath, '.eslintrc');
         }
 
         logger(`Loading magento .eslintrc file`);
-        try {
-            const magentoEslintPath = join(
+        const magentoEslintPath = join(
+            project.getRootDirectory(),
+            'vendor',
+            'magento',
+            'magento-coding-standard',
+            'eslint',
+            '.eslintrc',
+        );
+        if (await fileExists(magentoEslintPath)) {
+            config.extends = [
+                magentoEslintPath
+            ];
+
+            const rulePath = join(
+                project.getRootDirectory(),
+                'vendor',
+                'magento',
+                'magento-coding-standard',
+                'eslint',
+                'rules'
+            );
+            config.rulePaths = [
+                rulePath
+            ];
+        } else {
+            const legacyMagentoEslintPath = join(
                 project.getRootDirectory(),
                 'dev',
                 'tests',
@@ -75,13 +100,13 @@ export default class Eslint extends AbstractJsTask implements TaskInterface {
                 'eslint',
                 '.eslintrc-magento'
             );
-            await fs.stat(magentoEslintPath);
-
-            config.extends = [
-                magentoEslintPath
-            ];
-        } catch (err) {
-            logger(`Can't find magento eslintrc file.`)
+            if (await fileExists(legacyMagentoEslintPath)) {
+                config.extends = [
+                    legacyMagentoEslintPath
+                ];
+            } else {
+                logger(`Can't find magento eslintrc file.`)
+            }
         }
 
         config.resolvePluginsRelativeTo = basePath;
