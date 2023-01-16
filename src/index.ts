@@ -1,8 +1,6 @@
 import yargs, { Argv } from "yargs";
 import { Application } from "./Application";
-import CriticalCss, { CriticalCssCommandOptions } from "./Commands/CriticalCss";
-import Install, { InstallCommandOptions } from "./Commands/Install";
-import GulpRunner, { GulpCommands, GulpCommandOptions } from "./Commands/GulpRunner";
+import { GulpCommandOptions, GulpCommands, WebpackCommands, InstallCommandOptions, WebpackCommandOptions } from "./Commands/CommandInterface";
 
 const gulpCommands = [{
     name: GulpCommands.COMPILE,
@@ -15,52 +13,69 @@ const gulpCommands = [{
     label: 'Lint Command',
 }, {
     name: GulpCommands.WATCH,
-    label: 'Watch Command'
-}, {
-    name: GulpCommands.WEBPACK,
-    label: 'Webpack Command'
-}, {
-    name: GulpCommands.WEBPACK_BUILD,
-    label: 'Webpack Build Command'
+    label: 'Watch Command',
 }];
 
 for (const gulpCommand of gulpCommands) {
-    require('yargs')
-        .command(gulpCommand.name, gulpCommand.label, (yargs: GulpCommandOptions & Argv) => {
+    yargs.command<GulpCommandOptions>({
+        command: gulpCommand.name,
+        describe: gulpCommand.label,
+        builder: (yargs: Argv): Argv<GulpCommandOptions> => {
             yargs.describe('themes', 'list of themes to execute against')
             yargs.array('themes');
-        }, async (yargs: GulpCommandOptions) => {
+            return yargs as Argv<GulpCommandOptions>;
+        },
+        handler: async (yargs: GulpCommandOptions) => {
             const app = new Application();
-            const gulpRunner = new GulpRunner();
-            await app.run(gulpRunner, {
-                ...yargs,
-                command: gulpCommand.name
-            })
-        });
+            const {default: GulpRunner} = require('./Commands/GulpRunner');
+            const command = new GulpRunner();
+            await app.run(command, yargs);
+        }
+    });
 }
 
-require('yargs')
-    .command('install', 'Install Command', (yargs: InstallCommandOptions & Argv) => {
+const webpackCommands = [{
+    name: WebpackCommands.WEBPACK,
+    label: 'Webpack Command',
+}, {
+    name: WebpackCommands.WEBPACK_BUILD,
+    label: 'Webpack Build Command',
+}];
+
+for (const webpackCommand of webpackCommands) {
+    yargs.command<WebpackCommandOptions>({
+        command: webpackCommand.name,
+        describe: webpackCommand.label,
+        builder: (yargs: Argv): Argv<WebpackCommandOptions> => {
+            yargs.describe('themes', 'list of themes to execute against')
+            yargs.array('themes');
+            return yargs as Argv<WebpackCommandOptions>;
+        },
+        handler: async (yargs: WebpackCommandOptions) => {
+            const app = new Application();
+            const {default: WebpackRunner} = require('./Commands/WebpackRunner');
+            const command = new WebpackRunner();
+            await app.run(command, yargs);
+        }
+    });
+}
+
+yargs.command<InstallCommandOptions>({
+    command: 'install',
+    describe: 'Install Command',
+    builder: (yargs: Argv): Argv<InstallCommandOptions> => {
         yargs.default('installBaseTheme', false);
         yargs.default('baseThemeUrl', 'git@github.com:BlueAcornInc/ba-green-pistachio-theme-m2.git')
         yargs.string('baseThemeUrl');
         yargs.boolean('installBaseTheme');
-    }, async (yargs: InstallCommandOptions) => {
+        return yargs as Argv<InstallCommandOptions>;
+    },
+    handler: async (yargs: InstallCommandOptions) => {
         const app = new Application();
-        const installCommand = new Install();
-        await app.run(installCommand, yargs);
-    })
-    .command('criticalPath [theme]', 'Generate Critical CSS Files', (yargs: CriticalCssCommandOptions & Argv) => {
-        yargs.positional('theme', {
-            describe: 'single theme to compile',
-            type: 'string'
-        });
-        yargs.default('watch', false);
-        yargs.boolean('watch');
-    }, async (yargs: CriticalCssCommandOptions) => {
-        const app = new Application();
-        const criticalCssCommand = new CriticalCss();
-        await app.run(criticalCssCommand, yargs);
-    });
+        const {default: Install} = require('./Commands/Install');
+        const command = new Install();
+        await app.run(command, yargs);
+    }
+});
 
 yargs.demandCommand(1, '').argv;

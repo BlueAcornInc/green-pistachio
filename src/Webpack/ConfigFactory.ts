@@ -267,17 +267,13 @@ export default class WebpackConfigFactory {
         const config: Configuration[] = [];
 
         for (const pubDirectory of project.getWebpackOutputDirectories(theme)) {
+            // @ts-ignore
             const localeConfig: Configuration = {
                 ...commonConfig,
                 entry: allEntries,
                 context: theme.getSourceDirectory(),
                 output: {
                     ...commonConfig.output,
-                    // path: join(
-                    //     theme.getSourceDirectory(),
-                    //     'web',
-                    //     'bundle'
-                    // ),
                     path: join(
                         pubDirectory,
                         'bundle',
@@ -323,7 +319,8 @@ export default class WebpackConfigFactory {
                                 enforce: true
                             }
                         }
-                    }
+                    },
+                    emitOnErrors: true
                 },
             };
 

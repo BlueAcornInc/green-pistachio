@@ -4,40 +4,27 @@ import Project from "../Models/Project";
 import Clean from '../Gulp/Tasks/Clean';
 import Less from "../Gulp/Tasks/Less";
 import ImageMinGulpTask from "../Gulp/Tasks/Imagemin";
+import SvgMinGulpTask from "../Gulp/Tasks/Svgmin";
 import SvgSprite from "../Gulp/Tasks/SvgSprite";
 import PngSprite from "../Gulp/Tasks/PngSprite";
 import LiveReload from "../Gulp/Tasks/LiveReload";
 import { Cache } from "../Gulp/Tasks/Cache";
-import Webpack from "../Gulp/Tasks/Webpack";
 import SourceThemeDeploy from "../Gulp/Tasks/SourceThemeDeploy";
 import Babel from "../Gulp/Tasks/Babel";
 import BabelTypeScript from "../Gulp/Tasks/BabelTypeScript";
 import Eslint from "../Gulp/Tasks/Eslint";
-import { CommandInterface, CommandOptionsInterface } from "./CommandInterface";
+import { CommandInterface, GulpCommandOptions, GulpCommands } from "./CommandInterface";
 const logger = debug('gpc:gulp:runner');
-
-export enum GulpCommands {
-    DEFAULT = 'default',
-    LINT = 'lint',
-    WATCH = 'watch',
-    COMPILE = 'compile',
-    WEBPACK = 'webpack',
-    WEBPACK_BUILD = 'webpack:build',
-};
-
-export interface GulpCommandOptions extends CommandOptionsInterface {
-    command: GulpCommands;
-};
 
 export default class GulpRunner implements CommandInterface {
     private clean: Clean;
     private less: Less;
     private imageMin: ImageMinGulpTask;
+    private svgMin: SvgMinGulpTask;
     private svgSprite: SvgSprite;
     private pngSprite: PngSprite;
     private liveReload: LiveReload;
     private cache: Cache;
-    private webpack: Webpack;
     private sourceThemeDeploy: SourceThemeDeploy;
     private babel: Babel;
     private tsBabel: BabelTypeScript;
@@ -47,11 +34,11 @@ export default class GulpRunner implements CommandInterface {
         this.clean = new Clean();
         this.less = new Less();
         this.imageMin = new ImageMinGulpTask();
+        this.svgMin = new SvgMinGulpTask();
         this.svgSprite = new SvgSprite();
         this.pngSprite = new PngSprite();
         this.liveReload = new LiveReload();
         this.cache = new Cache();
-        this.webpack = new Webpack();
         this.sourceThemeDeploy = new SourceThemeDeploy();
         this.babel = new Babel();
         this.tsBabel = new BabelTypeScript();
@@ -65,14 +52,12 @@ export default class GulpRunner implements CommandInterface {
     }
 
     public async run(options: GulpCommandOptions) {
-        const { project, command } = options;
+        const { project, _: command } = options;
         const taskMap = {
             [GulpCommands.DEFAULT]: this.default,
             [GulpCommands.COMPILE]: this.compile,
             [GulpCommands.LINT]: this.lint,
             [GulpCommands.WATCH]: this.watch,
-            [GulpCommands.WEBPACK]: this.webpackTask,
-            [GulpCommands.WEBPACK_BUILD]: this.webpackBuildTask,
         };
         const gulpTask = taskMap[command] || this.default;
 
@@ -85,14 +70,6 @@ export default class GulpRunner implements CommandInterface {
         return this.eslint.execute(project);
     }
 
-    private webpackTask(project: Project) {
-        return this.webpack.watch(project);
-    }
-
-    private webpackBuildTask(project: Project) {
-        return this.webpack.execute(project);
-    }
-
     private prepareTasks(project: Project) {
         const task = series(
             this.clean.execute(project),
@@ -102,6 +79,7 @@ export default class GulpRunner implements CommandInterface {
             ),
             parallel(
                 this.imageMin.execute(project),
+                this.svgMin.execute(project),
                 this.eslint.execute(project)
             ),
             parallel(
@@ -127,6 +105,7 @@ export default class GulpRunner implements CommandInterface {
         return parallel(
             this.less.watch(project),
             this.imageMin.watch(project),
+            this.svgMin.watch(project),
             this.svgSprite.watch(project),
             this.pngSprite.watch(project),
             this.liveReload.watch(),
@@ -136,7 +115,7 @@ export default class GulpRunner implements CommandInterface {
             this.eslint.watch(project)
         );
     }
-    
+
     private defaultTasks(project: Project) {
         const task = series(
             this.prepareTasks(project),
@@ -156,6 +135,7 @@ export default class GulpRunner implements CommandInterface {
             ),
             parallel(
                 this.imageMin.execute(project),
+                this.svgMin.execute(project),
                 this.less.execute(project),
                 this.babel.execute(project),
                 this.tsBabel.execute(project),

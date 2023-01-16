@@ -59,17 +59,11 @@ export default class BabelTypeScript extends AbstractJsTask implements TaskInter
         }
 
         const babelConfig = {
-            presets: [
-                ["babel-preset-react-app", {
-                    helpers: false
-                }]
-            ],
             plugins: [
                 "@babel/plugin-transform-modules-amd",
                 ...magentoPagebuilderPlugins,
                 babelResolveImports(project)
             ],
-            babelrc: false,
             configFile: false
         };
         project.hooks.gulp.babelTypeScriptConfig.call(babelConfig);

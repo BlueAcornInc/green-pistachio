@@ -29,13 +29,17 @@ export default class Less implements TaskInterface {
         }
 
         const tasks: TaskFunction[] = sources.map(source => {
+
             const task: TaskFunction = (done) => {
                 logger(source);
                 src(source)
                     .pipe(sourcemaps.init())
                     .pipe(
                         less()
-                            .on('error', (err) => logger(err))
+                            .on('error', (err) => {
+                                logger(source);
+                                logger(err);
+                            })
                     )
                     .pipe(sourcemaps.write('./'))
                     .pipe(
