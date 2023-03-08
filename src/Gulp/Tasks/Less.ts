@@ -45,6 +45,7 @@ export default class Less implements TaskInterface {
                             sourcemaps: ".",
                         })
                     )
+                    .pipe(livereload())
                     .on("finish", done);
             };
 
